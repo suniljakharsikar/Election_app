@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".OTP">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/profile"
+        app:civ_border_color="@color/profile_boundry_color"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Verify Your Mobile Number"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/profile_image"
+        app:layout_constraintStart_toStartOf="@+id/profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Enter mobile number to recieve"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/otpEdit1"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_margin="4dp"
+        android:layout_marginTop="32dp"
+        android:background="#FFFFFF"
+        android:ems="2"
+        android:inputType="phone"
+        app:layout_constraintEnd_toStartOf="@+id/otpEdit2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
+        android:id="@+id/otpEdit2"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_margin="4dp"
+        android:background="#FFFFFF"
+        android:ems="2"
+
+        android:inputType="phone"
+        app:layout_constraintBottom_toBottomOf="@+id/otpEdit1"
+        app:layout_constraintEnd_toStartOf="@+id/otpEdit3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/otpEdit1"
+        app:layout_constraintTop_toTopOf="@+id/otpEdit1" />
+
+    <EditText
+        android:id="@+id/otpEdit3"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_margin="4dp"
+        android:background="#FFFFFF"
+        android:ems="2"
+
+        android:inputType="phone"
+        app:layout_constraintBottom_toBottomOf="@+id/otpEdit2"
+        app:layout_constraintEnd_toStartOf="@+id/otpEdit4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/otpEdit2"
+        app:layout_constraintTop_toTopOf="@+id/otpEdit2" />
+
+    <EditText
+        android:id="@+id/otpEdit4"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_margin="4dp"
+        android:background="#FFFFFF"
+        android:ems="2"
+
+        android:inputType="phone"
+        app:layout_constraintBottom_toBottomOf="@+id/otpEdit3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/otpEdit3"
+        app:layout_constraintTop_toTopOf="@+id/otpEdit3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Didn't Receive ? Resend OTP"
+        android:textColor="@color/white_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView50" />
+
+    <ImageView
+        android:id="@+id/imageView50"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
+        android:onClick="sumit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otpEdit2"
+        app:srcCompat="@drawable/submit" />
+</androidx.constraintlayout.widget.ConstraintLayout>
