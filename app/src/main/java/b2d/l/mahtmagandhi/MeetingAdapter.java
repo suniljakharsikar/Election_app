@@ -10,16 +10,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Response;
+
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHolder> implements View.OnClickListener {
 
-    private int[] x;
+    private ArrayList<Meeting> meetings;
     private Context context;
     private RecyclerView mRecyclerView;
 
 
-    public MeetingAdapter(int[] x, Context context, RecyclerView mRecyclerView) {
+    public MeetingAdapter(ArrayList<Meeting> meetings, Context context, RecyclerView mRecyclerView) {
+        this.meetings = meetings;
 
-        this.x = x;
         this.context = context;
         this.mRecyclerView = mRecyclerView;
     }
@@ -31,7 +38,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.meetingrow, parent, false);
+        View contactView = inflater.inflate(R.layout.raw_meeting, parent, false);
 
         contactView.setOnClickListener(this);
         // Return a new holder instance
@@ -41,28 +48,33 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.textView.setText("Meeting " + position);
+        Meeting meeting = meetings.get(position);
+        holder.title.setText(meeting.getTitle());
+        holder.date.setText(meeting.getMeeting_date());
+        holder.time.setText(meeting.getMeeting_time());
     }
 
     @Override
     public int getItemCount() {
-        return x.length;
+        return meetings.size();
     }
 
     @Override
     public void onClick(View view) {
         int itemPosition = mRecyclerView.getChildLayoutPosition(view);
         Intent intent = new Intent(context, MeetingDetails.class);
-        intent.putExtra("position", itemPosition);
+        intent.putExtra("meet", meetings.get(itemPosition));
         context.startActivity(intent);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView title, date, time;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.textView26);
+            title = itemView.findViewById(R.id.textView26);
+            date = itemView.findViewById(R.id.textView27);
+            time = itemView.findViewById(R.id.textView28);
         }
     }
 }

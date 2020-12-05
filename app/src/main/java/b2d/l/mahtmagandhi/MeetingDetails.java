@@ -6,8 +6,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import java.io.Serializable;
 
 public class MeetingDetails extends AppCompatActivity {
+
+    TextView title, date, time, dis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +23,20 @@ public class MeetingDetails extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
+        Meeting meet = (Meeting) getIntent().getSerializableExtra("meet");
+        title = findViewById(R.id.textView26);
+        date = findViewById(R.id.textView27);
+        time = findViewById(R.id.textView28);
+        dis = findViewById(R.id.dis);
+        if (meet != null) {
+            title.setText(meet.getTitle());
+            date.setText(meet.getMeeting_date());
+            time.setText(meet.getMeeting_time());
+            dis.setText(meet.getDescription());
+
+        }
     }
+
     public void back(View view) {
         finish();
     }

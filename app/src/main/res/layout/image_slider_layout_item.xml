@@ -33,6 +33,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="25dp"
             android:padding="6dp"
+            android:visibility="gone"
             android:textColor="#FFF"
             android:textSize="18sp" />
 

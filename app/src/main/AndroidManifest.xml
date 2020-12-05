@@ -11,27 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MeetingDetails"></activity>
+        <activity android:name=".ProblemSuggestion" />
+        <activity android:name=".Comment" />
+        <activity android:name=".NewPost" />
+        <activity android:name=".OurWorks" />
+        <activity android:name=".Language" />
+        <activity android:name=".MeetingDetails" />
         <activity android:name=".SettingProfile" />
         <activity android:name=".Helpline" />
         <activity android:name=".VotingGuide" />
         <activity android:name=".CommitteeMember" />
         <activity android:name=".Survey" />
         <activity android:name=".Manifesto" />
-        <activity android:name=".ProblemSuggestion" />
+        <activity android:name=".CreateNew" />
         <activity android:name=".VisionMission" />
-        <activity android:name=".OurWorks" />
+        <activity android:name=".OurWorkDetail" />
         <activity android:name=".NewsUpdate" />
         <activity android:name=".CommunityChat" />
         <activity android:name=".Meetings" />
         <activity android:name=".AboutUs" />
         <activity android:name=".Home" />
         <activity android:name=".Register" />
-        <activity android:name=".OTP" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".OTPVerify" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMemberAdapter.ViewHolder> {
@@ -38,10 +43,11 @@ public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMember
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        holder.textView.setText(committeeMemberData.get(position).getName());
-        holder.textView1.setText(committeeMemberData.get(position).getPost());
-        holder.imageView.setImageResource(committeeMemberData.get(position).getImage());
+        CommitteeMemberData data = committeeMemberData.get(position);
+        holder.textView.setText(data.getFirst_name() + " " + data.getLast_name());
+        holder.textView1.setText(data.getDesignation());
+        Glide.with(context).load(data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+//        holder.imageView.setImageResource(committeeMemberData.get(position).getImage());
     }
 
     @Override

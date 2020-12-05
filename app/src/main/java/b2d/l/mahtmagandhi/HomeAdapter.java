@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +41,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     intent.setClass(context, VisionMission.class);
                     break;
                 case 6:
-                    intent.setClass(context, ProblemSuggestion.class);
+                    intent.setClass(context, CreateNew.class);
                     break;
                 case 7:
                     intent.setClass(context, Manifesto.class);
