@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     CircleImageView circleImageView;
     private EditText editText;
     boolean issubmit = false;
-    ImageView imageView;
+//    ImageView imageView;
     private AVLoadingIndicatorView avi;
 
     void startAnim() {
@@ -65,17 +65,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         avi = findViewById(R.id.avi);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        }*/
 
         editText = findViewById(R.id.editTextPhone3);
-        imageView = findViewById(R.id.subbtn);
-        Rect rectangle = new Rect();
+//        imageView = findViewById(R.id.subbtn);
+       /* Rect rectangle = new Rect();
         Window window = getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
+        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);*/
 //        int statusBarHeight = rectangle.top;
 //        int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
 //        int titleBarHeight = contentViewTop - statusBarHeight;
@@ -183,6 +183,10 @@ public class LoginActivity extends AppCompatActivity {
             requestQueue.add(jsonObjectRequest);
 
         }
+    }
+
+    public void clear(View view) {
+        editText.setText("");
     }
 
     /*private void sendotp(final String mobile) {
