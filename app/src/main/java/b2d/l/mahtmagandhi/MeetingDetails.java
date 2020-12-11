@@ -27,7 +27,7 @@ public class MeetingDetails extends AppCompatActivity {
         title = findViewById(R.id.textView26);
         date = findViewById(R.id.textView27);
         time = findViewById(R.id.textView28);
-        dis = findViewById(R.id.dis);
+        dis = findViewById(R.id.textView_des_meeting_detail);
         if (meet != null) {
             title.setText(meet.getTitle());
             date.setText(meet.getMeeting_date());
