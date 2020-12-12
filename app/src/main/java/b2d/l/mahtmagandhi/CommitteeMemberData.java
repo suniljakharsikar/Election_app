@@ -1,5 +1,7 @@
 package b2d.l.mahtmagandhi;
 
+
+
 public class CommitteeMemberData {
     int id;
     String first_name, last_name, designation, description, image;

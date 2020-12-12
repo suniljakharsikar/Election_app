@@ -41,7 +41,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     intent.setClass(context, VisionMission.class);
                     break;
                 case 6:
-                    intent.setClass(context, CreateNew.class);
+                    intent.setClass(context, ProblemSuggestion.class);
                     break;
                 case 7:
                     intent.setClass(context, Manifesto.class);

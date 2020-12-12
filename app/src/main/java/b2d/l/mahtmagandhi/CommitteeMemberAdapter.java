@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMemberAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<CommitteeMemberData> committeeMemberData;
+    private List<CommitteMembersResponseModel.Data> committeeMemberData;
 
-    public CommitteeMemberAdapter(Context context, ArrayList<CommitteeMemberData> committeeMemberData) {
+    public CommitteeMemberAdapter(Context context, List<CommitteMembersResponseModel.Data> committeeMemberData) {
 
         this.context = context;
         this.committeeMemberData = committeeMemberData;
@@ -42,11 +44,21 @@ public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMember
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CommitteeMemberData data = committeeMemberData.get(position);
-        holder.textView.setText(data.getFirst_name() + " " + data.getLast_name());
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        final CommitteMembersResponseModel.Data data = committeeMemberData.get(position);
+        holder.textView.setText(data.getFirstName() + " " + data.getLastName());
         holder.textView1.setText(data.getDesignation());
         Glide.with(context).load(data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(holder.itemView.getContext(),CommitteeMemberDetailActivity.class);
+                intent.putExtra("data",data);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
 //        holder.imageView.setImageResource(committeeMemberData.get(position).getImage());
     }
 
