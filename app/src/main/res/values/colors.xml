@@ -2,10 +2,11 @@
 <resources>
     <color name="colorPrimary">#C234C3</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#000000</color>
+    <color name="colorAccent">#ffffff</color>
     <color name="profile_boundry_color">#FFFFFF</color>
     <color name="white_text_color">#FFFFFF</color>
     <color name="dividercolor">#9E9E9E</color>
     <color name="black">#000000</color>
     <color name="text_comment_name">#7C289D</color>
+    <color name="blue_home_icon">#040882</color>
 </resources>

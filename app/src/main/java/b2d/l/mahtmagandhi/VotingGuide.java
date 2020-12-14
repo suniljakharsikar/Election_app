@@ -47,11 +47,11 @@ public class VotingGuide extends AppCompatActivity {
         setContentView(R.layout.activity_voting_guide);
         avi = findViewById(R.id.avi);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//        }
         textView = findViewById(R.id.tv);
         String url = Url.baseurl + "/guide";
         JSONObject json = new JSONObject();

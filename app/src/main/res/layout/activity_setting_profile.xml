@@ -6,40 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".SettingProfile">
 
-    <ImageView
-        android:id="@+id/imageView32"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar17"
         android:layout_width="0dp"
-        android:layout_height="@dimen/topbar_hight"
-        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_box"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_top_bar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="My Profile"
-        android:textColor="@color/white_text_color"
+        android:textColor="@color/black"
         android:textSize="@dimen/headingtextsize"
         app:layout_constraintBottom_toBottomOf="@+id/imageView32"
-        app:layout_constraintEnd_toEndOf="@+id/imageView32"
-        app:layout_constraintStart_toStartOf="@+id/imageView32"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView32" />
 
     <ImageView
+        android:id="@+id/imageView32"
         android:layout_width="@dimen/back_dim"
         android:layout_height="@dimen/back_dim"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="back"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView32"
-        app:layout_constraintStart_toStartOf="@+id/imageView32"
-        app:layout_constraintTop_toTopOf="@+id/imageView32"
+        android:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/backicon" />
 
     <ScrollView
@@ -48,7 +48,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView32">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar17">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -70,25 +71,26 @@
                 android:id="@+id/textView45"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="24dp"
                 android:text="Full Name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/editTextPersonName2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Akshay Kumar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView45"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
             <TextView
@@ -97,18 +99,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Mobile Number"
-                app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+                app:layout_constraintStart_toStartOf="@+id/editTextPersonName2"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPersonName2" />
 
             <EditText
                 android:id="@+id/editTextPhone2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="phone"
                 android:text="9900990099"
-                app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName2"
+                app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView46"
                 app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
@@ -117,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Your Age"
+                android:text="Date of birth"
                 app:layout_constraintStart_toStartOf="@+id/editTextPhone2"
                 app:layout_constraintTop_toBottomOf="@+id/editTextPhone2" />
 
@@ -125,13 +126,68 @@
                 android:id="@+id/editTextNumberSigned"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:inputType="numberSigned"
-                android:text="30"
+                android:text="30 August 2020 "
                 app:layout_constraintEnd_toEndOf="@+id/editTextPhone2"
                 app:layout_constraintStart_toStartOf="@+id/textView47"
                 app:layout_constraintTop_toBottomOf="@+id/textView47" />
+
+
+            <TextView
+                android:id="@+id/textView_postal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Postal Code"
+                app:layout_constraintStart_toStartOf="@+id/editTextNumberSigned"
+                app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned" />
+
+            <EditText
+                android:id="@+id/editText_postal_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="302012"
+                app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
+                app:layout_constraintStart_toStartOf="@+id/textView_postal"
+                app:layout_constraintTop_toBottomOf="@+id/textView_postal" />
+
+            <TextView
+                android:id="@+id/textView_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="State"
+                app:layout_constraintStart_toStartOf="@+id/editText_postal_code"
+                app:layout_constraintTop_toBottomOf="@+id/editText_postal_code" />
+
+            <EditText
+                android:id="@+id/editText_state"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="Rajasthan"
+                app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
+                app:layout_constraintStart_toStartOf="@+id/textView_state"
+                app:layout_constraintTop_toBottomOf="@+id/textView_state" />
+
+            <TextView
+                android:id="@+id/textView_district"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Disctrict"
+                app:layout_constraintStart_toStartOf="@+id/editText_state"
+                app:layout_constraintTop_toBottomOf="@+id/editText_state" />
+
+            <EditText
+                android:id="@+id/editText_district"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="Jaipur"
+                app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
+                app:layout_constraintStart_toStartOf="@+id/textView_district"
+                app:layout_constraintTop_toBottomOf="@+id/textView_district" />
 
             <TextView
                 android:id="@+id/textView48"
@@ -139,8 +195,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Select Your City/Village"
-                app:layout_constraintStart_toStartOf="@+id/editTextNumberSigned"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned" />
+                app:layout_constraintStart_toStartOf="@+id/editText_district"
+                app:layout_constraintTop_toBottomOf="@+id/editText_district" />
 
             <Spinner
                 android:id="@+id/spinner4"
@@ -173,35 +229,89 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/black"
                     android:text="Male" />
 
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/black"
                     android:text="Female" />
             </RadioGroup>
 
             <ImageView
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:adjustViewBounds="true"
                 android:background="?android:attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="@+id/radioGroup"
+                app:layout_constraintHorizontal_bias="0.496"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup"
                 app:srcCompat="@drawable/submit1" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_bg_drawable"
+                android:paddingLeft="72dp"
+                android:paddingTop="8dp"
+                android:paddingRight="72dp"
+                android:paddingBottom="8dp"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white_text_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+            <TextView
+                android:id="@+id/tv_edit_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/edit"
+                android:textColor="#040882"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView45"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView37"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginRight="48dp"
+                android:padding="2dp"
+                android:tint="#040882"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_edit_profile"
+                app:layout_constraintEnd_toStartOf="@+id/tv_edit_profile"
+                app:layout_constraintStart_toEndOf="@+id/tv_edit_profile"
+                app:layout_constraintTop_toTopOf="@+id/tv_edit_profile"
+                app:srcCompat="@android:drawable/ic_menu_edit" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-   <!-- <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:indicatorColor="#000000"
-        app:indicatorName="BallClipRotatePulse"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
+    <!-- <com.wang.avi.AVLoadingIndicatorView
+         android:id="@+id/avi"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:indicatorColor="#000000"
+         app:indicatorName="BallClipRotatePulse"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

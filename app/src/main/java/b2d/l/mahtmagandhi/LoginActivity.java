@@ -15,9 +15,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -180,6 +182,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 //            MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+            int socketTimeout = 10000; //10 seconds - change to what you want
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
             requestQueue.add(jsonObjectRequest);
 
         }

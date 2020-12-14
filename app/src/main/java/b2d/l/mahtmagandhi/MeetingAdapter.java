@@ -15,7 +15,10 @@ import com.android.volley.Response;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHolder> implements View.OnClickListener {
 
@@ -50,8 +53,39 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
 
         Meeting meeting = meetings.get(position);
         holder.title.setText(meeting.getTitle());
-        holder.date.setText(meeting.getMeeting_date());
-        holder.time.setText(meeting.getMeeting_time());
+
+        String rawDate = meeting.getMeeting_date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat transDateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+        try {
+            Date date = simpleDateFormat.parse(rawDate);
+            String transDate = transDateFormat.format(date);
+            meeting.setMeeting_date(transDate);
+
+            holder.date.setText(transDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            holder.date.setText("");
+
+        }
+        SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat transTimeFormat = new SimpleDateFormat("hh:mm a");
+
+        String rawTime = meeting.getMeeting_time();
+        try {
+            Date timeD = simpleTimeFormat.parse(rawTime);
+            String time = transTimeFormat.format(timeD);
+            meeting.setMeeting_time(time);
+            holder.time.setText(time);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            holder.time.setText("");
+
+        }
+
+
     }
 
     @Override

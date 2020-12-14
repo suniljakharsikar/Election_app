@@ -6,52 +6,56 @@
     android:layout_height="match_parent"
     tools:context=".MeetingDetails">
 
-    <ImageView
-        android:id="@+id/imageView32"
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="@dimen/topbar_hight"
-        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_box"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.592"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="@dimen/back_dim"
+        android:layout_height="@dimen/back_dim"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="back"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_top_bar" />
+        app:srcCompat="@drawable/backicon"
+        app:tint="@color/black" />
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Meetings"
-        android:textColor="@color/white_text_color"
-        android:textSize="@dimen/headingtextsize"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView32"
-        app:layout_constraintEnd_toEndOf="@+id/imageView32"
-        app:layout_constraintStart_toStartOf="@+id/imageView32"
-        app:layout_constraintTop_toTopOf="@+id/imageView32" />
 
-    <ImageView
-        android:layout_width="@dimen/back_dim"
-        android:layout_height="@dimen/back_dim"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="24dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="back"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView32"
-        app:layout_constraintStart_toStartOf="@+id/imageView32"
-        app:layout_constraintTop_toTopOf="@+id/imageView32"
-        app:srcCompat="@drawable/backicon" />
+        android:layout_height="wrap_content"
+        android:text="Meetings"
+        android:textColor="@color/black"
+        android:textSize="@dimen/headingtextsize"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/vi"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:background="@color/white_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView32">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -61,19 +65,21 @@
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-thin"
                 android:text="Meeting 1"
-                android:textSize="20sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView38"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="@+id/textView26"
                 app:layout_constraintTop_toBottomOf="@+id/textView26"
@@ -83,9 +89,10 @@
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:text="January 22, 2020"
+                android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView38"
                 app:layout_constraintStart_toEndOf="@+id/imageView38"
@@ -93,8 +100,8 @@
 
             <ImageView
                 android:id="@+id/imageView39"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView27"
@@ -106,27 +113,47 @@
                 android:id="@+id/textView28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:text="11:00 AM"
+                android:textColor="@color/black"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView39"
                 app:layout_constraintStart_toEndOf="@+id/imageView39"
                 app:layout_constraintTop_toTopOf="@+id/imageView39" />
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#707070"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView38" />
+
             <TextView
-                android:id="@+id/dis"
+                android:id="@+id/textView_des_meeting_detail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginBottom="16dp"
-                android:text="Loading..."
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:lineSpacingExtra="8dp"
+                android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imageView38"
-                app:layout_constraintTop_toBottomOf="@+id/textView28"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

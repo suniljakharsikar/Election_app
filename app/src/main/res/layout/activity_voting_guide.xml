@@ -6,40 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".VotingGuide">
 
-    <ImageView
-        android:id="@+id/imageView36"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar14"
         android:layout_width="0dp"
-        android:layout_height="@dimen/topbar_hight"
-        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_box"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_top_bar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="Voting Guide"
-        android:textColor="@color/white_text_color"
+        android:textColor="@color/black"
         android:textSize="@dimen/headingtextsize"
         app:layout_constraintBottom_toBottomOf="@+id/imageView36"
-        app:layout_constraintEnd_toEndOf="@+id/imageView36"
-        app:layout_constraintStart_toStartOf="@+id/imageView36"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView36" />
 
     <ImageView
+        android:id="@+id/imageView36"
         android:layout_width="@dimen/back_dim"
         android:layout_height="@dimen/back_dim"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="back"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView36"
-        app:layout_constraintStart_toStartOf="@+id/imageView36"
-        app:layout_constraintTop_toTopOf="@+id/imageView36"
+        android:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar14"
+        app:layout_constraintStart_toStartOf="@+id/toolbar14"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/backicon" />
 
     <ImageView
@@ -52,17 +52,25 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:adjustViewBounds="true"
+        android:cropToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView36"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar14"
         app:srcCompat="@drawable/videothumb" />
 
     <TextView
         android:id="@+id/tv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:lineSpacingExtra="2dp"
         android:text="Loading..."
+        android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView52"
         app:layout_constraintStart_toStartOf="@+id/imageView52"
@@ -78,4 +86,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

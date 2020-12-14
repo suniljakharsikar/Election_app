@@ -55,11 +55,11 @@ public class CommitteeMember extends AppCompatActivity {
         setContentView(R.layout.activity_committee_member);
         avi = findViewById(R.id.avi);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        }*/
         recyclerView = findViewById(R.id.rv4);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -80,15 +80,18 @@ public class CommitteeMember extends AppCompatActivity {
 
                 try {
                     if (response.getBoolean("success")) {
-                        JSONArray data = response.getJSONArray("data");
+                       /* JSONArray data = response.getJSONArray("data");
                         committeeMemberData = new ArrayList<>();
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonObject = data.getJSONObject(i);
-                            Gson gson = new Gson();
+
                             CommitteeMemberData c = gson.fromJson(jsonObject.toString(), CommitteeMemberData.class);
                             committeeMemberData.add(c);
-                        }
-                        CommitteeMemberAdapter committeeMemberAdapter1 = new CommitteeMemberAdapter(CommitteeMember.this, committeeMemberData);
+                        }*/
+                        Gson gson = new Gson();
+                        CommitteMembersResponseModel c = gson.fromJson(response.toString(), CommitteMembersResponseModel.class);
+
+                        CommitteeMemberAdapter committeeMemberAdapter1 = new CommitteeMemberAdapter(CommitteeMember.this, c.getData());
                         recyclerView.setAdapter(committeeMemberAdapter1);
                     } else {
                         Toast.makeText(CommitteeMember.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

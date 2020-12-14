@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".CommitteeMemberDetailActivity"></activity>
+        <activity android:name=".SurveyDetailActivity" />
+        <activity android:name=".CreateProblemAndSuggestionActivity" />
         <activity android:name=".ProblemSuggestion" />
         <activity android:name=".Comment" />
         <activity android:name=".NewPost" />
@@ -36,6 +39,7 @@
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
