@@ -245,9 +245,9 @@
                 android:layout_marginTop="12dp"
                 android:adjustViewBounds="true"
                 android:background="?android:attr/selectableItemBackground"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/radioGroup"
                 app:layout_constraintHorizontal_bias="0.496"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup"
                 app:srcCompat="@drawable/submit1" />
@@ -290,13 +290,11 @@
                 android:id="@+id/imageView37"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginEnd="48dp"
-                android:layout_marginRight="48dp"
+                android:adjustViewBounds="true"
                 android:padding="2dp"
                 android:tint="#040882"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_edit_profile"
                 app:layout_constraintEnd_toStartOf="@+id/tv_edit_profile"
-                app:layout_constraintStart_toEndOf="@+id/tv_edit_profile"
                 app:layout_constraintTop_toTopOf="@+id/tv_edit_profile"
                 app:srcCompat="@android:drawable/ic_menu_edit" />
 

@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ public class OTPVerify extends AppCompatActivity {
 
     private EditText editText1, editText2, editText3, editText4, editText5, editText6;
     private EditText[] editTexts;
-    ImageView sendbtn;
+    Button sendbtn;
     boolean isOtpSent = false;
     private AVLoadingIndicatorView avi;
 
@@ -64,7 +65,7 @@ public class OTPVerify extends AppCompatActivity {
         editText5 = (EditText) findViewById(R.id.otpEdit5);
         editText6 = (EditText) findViewById(R.id.otpEdit6);
         editTexts = new EditText[]{editText1, editText2, editText3, editText4, editText5, editText6};
-        sendbtn = findViewById(R.id.imageView50);
+        sendbtn = findViewById(R.id.button_verify_otp);
 
         editText1.addTextChangedListener(new PinTextWatcher(0));
         editText2.addTextChangedListener(new PinTextWatcher(1));

@@ -4,248 +4,300 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register">
+    android:background="@drawable/bg"
+    tools:context=".Language">
 
 
-    <ImageView
-        android:id="@+id/imageView18"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/topbar_hight"
-        android:adjustViewBounds="true"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageView"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/profile"
+        app:civ_border_color="@color/white_text_color"
+        app:civ_border_width="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_top_bar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Register"
-        android:textColor="@color/white_text_color"
-        android:textSize="@dimen/headingtextsize"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView18"
-        app:layout_constraintEnd_toEndOf="@+id/imageView18"
-        app:layout_constraintStart_toStartOf="@+id/imageView18"
-        app:layout_constraintTop_toTopOf="@+id/imageView18" />
-
-    <ImageView
-        android:layout_width="@dimen/back_dim"
-        android:layout_height="@dimen/back_dim"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="24dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="back"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView18"
-        app:layout_constraintStart_toStartOf="@+id/imageView18"
-        app:layout_constraintTop_toTopOf="@+id/imageView18"
-        app:srcCompat="@drawable/backicon" />
-
-    <ScrollView
+    <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="32dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView18">
+        app:layout_constraintTop_toBottomOf="@+id/circleImageView">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="32dp"
-                android:text="Full Name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".SettingProfile">
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Mobile Number"
-                app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
-            <EditText
-                android:id="@+id/editTextPhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clickable="false"
-                android:ems="10"
-                android:focusable="false"
-                android:inputType="phone"
-                app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
-                app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Your Age"
-                app:layout_constraintStart_toStartOf="@+id/editTextPhone"
-                app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
-
-            <EditText
-                android:id="@+id/editTextNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:inputType="number"
-                app:layout_constraintEnd_toEndOf="@+id/editTextPhone"
-                app:layout_constraintStart_toStartOf="@+id/editTextPhone"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="City/Village"
-                app:layout_constraintStart_toStartOf="@+id/editTextNumber"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Select Gender"
-                app:layout_constraintStart_toStartOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
-
-            <RadioGroup
-                android:id="@+id/radioGroup2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName4"
-                app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName4"
-                app:layout_constraintTop_toBottomOf="@+id/textView9">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
+                <ScrollView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Male" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Female" />
-            </RadioGroup>
 
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Postal Code"
-                app:layout_constraintStart_toStartOf="@+id/editTextNumber"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/editTextNumber2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number"
-                app:layout_constraintEnd_toEndOf="@+id/editTextNumber"
-                app:layout_constraintStart_toStartOf="@+id/editTextNumber"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Profile"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="State"
-                app:layout_constraintStart_toStartOf="@+id/editTextNumber2"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumber2" />
+                        <TextView
+                            android:id="@+id/textView45"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Full Name"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="@+id/editTextNumber2"
-                app:layout_constraintStart_toStartOf="@+id/editTextNumber2"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                        <EditText
+                            android:id="@+id/editTextPersonName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginRight="16dp"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:text="Akshay Kumar"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="District"
-                app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName3"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
+                        <TextView
+                            android:id="@+id/textView46"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Mobile Number"
+                            app:layout_constraintStart_toStartOf="@+id/editTextPersonName"
+                            app:layout_constraintTop_toBottomOf="@+id/editTextPersonName" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName3"
-                app:layout_constraintStart_toStartOf="@+id/textView15"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                        <EditText
+                            android:id="@+id/editTextPhone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="phone"
+                            android:text="9900990099"
+                            app:layout_constraintEnd_toEndOf="@+id/editTextPersonName"
+                            app:layout_constraintStart_toStartOf="@+id/textView46"
+                            app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="48dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:onClick="submit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/radioGroup2"
-                app:layout_constraintStart_toStartOf="@+id/radioGroup2"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup2"
-                app:srcCompat="@drawable/submit1" />
+                        <TextView
+                            android:id="@+id/textView47"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Date of birth"
+                            app:layout_constraintStart_toStartOf="@+id/editTextPhone"
+                            app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName4"
-                app:layout_constraintStart_toStartOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                        <EditText
+                            android:id="@+id/editText_dob"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="30 August 2020"
+                            app:layout_constraintEnd_toEndOf="@+id/editTextPhone"
+                            app:layout_constraintStart_toStartOf="@+id/textView47"
+                            app:layout_constraintTop_toBottomOf="@+id/textView47" />
+
+
+                        <TextView
+                            android:id="@+id/textView_postal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Postal Code"
+                            app:layout_constraintStart_toStartOf="@+id/editText_dob"
+                            app:layout_constraintTop_toBottomOf="@+id/editText_dob" />
+
+                        <EditText
+                            android:id="@+id/editText_postal_code"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:text="302012"
+                            app:layout_constraintEnd_toEndOf="@+id/editTextPersonName"
+                            app:layout_constraintStart_toStartOf="@+id/textView_postal"
+                            app:layout_constraintTop_toBottomOf="@+id/textView_postal" />
+
+                        <TextView
+                            android:id="@+id/textView_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="State"
+                            app:layout_constraintStart_toStartOf="@+id/editText_postal_code"
+                            app:layout_constraintTop_toBottomOf="@+id/editText_postal_code" />
+
+                        <EditText
+                            android:id="@+id/editText_state"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:text="Rajasthan"
+                            app:layout_constraintEnd_toEndOf="@+id/editTextPersonName"
+                            app:layout_constraintStart_toStartOf="@+id/textView_state"
+                            app:layout_constraintTop_toBottomOf="@+id/textView_state" />
+
+                        <TextView
+                            android:id="@+id/textView_district"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Disctrict"
+                            app:layout_constraintStart_toStartOf="@+id/editText_state"
+                            app:layout_constraintTop_toBottomOf="@+id/editText_state" />
+
+                        <EditText
+                            android:id="@+id/editText_district"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:text="Jaipur"
+                            app:layout_constraintEnd_toEndOf="@+id/editTextPersonName"
+                            app:layout_constraintStart_toStartOf="@+id/textView_district"
+                            app:layout_constraintTop_toBottomOf="@+id/textView_district" />
+
+                        <TextView
+                            android:id="@+id/textView48"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Select Your City/Village"
+                            app:layout_constraintStart_toStartOf="@+id/editText_district"
+                            app:layout_constraintTop_toBottomOf="@+id/editText_district" />
+
+                        <Spinner
+                            android:id="@+id/spinner_city_regi"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintEnd_toEndOf="@+id/editText_dob"
+                            app:layout_constraintStart_toStartOf="@+id/textView48"
+                            app:layout_constraintTop_toBottomOf="@+id/textView48" />
+
+                        <TextView
+                            android:id="@+id/textView49"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Select Gender"
+                            app:layout_constraintStart_toStartOf="@+id/spinner_city_regi"
+                            app:layout_constraintTop_toBottomOf="@+id/spinner_city_regi" />
+
+                        <RadioGroup
+                            android:id="@+id/radioGroup"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="@+id/spinner_city_regi"
+                            app:layout_constraintStart_toStartOf="@+id/textView49"
+                            app:layout_constraintTop_toBottomOf="@+id/textView49">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/black"
+                                android:text="Male" />
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/black"
+                                android:text="Female" />
+                        </RadioGroup>
+
+                        <ImageView
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:adjustViewBounds="true"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="@+id/radioGroup"
+                            app:layout_constraintHorizontal_bias="0.496"
+                            app:layout_constraintStart_toStartOf="@+id/radioGroup"
+                            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+                            app:srcCompat="@drawable/submit1" />
+
+                        <Button
+                            android:id="@+id/button2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="32dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="32dp"
+                            android:background="@drawable/button_bg_drawable"
+                            android:paddingLeft="72dp"
+                            android:paddingTop="8dp"
+                            android:paddingRight="72dp"
+                            android:paddingBottom="8dp"
+                            android:text="Submit"
+                            android:onClick="submit"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white_text_color"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </ScrollView>
+
+                <!-- <com.wang.avi.AVLoadingIndicatorView
+                     android:id="@+id/avi"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     app:indicatorColor="#000000"
+                     app:indicatorName="BallClipRotatePulse"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintTop_toTopOf="parent" />-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
 
     <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
+        android:id="@+id/avi3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:indicatorColor="#000000"
@@ -254,4 +306,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
