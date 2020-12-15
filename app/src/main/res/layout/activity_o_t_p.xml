@@ -74,7 +74,6 @@
                 android:gravity="center"
                 android:inputType="phone"
                 app:backgroundTint="@color/black"
-
                 app:layout_constraintBottom_toBottomOf="@+id/otpEdit1"
                 app:layout_constraintEnd_toStartOf="@+id/otpEdit3"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -89,7 +88,6 @@
                 android:ems="2"
                 android:gravity="center"
                 android:inputType="phone"
-
                 app:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/otpEdit2"
                 app:layout_constraintEnd_toStartOf="@+id/otpEdit4"
@@ -106,7 +104,6 @@
                 android:gravity="center"
                 android:inputType="phone"
                 app:backgroundTint="@color/black"
-
                 app:layout_constraintBottom_toBottomOf="@+id/otpEdit3"
                 app:layout_constraintEnd_toStartOf="@+id/otpEdit5"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -121,7 +118,6 @@
                 android:ems="2"
                 android:gravity="center"
                 android:inputType="phone"
-
                 app:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/otpEdit4"
                 app:layout_constraintEnd_toStartOf="@+id/otpEdit6"
@@ -137,7 +133,6 @@
                 android:ems="2"
                 android:gravity="center"
                 android:inputType="phone"
-
                 app:backgroundTint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/otpEdit5"
                 app:layout_constraintEnd_toEndOf="parent"

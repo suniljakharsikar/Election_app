@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "638822636163",
+    "project_id": "event-95410",
+    "storage_bucket": "event-95410.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638822636163:android:0c2507eb539a81ce42d9b6",
+        "android_client_info": {
+          "package_name": "b2d.l.mahtmagandhi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638822636163-77bpp8oh0l93cm92bm58ghicbir1haoj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAONGkpI8vlF22546fqg1Bebo7ybz-2FnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638822636163-77bpp8oh0l93cm92bm58ghicbir1haoj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
