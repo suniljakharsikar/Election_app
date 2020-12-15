@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +29,8 @@ import io.gloxey.gnm.managers.ConnectionManager;
 
 public class Register extends AppCompatActivity {
 
-    EditText name, number, age, pincode, state, distirct, city, gender;
+    EditText name, number, age, pincode, state, distirct;
+    Spinner city;
     private SharedPreferences preferences;
     private AVLoadingIndicatorView avi;
 
@@ -60,20 +61,20 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        avi = findViewById(R.id.avi);
+        avi = findViewById(R.id.avi3);
 
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
-        name = findViewById(R.id.editTextTextPersonName);
+        name = findViewById(R.id.editTextPersonName);
         number = findViewById(R.id.editTextPhone);
-        age = findViewById(R.id.editTextNumber);
-        pincode = findViewById(R.id.editTextNumber2);
-        state = findViewById(R.id.editTextTextPersonName3);
-        distirct = findViewById(R.id.editTextTextPersonName4);
-        city = findViewById(R.id.editTextTextPersonName6);
+        age = findViewById(R.id.editText_dob);
+        pincode = findViewById(R.id.editText_postal_code);
+        state = findViewById(R.id.editText_state);
+        distirct = findViewById(R.id.editText_district);
+        city = findViewById(R.id.spinner_city_regi);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         name.setText(preferences.getString(Datas.user_name, ""));
         number.setText(preferences.getString(Datas.user_mobile, ""));
@@ -110,7 +111,7 @@ public class Register extends AppCompatActivity {
             jsonRwquest.put("userPostalCode", pincode.getText().toString());
             jsonRwquest.put("userState", state.getText().toString());
             jsonRwquest.put("userDistrict", distirct.getText().toString());
-            jsonRwquest.put("userVillage", city.getText().toString());
+            jsonRwquest.put("userVillage", city.getSelectedItem().toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -144,6 +145,8 @@ public class Register extends AppCompatActivity {
 
         String url = Url.baseurl + "/update_profile";
         JSONObject jsonRwquest = new JSONObject();
+        String cityS = "";
+        if (city.getSelectedItem()==null)cityS="";else cityS = city.getSelectedItem().toString();
         try {
             jsonRwquest.put("userMobile", number.getText().toString());
             jsonRwquest.put("userName", name.getText().toString());
@@ -152,7 +155,7 @@ public class Register extends AppCompatActivity {
             jsonRwquest.put("userPostalCode", pincode.getText().toString());
             jsonRwquest.put("userState", state.getText().toString());
             jsonRwquest.put("userDistrict", distirct.getText().toString());
-            jsonRwquest.put("userVillage", city.getText().toString());
+            jsonRwquest.put("userVillage",cityS );
 
         } catch (JSONException e) {
             e.printStackTrace();
