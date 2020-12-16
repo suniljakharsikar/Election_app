@@ -1,14 +1,23 @@
 package b2d.l.mahtmagandhi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -22,6 +31,11 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         View decorView = getWindow().getDecorView();
+        //((CardView) findViewById(R.id.cardView3)).setContentPadding(0,140,0,0);
+        String TAG = "Home";
+       MotionLayout motionLayout = ((MotionLayout)findViewById(R.id.ml_home));
+
+
 /*// Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
@@ -34,7 +48,7 @@ public class Home extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
-        recyclerView = findViewById(R.id.rv);
+        recyclerView = findViewById(R.id.rv_home);
 // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -54,6 +68,124 @@ public class Home extends AppCompatActivity {
         homelistDatas.add(new HomelistData("Setting & Profile", R.drawable.setting));
         RecyclerView.Adapter mAdapter = new HomeAdapter(this, homelistDatas, recyclerView);
         recyclerView.setAdapter(mAdapter);
+
+        CardView cardView =  findViewById(R.id.cardView3);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private int dy,dx;
+
+            @Override
+            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState){
+
+                    case  RecyclerView.SCROLL_STATE_IDLE:{
+                        Log.d(TAG, "onScrollStateChanged: "+layoutManager.findFirstVisibleItemPosition());
+                        if (layoutManager.findFirstVisibleItemPosition() > 0){
+                            float dip = 48f;
+                            Resources r = getResources();
+                            float px = TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP,
+                                    dip,
+                                    r.getDisplayMetrics()
+                            );
+
+                            cardView.setContentPadding(0, (int) px,0,0);
+                        }
+                        else{
+                            float dip = 140f;
+                            Resources r = getResources();
+                            float px = TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP,
+                                    dip,
+                                    r.getDisplayMetrics()
+                            );
+
+                            cardView.setContentPadding(0, (int) px,0,0);
+
+                        }
+
+                               /* RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams)recyclerView.getLayoutParams();
+
+                                int marginTopPx = (int) (dip * getResources().getDisplayMetrics().density + 0.5f);
+                                layoutParams.setMargins(0, marginTopPx, 0, 0);
+                                recyclerView.setLayoutParams(layoutParams);*/
+                        break;
+                    }
+                   
+                    case RecyclerView.SCROLL_STATE_DRAGGING:{
+                        if (layoutManager.findFirstVisibleItemPosition() > 0){
+                            float dip = 48f;
+                            Resources r = getResources();
+                            float px = TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP,
+                                    dip,
+                                    r.getDisplayMetrics()
+                            );
+
+                            cardView.setContentPadding(0, (int) px,0,0);
+                        }
+                        else{
+                            float dip = 140f;
+                            Resources r = getResources();
+                            float px = TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP,
+                                    dip,
+                                    r.getDisplayMetrics()
+                            );
+
+                            cardView.setContentPadding(0, (int) px,0,0);
+
+                        }
+
+                        break;
+
+                    }
+                    case RecyclerView.SCROLL_STATE_SETTLING:{
+                        Log.d(TAG, "onScrollStateChanged: SCROLL_STATE_SETTLING");
+                        if (layoutManager.findFirstVisibleItemPosition() > 0){
+                            float dip = 48f;
+                            Resources r = getResources();
+                            float px = TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP,
+                                    dip,
+                                    r.getDisplayMetrics()
+                            );
+
+                            cardView.setContentPadding(0, (int) px,0,0);
+                        }
+                        else{
+                            float dip = 140f;
+                            Resources r = getResources();
+                            float px = TypedValue.applyDimension(
+                                    TypedValue.COMPLEX_UNIT_DIP,
+                                    dip,
+                                    r.getDisplayMetrics()
+                            );
+
+                            cardView.setContentPadding(0, (int) px,0,0);
+
+                        }
+
+                        break;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d(TAG, "onScrolled: "+dx + ", "+dy);
+
+                this.dx = dx;
+                this.dy = dy;
+
+
+                
+               
+            }
+        });
 
     }
     public void back(View view) {

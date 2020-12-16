@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_setting_profile.*
 
 class SettingProfile : AppCompatActivity() {
@@ -22,7 +23,9 @@ class SettingProfile : AppCompatActivity() {
         editText_state.inputType = InputType.TYPE_NULL
         editText_state.inputType = InputType.TYPE_NULL
         editText_district.inputType = InputType.TYPE_NULL
+        button2.visibility = View.INVISIBLE
         tv_edit_profile.setOnClickListener {
+            button2.visibility = View.VISIBLE
             editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
             editTextPhone2.inputType = InputType.TYPE_CLASS_PHONE
             editText_postal_code.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
