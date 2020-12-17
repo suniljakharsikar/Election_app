@@ -46,11 +46,11 @@ public class AboutUs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         avi = findViewById(R.id.avi);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        }*/
         final SliderView sliderView = findViewById(R.id.imageSlider);
 
         final SliderAdapterExample adapter = new SliderAdapterExample(this);

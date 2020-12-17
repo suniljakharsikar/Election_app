@@ -52,9 +52,11 @@
 
             <EditText
                 android:id="@+id/otpEdit1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
                 android:layout_margin="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:ems="2"
                 android:gravity="center"
                 android:inputType="phone"
@@ -67,7 +69,7 @@
 
             <EditText
                 android:id="@+id/otpEdit2"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
                 android:ems="2"
@@ -82,7 +84,7 @@
 
             <EditText
                 android:id="@+id/otpEdit3"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
                 android:ems="2"
@@ -97,7 +99,7 @@
 
             <EditText
                 android:id="@+id/otpEdit4"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
                 android:ems="2"
@@ -112,7 +114,7 @@
 
             <EditText
                 android:id="@+id/otpEdit5"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
                 android:ems="2"
@@ -127,9 +129,11 @@
 
             <EditText
                 android:id="@+id/otpEdit6"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="48dp"
                 android:layout_margin="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:ems="2"
                 android:gravity="center"
                 android:inputType="phone"

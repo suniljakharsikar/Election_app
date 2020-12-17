@@ -21,11 +21,11 @@ public class Survey extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        }*/
         recyclerView = findViewById(R.id.rv4);
 // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);

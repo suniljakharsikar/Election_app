@@ -2,9 +2,11 @@ package b2d.l.mahtmagandhi;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -63,11 +65,11 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         avi = findViewById(R.id.avi3);
 
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }*/
+        }
         name = findViewById(R.id.editTextPersonName);
         number = findViewById(R.id.editTextPhone);
         age = findViewById(R.id.editText_dob);

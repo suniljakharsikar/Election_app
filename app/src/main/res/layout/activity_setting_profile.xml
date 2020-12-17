@@ -123,7 +123,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextPhone2" />
 
             <EditText
-                android:id="@+id/editTextNumberSigned"
+                android:id="@+id/editText_dob_setting_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="30 August 2020 "
@@ -138,8 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Postal Code"
-                app:layout_constraintStart_toStartOf="@+id/editTextNumberSigned"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumberSigned" />
+                app:layout_constraintStart_toStartOf="@+id/editText_dob_setting_profile"
+                app:layout_constraintTop_toBottomOf="@+id/editText_dob_setting_profile" />
 
             <EditText
                 android:id="@+id/editText_postal_code"
@@ -203,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/editTextNumberSigned"
+                app:layout_constraintEnd_toEndOf="@+id/editText_dob_setting_profile"
                 app:layout_constraintStart_toStartOf="@+id/textView48"
                 app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
