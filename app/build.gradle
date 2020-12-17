@@ -4,7 +4,6 @@ apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
-
 android {
     compileSdkVersion 29
     buildToolsVersion "30.0.0"
@@ -31,6 +30,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        viewBinding true
     }
 }
 
@@ -61,14 +63,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.21"
     implementation 'com.hbb20:ccp:2.4.2'
     implementation 'com.android.support:multidex:1.0.3'
-
-    def multidex_version = "2.0.1"
-
-    implementation "androidx.multidex:multidex:$multidex_version"
-
     implementation 'com.google.android.material:material:1.2.1'
 
 }
 repositories {
     mavenCentral()
 }
+
+

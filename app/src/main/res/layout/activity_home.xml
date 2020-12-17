@@ -2,13 +2,11 @@
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ml_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ml_home"
-
     app:layoutDescription="@xml/activity_home_scene2"
     tools:context=".Home">
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
@@ -22,28 +20,18 @@
         android:background="@drawable/round_bg"
         app:cardCornerRadius="16dp"
         app:contentPaddingTop="140dp"
-
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5">
 
-
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_home"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-
-                />
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.cardview.widget.CardView>
 
@@ -66,7 +54,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-
         app:srcCompat="@drawable/bg" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -132,6 +119,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/round_bg"
         android:padding="3dp"
+        android:onClick="appointment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_notifications_24" />

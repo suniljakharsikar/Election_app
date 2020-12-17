@@ -214,4 +214,7 @@ public class Home extends AppCompatActivity {
         }, 2000);
     }
 
+    public void appointment(View view) {
+        
+    }
 }
