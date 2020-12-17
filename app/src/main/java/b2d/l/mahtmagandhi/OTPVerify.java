@@ -162,6 +162,8 @@ public class OTPVerify extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    sendbtn.setEnabled(true);
+
                 }
 
                 stopAnim();
@@ -169,6 +171,7 @@ public class OTPVerify extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                sendbtn.setEnabled(true);
                 stopAnim();
                 Toast.makeText(OTPVerify.this, "" + error, Toast.LENGTH_SHORT).show();
             }

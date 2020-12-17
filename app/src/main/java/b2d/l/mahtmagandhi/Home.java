@@ -34,7 +34,7 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         View decorView = getWindow().getDecorView();
         //((CardView) findViewById(R.id.cardView3)).setContentPadding(0,140,0,0);
-        String TAG = "Home";
+        final String TAG = "Home";
        MotionLayout motionLayout = ((MotionLayout)findViewById(R.id.ml_home));
 
 
@@ -71,7 +71,7 @@ public class Home extends AppCompatActivity {
         RecyclerView.Adapter mAdapter = new HomeAdapter(this, homelistDatas, recyclerView);
         recyclerView.setAdapter(mAdapter);
 
-        CardView cardView =  findViewById(R.id.cardView3);
+        final CardView cardView =  findViewById(R.id.cardView3);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             private int dy,dx;
@@ -114,7 +114,7 @@ public class Home extends AppCompatActivity {
                                 recyclerView.setLayoutParams(layoutParams);*/
                         break;
                     }
-                   
+
                     case RecyclerView.SCROLL_STATE_DRAGGING:{
                         if (layoutManager.findFirstVisibleItemPosition() > 0){
                             float dip = 48f;
@@ -184,8 +184,8 @@ public class Home extends AppCompatActivity {
                 this.dy = dy;
 
 
-                
-               
+
+
             }
         });
 
@@ -193,7 +193,6 @@ public class Home extends AppCompatActivity {
     public void back(View view) {
         finish();
     }
-
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -214,4 +213,5 @@ public class Home extends AppCompatActivity {
             }
         }, 2000);
     }
+
 }
