@@ -130,7 +130,7 @@ public class OTPVerify extends AppCompatActivity {
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putBoolean(Datas.loginstatus, true);
                         JSONObject jsonObject = data1.getJSONObject(0);
-                        editor.putString(Datas.id, jsonObject.getString(Datas.id));
+                        editor.putInt(Datas.id, jsonObject.getInt(Datas.id));
                         if (!jsonObject.getString(Datas.user_name).equals("null")) {
                             editor.putString(Datas.user_name, jsonObject.getString(Datas.user_name));
                         }

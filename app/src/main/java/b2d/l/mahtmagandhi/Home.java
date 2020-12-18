@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class Home extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         //((CardView) findViewById(R.id.cardView3)).setContentPadding(0,140,0,0);
         final String TAG = "Home";
-       MotionLayout motionLayout = ((MotionLayout)findViewById(R.id.ml_home));
+        MotionLayout motionLayout = ((MotionLayout) findViewById(R.id.ml_home));
 
 
 /*// Hide the status bar.
@@ -71,19 +72,19 @@ public class Home extends AppCompatActivity {
         RecyclerView.Adapter mAdapter = new HomeAdapter(this, homelistDatas, recyclerView);
         recyclerView.setAdapter(mAdapter);
 
-        final CardView cardView =  findViewById(R.id.cardView3);
+        final CardView cardView = findViewById(R.id.cardView3);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            private int dy,dx;
+            private int dy, dx;
 
             @Override
             public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                switch (newState){
+                switch (newState) {
 
-                    case  RecyclerView.SCROLL_STATE_IDLE:{
-                        Log.d(TAG, "onScrollStateChanged: "+layoutManager.findFirstVisibleItemPosition());
-                        if (layoutManager.findFirstVisibleItemPosition() > 0){
+                    case RecyclerView.SCROLL_STATE_IDLE: {
+                        Log.d(TAG, "onScrollStateChanged: " + layoutManager.findFirstVisibleItemPosition());
+                        if (layoutManager.findFirstVisibleItemPosition() > 0) {
                             float dip = 48f;
                             Resources r = getResources();
                             float px = TypedValue.applyDimension(
@@ -92,9 +93,8 @@ public class Home extends AppCompatActivity {
                                     r.getDisplayMetrics()
                             );
 
-                            cardView.setContentPadding(0, (int) px,0,0);
-                        }
-                        else{
+                            cardView.setContentPadding(0, (int) px, 0, 0);
+                        } else {
                             float dip = 140f;
                             Resources r = getResources();
                             float px = TypedValue.applyDimension(
@@ -103,7 +103,7 @@ public class Home extends AppCompatActivity {
                                     r.getDisplayMetrics()
                             );
 
-                            cardView.setContentPadding(0, (int) px,0,0);
+                            cardView.setContentPadding(0, (int) px, 0, 0);
 
                         }
 
@@ -115,8 +115,8 @@ public class Home extends AppCompatActivity {
                         break;
                     }
 
-                    case RecyclerView.SCROLL_STATE_DRAGGING:{
-                        if (layoutManager.findFirstVisibleItemPosition() > 0){
+                    case RecyclerView.SCROLL_STATE_DRAGGING: {
+                        if (layoutManager.findFirstVisibleItemPosition() > 0) {
                             float dip = 48f;
                             Resources r = getResources();
                             float px = TypedValue.applyDimension(
@@ -125,9 +125,8 @@ public class Home extends AppCompatActivity {
                                     r.getDisplayMetrics()
                             );
 
-                            cardView.setContentPadding(0, (int) px,0,0);
-                        }
-                        else{
+                            cardView.setContentPadding(0, (int) px, 0, 0);
+                        } else {
                             float dip = 140f;
                             Resources r = getResources();
                             float px = TypedValue.applyDimension(
@@ -136,16 +135,16 @@ public class Home extends AppCompatActivity {
                                     r.getDisplayMetrics()
                             );
 
-                            cardView.setContentPadding(0, (int) px,0,0);
+                            cardView.setContentPadding(0, (int) px, 0, 0);
 
                         }
 
                         break;
 
                     }
-                    case RecyclerView.SCROLL_STATE_SETTLING:{
+                    case RecyclerView.SCROLL_STATE_SETTLING: {
                         Log.d(TAG, "onScrollStateChanged: SCROLL_STATE_SETTLING");
-                        if (layoutManager.findFirstVisibleItemPosition() > 0){
+                        if (layoutManager.findFirstVisibleItemPosition() > 0) {
                             float dip = 48f;
                             Resources r = getResources();
                             float px = TypedValue.applyDimension(
@@ -154,9 +153,8 @@ public class Home extends AppCompatActivity {
                                     r.getDisplayMetrics()
                             );
 
-                            cardView.setContentPadding(0, (int) px,0,0);
-                        }
-                        else{
+                            cardView.setContentPadding(0, (int) px, 0, 0);
+                        } else {
                             float dip = 140f;
                             Resources r = getResources();
                             float px = TypedValue.applyDimension(
@@ -165,7 +163,7 @@ public class Home extends AppCompatActivity {
                                     r.getDisplayMetrics()
                             );
 
-                            cardView.setContentPadding(0, (int) px,0,0);
+                            cardView.setContentPadding(0, (int) px, 0, 0);
 
                         }
 
@@ -178,21 +176,21 @@ public class Home extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.d(TAG, "onScrolled: "+dx + ", "+dy);
+                Log.d(TAG, "onScrolled: " + dx + ", " + dy);
 
                 this.dx = dx;
                 this.dy = dy;
-
-
 
 
             }
         });
 
     }
+
     public void back(View view) {
         finish();
     }
+
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -209,12 +207,13 @@ public class Home extends AppCompatActivity {
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
 
     public void appointment(View view) {
-        
+        startActivity(new Intent(this, Appointment.class));
+
     }
 }

@@ -23,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="News &amp; Update"
-
         android:textColor="@color/black"
         android:textSize="@dimen/headingtextsize"
         app:layout_constraintBottom_toBottomOf="@+id/imageView16"
@@ -39,11 +38,11 @@
         android:layout_marginLeft="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="back"
-        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backicon" />
+        app:srcCompat="@drawable/backicon"
+        app:tint="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_news"

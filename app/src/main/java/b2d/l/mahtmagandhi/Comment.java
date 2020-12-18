@@ -6,11 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
-import com.jaeger.library.StatusBarUtil;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
@@ -54,7 +51,7 @@ public class Comment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
-        StatusBarUtil.setTransparent(this);
+//        StatusBarUtil.setTransparent(this);
         avi = findViewById(R.id.avi);
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
@@ -92,7 +89,7 @@ public class Comment extends AppCompatActivity {
                             CommentData comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData.class);
                             commentData.add(comment);
                         }
-                        RecyclerView.Adapter adapter = new CommentAdapter(Comment.this, commentData);
+                        RecyclerView.Adapter adapter = new CommentAdapter(Comment.this, commentData, preferences.getInt(Datas.id, 1));
                         recyclerView.setAdapter(adapter);
                     } else {
                         Toast.makeText(Comment.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -116,7 +113,7 @@ public class Comment extends AppCompatActivity {
             }
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> header = new HashMap<>();
                 header.put("Content-Type", "application/json");
                 header.put("token", preferences.getString(Datas.token, ""));
@@ -154,7 +151,7 @@ public class Comment extends AppCompatActivity {
                             CommentData comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData.class);
                             commentData.add(comment);
                         }
-                        RecyclerView.Adapter adapter = new CommentAdapter(Comment.this, commentData);
+                        RecyclerView.Adapter adapter = new CommentAdapter(Comment.this, commentData, preferences.getInt(Datas.id, 1));
                         recyclerView.setAdapter(adapter);
                         comment.setText("");
                     }
@@ -172,7 +169,7 @@ public class Comment extends AppCompatActivity {
             }
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> header = new HashMap<>();
                 header.put("Content-Type", "application/json");
                 header.put("token", preferences.getString(Datas.token, ""));

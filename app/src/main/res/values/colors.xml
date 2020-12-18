@@ -7,6 +7,10 @@
     <color name="white_text_color">#FFFFFF</color>
     <color name="dividercolor">#9E9E9E</color>
     <color name="black">#000000</color>
-    <color name="text_comment_name">#7C289D</color>
+    <color name="text_comment_name">#1A167F</color>
     <color name="blue_home_icon">#040882</color>
+    <color name="commentself">#EBEBEB</color>
+    <color name="book">#52C462</color>
+    <color name="pending">#B7251D</color>
+    <color name="expired">#AFAFAF</color>
 </resources>

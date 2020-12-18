@@ -34,7 +34,6 @@
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="@dimen/back_dim"
-
         android:layout_height="@dimen/back_dim"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -63,6 +62,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView2"
@@ -75,7 +75,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="25dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/rv_comment"
@@ -97,6 +97,7 @@
                 android:background="@android:color/transparent"
                 android:ems="10"
                 android:gravity="start|top"
+                android:hint="Post New Comment Here"
                 android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView8"
