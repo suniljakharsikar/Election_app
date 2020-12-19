@@ -69,7 +69,7 @@ public class Comment extends AppCompatActivity {
         RecyclerView.Adapter adapter = new CommentAdapter(this, data);
         recyclerView.setAdapter(adapter);*/
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = Url.baseurl + "/ctalk_comments";
+        String url = Url.baseurl + getIntent().getStringExtra("url");//"/ctalk_comments";
         JSONObject json = new JSONObject();
         try {
             json.put("parentId", getIntent().getStringExtra("pos"));
@@ -130,7 +130,7 @@ public class Comment extends AppCompatActivity {
     }
 
     public void newpost(View view) {
-        String url = Url.baseurl + "/ctalk_comments_post";
+        String url = Url.baseurl + getIntent().getStringExtra("newposturl");
         JSONObject json = new JSONObject();
         try {
             json.put("parentId", getIntent().getStringExtra("pos"));

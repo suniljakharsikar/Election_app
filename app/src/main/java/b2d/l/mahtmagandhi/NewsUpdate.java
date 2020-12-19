@@ -6,11 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -69,20 +67,21 @@ public class NewsUpdate extends AppCompatActivity {
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n" +
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam", 35, 6, R.drawable.news3));
 */
-       initView();
+        initView();
     }
 
     private void initView() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String url = Url.baseurl + "/ctalk_data";
+        String url = Url.baseurl + "/nevent_data";
         JSONObject json = new JSONObject();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 try {
                     if (response.getBoolean("success")) {
+                        Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+
                         JSONArray data = response.getJSONArray("data");
                         chatData = new ArrayList<>();
                         for (int i = 0; i < data.length(); i++) {
@@ -91,7 +90,7 @@ public class NewsUpdate extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(getBaseContext(), chatData);
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(getBaseContext(), chatData, "/nevent_like_unlike_post", "/nevent_comments","/nevent_comments_post");
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -111,6 +110,7 @@ public class NewsUpdate extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                Toast.makeText(NewsUpdate.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

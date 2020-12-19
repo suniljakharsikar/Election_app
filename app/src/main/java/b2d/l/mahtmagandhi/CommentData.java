@@ -17,6 +17,12 @@ public class CommentData {
         this.userImage = userImage;
     }
 
+    public CommentData(String username, String comment) {
+
+        this.username = username;
+        this.comment = comment;
+    }
+
     public int getId() {
         return id;
     }
