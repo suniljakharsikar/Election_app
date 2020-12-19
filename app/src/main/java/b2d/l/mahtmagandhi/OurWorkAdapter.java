@@ -10,14 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Response;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class OurWorkAdapter extends RecyclerView.Adapter<OurWorkAdapter.ViewHolder> {
-    private Context context;
-    private ArrayList<OurWorkData> data;
+    private List<OurWorkResponseModel.Data> data;
 
-    public OurWorkAdapter(Context context, ArrayList<OurWorkData> data) {
-        this.context = context;
+    public OurWorkAdapter( List<OurWorkResponseModel.Data> data) {
+
         this.data = data;
     }
 
@@ -31,18 +35,18 @@ public class OurWorkAdapter extends RecyclerView.Adapter<OurWorkAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        final OurWorkData ourWorkData = data.get(position);
+        final OurWorkResponseModel.Data ourWorkData = data.get(position);
         holder.title.setText(ourWorkData.getTitle());
-        holder.content.setText(ourWorkData.getContent());
+        holder.content.setText(ourWorkData.getDescription());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent d = new Intent(context, OurWorkDetail.class);
-                d.putExtra("title", ourWorkData.getTitle());
-                d.putExtra("content", ourWorkData.getContent());
-                context.startActivity(d);
+                Intent d = new Intent(holder.itemView.getContext(), OurWorkDetail.class);
+                d.putExtra("data", ourWorkData);
+
+                holder.itemView.getContext().startActivity(d);
             }
         });
     }

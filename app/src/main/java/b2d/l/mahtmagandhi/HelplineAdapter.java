@@ -10,16 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HelplineAdapter extends RecyclerView.Adapter<HelplineAdapter.ViewHolder> {
-    private Context context;
-    private ArrayList<AddressData> addressData;
+    List<HelplineResponseModel.Data> data;
 
-    public HelplineAdapter(Context context, ArrayList<AddressData> addressData) {
-
-        this.context = context;
-        this.addressData = addressData;
+    public HelplineAdapter(List<HelplineResponseModel.Data> data) {
+        this.data = data;
     }
+
 
     @NonNull
     @Override
@@ -38,13 +37,13 @@ public class HelplineAdapter extends RecyclerView.Adapter<HelplineAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.textView.setText(addressData.get(position).getAddressname());
-        holder.textView1.setText(addressData.get(position).getAddress());
+        holder.textView.setText(data.get(position).getTitle());
+        holder.textView1.setText(data.get(position).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return addressData.size();
+        return data.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

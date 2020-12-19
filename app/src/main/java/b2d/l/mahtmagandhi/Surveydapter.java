@@ -11,17 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Surveydapter extends RecyclerView.Adapter<Surveydapter.ViewHolder> {
-    private Context context;
-    private ArrayList<String> homelistDatas;
-    private RecyclerView recyclerView;
+    List<SurveyResponseModel.Data> data;
 
-    public Surveydapter(Context context, ArrayList<String> homelistDatas, RecyclerView recyclerView) {
-        this.context = context;
-        this.homelistDatas = homelistDatas;
-        this.recyclerView = recyclerView;
+    public Surveydapter(List<SurveyResponseModel.Data> data) {
+        this.data = data;
+
     }
+
 
     @NonNull
     @Override
@@ -40,7 +39,7 @@ public class Surveydapter extends RecyclerView.Adapter<Surveydapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
-        String s = homelistDatas.get(position);
+        String s = data.get(position).getTitle();
         holder.textView.setText(s);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +52,7 @@ public class Surveydapter extends RecyclerView.Adapter<Surveydapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return homelistDatas.size();
+        return data.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

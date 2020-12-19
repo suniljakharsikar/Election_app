@@ -1,16 +1,22 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OurWorkDetail extends AppCompatActivity {
 
@@ -23,13 +29,33 @@ public class OurWorkDetail extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
+
+        OurWorkResponseModel.Data data= getIntent().getParcelableExtra("data");
         SliderView sliderView = findViewById(R.id.imageSlider);
 
         SliderAdapterExample adapter = new SliderAdapterExample(this);
 
-        adapter.addItem(new SliderItem("https://starofmysore.com/wp-content/uploads/2017/10/mahatma-gandhiji.jpg"));
-        adapter.addItem(new SliderItem("https://starofmysore.com/wp-content/uploads/2017/10/mahatma-gandhiji.jpg"));
-        adapter.addItem(new SliderItem("https://starofmysore.com/wp-content/uploads/2017/10/mahatma-gandhiji.jpg"));
+        List<OurWorkResponseModel.Data.DataImage> imgs = data.getDataImages();
+        ArrayList<SliderItem> list = new ArrayList<>();
+        for (int i = 0; i < imgs.size(); i++) {
+            OurWorkResponseModel.Data.DataImage img = imgs.get(i);
+            if (img.getImageUrl().length()>0) {
+                list.add(new SliderItem(img.getImageUrl()));
+                Log.d("OurWorkDetail", "onCreate: imageUrl"+img.getImageUrl());
+            }else{
+                Log.d("OurWorkDetail", "onCreate: imageName"+img.getImageName());
+
+                list.add(new SliderItem(img.getImageName()));
+
+            }
+        }
+        adapter.renewItems(list);
+        TextView titleTv = findViewById(R.id.textView_our_work_title);
+        TextView descTv = findViewById(R.id.tv_our_work_desc);
+
+        titleTv.setText(data.getTitle());
+        descTv.setText(data.getDescription());
+
         sliderView.setSliderAdapter(adapter);
 
         sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!

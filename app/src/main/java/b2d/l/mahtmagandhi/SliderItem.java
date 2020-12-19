@@ -13,7 +13,7 @@ public class SliderItem {
         return "testing";
     }
 
-    public String getImageUrl(int position) {
+    public String getImageUrl() {
         return image_name;
     }
 }

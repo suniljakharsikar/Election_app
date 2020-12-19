@@ -3,6 +3,7 @@ package b2d.l.mahtmagandhi;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.SliderViewAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +57,26 @@ public class SliderAdapterExample extends
         viewHolder.textViewDescription.setText(sliderItem.getDescription());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
-        Glide.with(viewHolder.itemView)
+      /*  Glide.with(viewHolder.itemView)
                 .load(sliderItem.getImageUrl(position))
                 .fitCenter()
                 .into(viewHolder.imageViewBackground);
+
+      */
+
+
+        if (sliderItem.getImageUrl().length()>0){
+            Picasso.with(viewHolder.itemView.getContext()).load(sliderItem.getImageUrl()).into(viewHolder.imageViewBackground);
+
+
+        }else{
+            Picasso.with(viewHolder.itemView.getContext()).load(sliderItem.getDescription()).into(viewHolder.imageViewBackground);
+
+        }
+
+
+
+        Log.d("Slider", "onBindViewHolder: "+sliderItem.getImageUrl());
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

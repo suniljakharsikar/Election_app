@@ -4,12 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class ManifestoAdapter extends RecyclerView.Adapter<ManifestoAdapter.ViewHolder> {
-    public ManifestoAdapter(Context context) {
+    List<ManifestoResponseModel.Data> data;
+
+
+    public ManifestoAdapter(List<ManifestoResponseModel.Data> data) {
+        this.data = data;
     }
 
     @NonNull
@@ -27,17 +34,25 @@ public class ManifestoAdapter extends RecyclerView.Adapter<ManifestoAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+         ManifestoResponseModel.Data model = data.get(position);
+         holder.titleMfs.setText(model.getTitle());
+         holder.detailMfs.setText(model.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return data.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView titleMfs;
+        TextView detailMfs;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+             titleMfs = itemView.findViewById(R.id.textView_title_manifesto);
+             detailMfs = itemView.findViewById(R.id.tv_desc_manifesto);
         }
     }
 }

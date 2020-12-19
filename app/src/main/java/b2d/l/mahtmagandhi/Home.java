@@ -18,6 +18,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
@@ -185,6 +186,13 @@ public class Home extends AppCompatActivity {
             }
         });
 
+       Button appointmentButton =  findViewById(R.id.button_appointment);
+       appointmentButton.setOnClickListener(new View.OnClickListener(){
+           @Override
+           public void onClick(View v) {
+               startActivity(new Intent(getBaseContext(),Appointment.class));
+           }
+       });
     }
 
     public void back(View view) {
