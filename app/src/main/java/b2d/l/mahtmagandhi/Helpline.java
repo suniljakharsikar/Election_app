@@ -35,7 +35,9 @@ public class Helpline extends AppCompatActivity {
         addressData.add(new AddressData("Address 3", "Near Village Chok, Toer Road, Jaipur\n" + "Contact : 1234567890"));
         HelplineAdapter helplineAdapter = new HelplineAdapter(this, addressData);
         recyclerView.setAdapter(helplineAdapter);
+
     }
+
     public void back(View view) {
         finish();
     }

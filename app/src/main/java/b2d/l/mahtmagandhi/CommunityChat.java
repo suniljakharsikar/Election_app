@@ -116,7 +116,7 @@ public class CommunityChat extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData);
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData,"/ctalk_like_unlike_post","/ctalk_comments","/ctalk_comments_post");
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(CommunityChat.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

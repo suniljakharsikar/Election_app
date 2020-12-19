@@ -213,7 +213,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void appointment(View view) {
-        startActivity(new Intent(this, Appointment.class));
+        startActivity(new Intent(this, ChatOnProblem.class));
 
     }
 }
