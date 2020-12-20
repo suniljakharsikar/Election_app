@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,10 +27,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Meetings extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -104,9 +107,18 @@ public class Meetings extends AppCompatActivity {
                             }
                         }
                         Log.d("Meetings", "onResponse: "+map.toString());
+                        Set<String> keys = map.keySet();
+                        ConcatAdapter concatAdapter = new ConcatAdapter();
+                        for (String key:keys) {
+                            concatAdapter.addAdapter(new MeetingHeaderAdapter(key));
+                            List<Meeting> v = map.get(key);
+                            concatAdapter.addAdapter(new MeetingAdapter(v, Meetings.this, recyclerView));
+                        }
 
-                        mAdapter = new MeetingAdapter(meetings, Meetings.this, recyclerView);
-                        recyclerView.setAdapter(mAdapter);
+
+
+
+                        recyclerView.setAdapter(concatAdapter);
                     } else {
                         Toast.makeText(Meetings.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                         //login page

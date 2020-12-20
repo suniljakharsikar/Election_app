@@ -19,15 +19,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHolder> implements View.OnClickListener {
 
-    private ArrayList<Meeting> meetings;
+    private List<Meeting> meetings;
     private Context context;
     private RecyclerView mRecyclerView;
 
 
-    public MeetingAdapter(ArrayList<Meeting> meetings, Context context, RecyclerView mRecyclerView) {
+    public MeetingAdapter(List<Meeting> meetings, Context context, RecyclerView mRecyclerView) {
         this.meetings = meetings;
 
         this.context = context;
@@ -53,6 +54,16 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
 
         Meeting meeting = meetings.get(position);
         holder.title.setText(meeting.getTitle());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MeetingDetails.class);
+                intent.putExtra("meet", meeting);
+                context.startActivity(intent);
+            }
+        });
 
         String rawDate = meeting.getMeeting_date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
@@ -96,9 +107,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
     @Override
     public void onClick(View view) {
         int itemPosition = mRecyclerView.getChildLayoutPosition(view);
-        Intent intent = new Intent(context, MeetingDetails.class);
-        intent.putExtra("meet", meetings.get(itemPosition));
-        context.startActivity(intent);
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
