@@ -54,7 +54,7 @@ public class Survey extends AppCompatActivity {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 
-        String url = Url.baseurl + "/survey_questions";
+        String url = Url.baseurl + "/survey";
         JSONObject jsonRequest = new JSONObject();
         //startAnim();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {

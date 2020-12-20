@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -25,7 +26,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Meetings extends AppCompatActivity {
@@ -86,6 +89,22 @@ public class Meetings extends AppCompatActivity {
                             JSONObject jsonObject = data.getJSONObject(i);
                             meetings.add(new Meeting(jsonObject.getString("id"), jsonObject.getString("title"), jsonObject.getString("description"), jsonObject.getString("meeting_date"), jsonObject.getString("meeting_time")));
                         }
+                        Map<String, List<Meeting>> map = new HashMap<>();
+                        for (int i = 0; i < meetings.size(); i++) {
+                            Meeting item = meetings.get(i);
+
+                            List<Meeting> ms = new ArrayList<>();
+                            if (map.containsKey(item.getMeeting_date())) {
+                                List<Meeting> ts = map.get(item.getMeeting_date());
+                                ts.add(item);
+                                map.put(item.getMeeting_date(), ts);
+                            }else{
+                                ms.add(item);
+                                map.put(item.getMeeting_date(),ms);
+                            }
+                        }
+                        Log.d("Meetings", "onResponse: "+map.toString());
+
                         mAdapter = new MeetingAdapter(meetings, Meetings.this, recyclerView);
                         recyclerView.setAdapter(mAdapter);
                     } else {

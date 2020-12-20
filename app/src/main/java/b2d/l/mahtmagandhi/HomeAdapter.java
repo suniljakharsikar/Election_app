@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,9 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    private Context context;
+public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_FOOTER = 0;
+    private static final int TYPE_ITEM = 1;
+    private final Context context;
     private ArrayList<HomelistData> homelistDatas;
+    private RecyclerView mRecyclerView;
+
+    public HomeAdapter(Context context, RecyclerView mRecyclerView, ArrayList<HomelistData> homelistDatas) {
+        this.context =context;
+        this.mRecyclerView = mRecyclerView;
+        this.homelistDatas = homelistDatas;
+
+    }
+
     private View.OnClickListener i = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -69,51 +81,90 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         }
     };
-    private RecyclerView mRecyclerView;
 
-    public HomeAdapter(Context context, ArrayList<HomelistData> homelistDatas, RecyclerView recyclerView) {
-        this.context = context;
-        this.homelistDatas = homelistDatas;
-        mRecyclerView = recyclerView;
-    }
-
-    @NonNull
     @Override
-    public HomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.home_raw, parent, false);
+        if (viewType == TYPE_ITEM) {
 
-        contactView.setOnClickListener(i);
-        // Return a new holder instance
-        return new ViewHolder(contactView);
+            // Inflate the custom layout
+            View contactView = inflater.inflate(R.layout.home_raw, parent, false);
+
+            contactView.setOnClickListener(i);
+            // Return a new holder instance
+            return new VHItem(contactView);
+        } else if (viewType == TYPE_FOOTER) {
+            //inflate your layout and pass it to view holder
+
+            View view = inflater.inflate(R.layout.item_appointment_btn,parent,false);
+
+            return new VHHeader(view);
+        }
+
+        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+      if (holder instanceof VHHeader) {
+            //cast holder to VHHeader and set data for header.
+            ((VHHeader) holder).appointmentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        HomelistData homelistData = homelistDatas.get(position);
+                    context.startActivity(new Intent(context,Appointment.class));
+                }
+            });
+        }else if (holder instanceof VHItem){
+          HomelistData homelistData = getItem(position);
 
-        holder.name.setText(homelistData.getMenuName());
-        holder.icon.setImageResource(homelistData.getIconId());
+          ((VHItem) holder).name.setText(homelistData.getMenuName());
+          ((VHItem) holder).icon.setImageResource(homelistData.getIconId());
 
+      }
     }
 
     @Override
     public int getItemCount() {
-        return homelistDatas.size();
+        return homelistDatas.size() + 1;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        if (position == homelistDatas.size())
+            return TYPE_FOOTER;
+
+        return TYPE_ITEM;
+    }
+
+    private boolean isPositionHeader(int position) {
+        return position == 0;
+    }
+
+    private HomelistData getItem(int position) {
+        return homelistDatas.get(position);
+    }
+
+    class VHItem extends RecyclerView.ViewHolder {
         TextView name;
         ImageView icon;
 
-        public ViewHolder(@NonNull View itemView) {
+        public VHItem(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.textView11);
             icon = itemView.findViewById(R.id.imageView9);
+        }
+
+    }
+
+    class VHHeader extends RecyclerView.ViewHolder {
+        Button appointmentButton;
+
+        public VHHeader(View itemView) {
+            super(itemView);
+            appointmentButton = itemView.findViewById(R.id.button_appointment);
         }
     }
 }

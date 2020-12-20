@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatOnProblem"></activity>
+        <activity android:name=".RequestAppointmentActivity"></activity>
+        <activity android:name=".NotificationActivity" />
+        <activity android:name=".ChatOnProblem" />
         <activity android:name=".Appointment" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>

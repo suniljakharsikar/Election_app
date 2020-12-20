@@ -7,18 +7,13 @@ import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,8 +65,17 @@ public class Home extends AppCompatActivity {
         homelistDatas.add(new HomelistData("Voting Guide", R.drawable.vote));
         homelistDatas.add(new HomelistData("Helpline", R.drawable.helpline));
         homelistDatas.add(new HomelistData("Setting & Profile", R.drawable.setting));
-        RecyclerView.Adapter mAdapter = new HomeAdapter(this, homelistDatas, recyclerView);
+        RecyclerView.Adapter mAdapter = new HomeAdapter(this,  recyclerView,homelistDatas);
+
         recyclerView.setAdapter(mAdapter);
+
+        findViewById(R.id.imageView_noti_home).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getBaseContext(), NotificationActivity.class));
+
+            }
+        });
 
         final CardView cardView = findViewById(R.id.cardView3);
 
@@ -186,13 +190,7 @@ public class Home extends AppCompatActivity {
             }
         });
 
-       Button appointmentButton =  findViewById(R.id.button_appointment);
-       appointmentButton.setOnClickListener(new View.OnClickListener(){
-           @Override
-           public void onClick(View v) {
-               startActivity(new Intent(getBaseContext(),Appointment.class));
-           }
-       });
+
     }
 
     public void back(View view) {
@@ -220,8 +218,5 @@ public class Home extends AppCompatActivity {
         }, 2000);
     }
 
-    public void appointment(View view) {
-        startActivity(new Intent(this, ChatOnProblem.class));
 
-    }
 }
