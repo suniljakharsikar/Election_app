@@ -166,6 +166,7 @@
         android:paddingLeft="72dp"
         android:paddingTop="8dp"
         android:paddingRight="72dp"
+        android:onClick="newposting"
         android:paddingBottom="8dp"
         android:text="Post"
         android:textAllCaps="false"

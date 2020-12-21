@@ -129,12 +129,23 @@ public class Comment extends AppCompatActivity {
         finish();
     }
 
+    public static boolean isNullOrEmpty(String str) {
+        if (str != null && !str.isEmpty())
+            return false;
+        return true;
+    }
+
     public void newpost(View view) {
+        String s = comment.getText().toString();
+        if (isNullOrEmpty(s)) {
+            Toast.makeText(this, "Please type comment first", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String url = Url.baseurl + getIntent().getStringExtra("newposturl");
         JSONObject json = new JSONObject();
         try {
             json.put("parentId", getIntent().getStringExtra("pos"));
-            json.put("comment", comment.getText().toString());
+            json.put("comment", s);
         } catch (JSONException e) {
             e.printStackTrace();
         }
