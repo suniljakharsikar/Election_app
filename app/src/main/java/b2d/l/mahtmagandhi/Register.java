@@ -5,10 +5,16 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,21 +24,33 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.gson.Gson;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.gloxey.gnm.interfaces.VolleyResponse;
 import io.gloxey.gnm.managers.ConnectionManager;
 
+import static android.media.CamcorderProfile.get;
+
 public class Register extends AppCompatActivity {
 
-    EditText name, number, age, pincode, state, distirct;
-    Spinner city;
+    EditText name, number, age, pincode, stateEt, distirctEt;
+    Spinner cityEt;
     private SharedPreferences preferences;
     private AVLoadingIndicatorView avi;
 
@@ -65,27 +83,106 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         avi = findViewById(R.id.avi3);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
         name = findViewById(R.id.editTextPersonName);
         number = findViewById(R.id.editTextPhone);
         age = findViewById(R.id.editText_dob);
+        age.setInputType(InputType.TYPE_NULL);
+        age.setFocusable(false);
+        age.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
+                dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long it) {
+                        Date date =new  Date(it);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+                        //formatter.setTimeZone(TimeZone.getTimeZone(""))
+                        String dateFormatted = formatter.format(date);
+                        age.setText(dateFormatted);
+                    }
+                }) ;
+                dp.show(getSupportFragmentManager(), "date");
+            }
+        });
         pincode = findViewById(R.id.editText_postal_code);
-        state = findViewById(R.id.editText_state);
-        distirct = findViewById(R.id.editText_district);
-        city = findViewById(R.id.spinner_city_regi);
+        stateEt = findViewById(R.id.editText_state);
+        distirctEt = findViewById(R.id.editText_district);
+        cityEt = findViewById(R.id.spinner_city_regi);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         name.setText(preferences.getString(Datas.user_name, ""));
         number.setText(preferences.getString(Datas.user_mobile, ""));
         age.setText(preferences.getString(Datas.user_age, ""));
         pincode.setText(preferences.getString(Datas.user_postal_code, ""));
-        state.setText(preferences.getString(Datas.user_state, ""));
-        distirct.setText(preferences.getString(Datas.user_district, ""));
+        stateEt.setText(preferences.getString(Datas.user_state, ""));
+        distirctEt.setText(preferences.getString(Datas.user_district, ""));
 //        city.setText(preferences.getString(Datas.user_district, ""));
+
+        pincode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length()>5 && s.length()==6)
+                fetchLoc(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>5 && s.length()==6)
+                    fetchLoc(s.toString());
+            }
+        });
         stopAnim();
+    }
+
+    private void fetchLoc(String s) {
+
+
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/" + s,
+        new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Register", "onResponse: "+response);
+
+                Gson gson = new Gson();
+               PinCodeResponseModel pinCodeResponseModelItems =   gson.fromJson(response.toString(),PinCodeResponseModel.class);
+                try {
+                    if (pinCodeResponseModelItems!=null && pinCodeResponseModelItems.size()>0){
+                        PinCodeResponseModelItem pinItem = pinCodeResponseModelItems.get(0);
+                        List<PinCodeResponseModelItem.PostOffice> postOffice = pinItem.getPostOffice();
+                        PinCodeResponseModelItem.PostOffice post = postOffice.get(0);
+                        String state = post.getState();
+                        stateEt.setText(state);
+
+                        String district = post.getDistrict();
+
+                        distirctEt.setText(district);
+                        List<String>  cities = new ArrayList<>();
+                        for(PinCodeResponseModelItem.PostOffice postObj :postOffice){
+                            cities.add(postObj.getName());
+                        }
+                        cityEt.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line,cities));
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Register", "onErrorResponse: "+error);
+
+            }
+        });
+
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+
     }
 
     public void back(View view) {
@@ -111,9 +208,9 @@ public class Register extends AppCompatActivity {
             int x = Integer.parseInt(age.getText().toString());
             jsonRwquest.put("userAge", x);
             jsonRwquest.put("userPostalCode", pincode.getText().toString());
-            jsonRwquest.put("userState", state.getText().toString());
-            jsonRwquest.put("userDistrict", distirct.getText().toString());
-            jsonRwquest.put("userVillage", city.getSelectedItem().toString());
+            jsonRwquest.put("userState", stateEt.getText().toString());
+            jsonRwquest.put("userDistrict", distirctEt.getText().toString());
+            jsonRwquest.put("userVillage", cityEt.getSelectedItem().toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -148,15 +245,15 @@ public class Register extends AppCompatActivity {
         String url = Url.baseurl + "/update_profile";
         JSONObject jsonRwquest = new JSONObject();
         String cityS = "";
-        if (city.getSelectedItem()==null)cityS="";else cityS = city.getSelectedItem().toString();
+        if (cityEt.getSelectedItem()==null)cityS="";else cityS = cityEt.getSelectedItem().toString();
         try {
             jsonRwquest.put("userMobile", number.getText().toString());
             jsonRwquest.put("userName", name.getText().toString());
             int x = Integer.parseInt(age.getText().toString());
             jsonRwquest.put("userAge", x);
             jsonRwquest.put("userPostalCode", pincode.getText().toString());
-            jsonRwquest.put("userState", state.getText().toString());
-            jsonRwquest.put("userDistrict", distirct.getText().toString());
+            jsonRwquest.put("userState", stateEt.getText().toString());
+            jsonRwquest.put("userDistrict", distirctEt.getText().toString());
             jsonRwquest.put("userVillage",cityS );
 
         } catch (JSONException e) {

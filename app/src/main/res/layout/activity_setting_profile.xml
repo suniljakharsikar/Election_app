@@ -199,7 +199,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editText_district" />
 
             <Spinner
-                android:id="@+id/spinner4"
+                android:id="@+id/spinner_city_setting_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -213,8 +213,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Select Gender"
-                app:layout_constraintStart_toStartOf="@+id/spinner4"
-                app:layout_constraintTop_toBottomOf="@+id/spinner4" />
+                app:layout_constraintStart_toStartOf="@+id/spinner_city_setting_profile"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_city_setting_profile" />
 
             <RadioGroup
                 android:id="@+id/radioGroup"
@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@+id/spinner4"
+                app:layout_constraintEnd_toEndOf="@+id/spinner_city_setting_profile"
                 app:layout_constraintStart_toStartOf="@+id/textView49"
                 app:layout_constraintTop_toBottomOf="@+id/textView49">
 

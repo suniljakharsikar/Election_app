@@ -109,8 +109,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="phone"
-                        android:text="9900990099"
+                        android:inputType="none"
+                        tools:text="9900990099"
                         app:layout_constraintEnd_toEndOf="@+id/editTextPersonName"
                         app:layout_constraintStart_toStartOf="@+id/textView46"
                         app:layout_constraintTop_toBottomOf="@+id/textView46" />
