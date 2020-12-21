@@ -1,8 +1,8 @@
 package b2d.l.mahtmagandhi
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 
 class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,5 +12,9 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
     fun back(view: View) {
         finish()
+    }
+
+    fun isNullOrEmpty(str: String?): Boolean {
+        return if (str != null && !str.isEmpty()) false else true
     }
 }

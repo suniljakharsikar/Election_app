@@ -21,6 +21,7 @@
         android:paddingRight="72dp"
         android:paddingBottom="8dp"
         android:text="Submit"
+        android:onClick="submit"
         android:textAllCaps="false"
         android:textColor="@color/white_text_color"
         app:layout_constraintBottom_toBottomOf="parent"

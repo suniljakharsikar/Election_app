@@ -13,4 +13,6 @@ class RequestAppointmentActivity : AppCompatActivity() {
     fun back(view: View) {
         finish()
     }
+
+    fun submit(view: View) {}
 }

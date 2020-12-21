@@ -114,10 +114,6 @@ public class Meetings extends AppCompatActivity {
                             List<Meeting> v = map.get(key);
                             concatAdapter.addAdapter(new MeetingAdapter(v, Meetings.this, recyclerView));
                         }
-
-
-
-
                         recyclerView.setAdapter(concatAdapter);
                     } else {
                         Toast.makeText(Meetings.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
