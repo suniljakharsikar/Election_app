@@ -8,8 +8,12 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,12 +26,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -69,11 +77,11 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         avi = findViewById(R.id.avi3);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//        }
         name = findViewById(R.id.editTextPersonName);
         number = findViewById(R.id.editTextPhone);
         age = findViewById(R.id.editText_dob);
@@ -107,6 +115,23 @@ public class Register extends AppCompatActivity {
 
         };
 
+        pincode.addTextChangedListener(new TextWatcher (){
+                                           @Override
+                                           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                           }
+
+                                           @Override
+                                           public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                               if (s.length() > 5 && s.length() == 6) fetchLoc(s.toString());
+                                           }
+
+                                           @Override
+                                           public void afterTextChanged(Editable s) {
+                                               if (s.length() > 5 && s.length() == 6) fetchLoc(s.toString());
+                                           }
+                                       }
+            );
         /*age.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -299,4 +324,45 @@ public class Register extends AppCompatActivity {
 //        requestQueue.add(jsonObjectRequest);
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
+
+    private void fetchLoc(String s) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/" + s, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Gson gson = new Gson();
+                PinCodeResponseModel pinCodeResponseModelItems = gson.fromJson(response, PinCodeResponseModel.class);
+                try{
+                    if (pinCodeResponseModelItems!=null && pinCodeResponseModelItems.size()>0){
+                        PinCodeResponseModelItem postItem = pinCodeResponseModelItems.get(0);
+                        List<PinCodeResponseModelItem.PostOffice> postOffice = postItem.getPostOffice();
+                    if (postOffice.size()>0){
+                        PinCodeResponseModelItem.PostOffice specificPost = postOffice.get(0);
+
+                        state.setText(specificPost.getState());
+                        distirct.setText(specificPost.getDistrict());
+
+                        List<String> cities = new ArrayList<String>();
+                        for (PinCodeResponseModelItem.PostOffice postOff:postOffice){
+                            cities.add(postOff.getName());
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line, cities);
+
+                    city.setAdapter(adapter);
+                    }
+                    }
+                }catch (Exception e){
+
+
+                }            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+    }
+
 }
