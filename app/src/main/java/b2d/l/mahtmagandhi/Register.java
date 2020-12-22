@@ -27,6 +27,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.gson.Gson;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -34,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -100,6 +103,29 @@ public class Register extends AppCompatActivity {
         stopAnim();
 
         myCalendar = Calendar.getInstance();
+        age.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
+                dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long it) {
+                        Date date = new Date(it);
+                        SimpleDateFormat formatter =new  SimpleDateFormat("dd MMM yyyy");
+                        //formatter.setTimeZone(TimeZone.getTimeZone(""))
+                        String dateFormatted = formatter.format(date);
+                        age.setText(dateFormatted);
+                    }
+                });
+
+                dp.show(getSupportFragmentManager(), "date");
+
+
+            }
+        });
+
+
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -245,8 +271,7 @@ public class Register extends AppCompatActivity {
         try {
             jsonRwquest.put("userMobile", number.getText().toString());
             jsonRwquest.put("userName", s);
-            int x = Integer.parseInt(s5);
-            jsonRwquest.put("userAge", x);
+            jsonRwquest.put("userAge", s5);
             jsonRwquest.put("userPostalCode", s1);
             jsonRwquest.put("userState", s3);
             jsonRwquest.put("userDistrict", s4);

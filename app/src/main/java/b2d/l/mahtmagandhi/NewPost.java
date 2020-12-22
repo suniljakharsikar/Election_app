@@ -15,7 +15,7 @@ public class NewPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
-        editText = findViewById(R.id.editTextTextMultiLine3);
+        editText = findViewById(R.id.et_prob_sugg);
     }
 
     public void back(View view) {

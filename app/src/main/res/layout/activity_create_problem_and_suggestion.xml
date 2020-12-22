@@ -112,7 +112,7 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
-        android:id="@+id/editTextTextMultiLine3"
+        android:id="@+id/et_prob_sugg"
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginStart="16dp"
@@ -131,19 +131,19 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
 
     <ImageView
-        android:id="@+id/imageView23"
+        android:id="@+id/imageView_pic_create_new_prob_sug"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView38"
+        app:layout_constraintEnd_toStartOf="@+id/tv_image_btn_prob_sug"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine3"
+        app:layout_constraintTop_toBottomOf="@+id/et_prob_sugg"
         app:srcCompat="@drawable/imageload" />
 
     <TextView
-        android:id="@+id/textView38"
+        android:id="@+id/tv_image_btn_prob_sug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -151,18 +151,20 @@
         android:text="Add Image"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView23"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_pic_create_new_prob_sug"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView23"
-        app:layout_constraintTop_toTopOf="@+id/imageView23" />
+        app:layout_constraintStart_toEndOf="@+id/imageView_pic_create_new_prob_sug"
+        app:layout_constraintTop_toTopOf="@+id/imageView_pic_create_new_prob_sug" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_bg"
+        android:enabled="true"
+        android:onClick="submit"
         android:paddingLeft="72dp"
         android:paddingTop="8dp"
         android:paddingRight="72dp"

@@ -89,6 +89,8 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
                         android:ems="10"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
                         android:inputType="textPersonName"
                         android:text="Akshay Kumar"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -122,7 +124,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Age"
+                        android:text="Date Of Birth"
                         app:layout_constraintStart_toStartOf="@+id/editTextPhone"
                         app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 
@@ -130,9 +132,10 @@
                         android:id="@+id/editText_dob"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:digits="0123456789"
-                        android:hint="age"
-                        android:inputType="number"
+                        android:hint="DOB"
+                        android:editable="false"
+                        android:maxLines="1"
+                        android:focusable="false"
                         app:layout_constraintEnd_toEndOf="@+id/editTextPhone"
                         app:layout_constraintStart_toStartOf="@+id/textView47"
                         app:layout_constraintTop_toBottomOf="@+id/textView47" />
@@ -227,18 +230,21 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:checkedButton="@id/rb_male_regi"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="@+id/spinner_city_regi"
                         app:layout_constraintStart_toStartOf="@+id/textView49"
                         app:layout_constraintTop_toBottomOf="@+id/textView49">
 
                         <RadioButton
+                            android:id="@+id/rb_male_regi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/black"
                             android:text="Male" />
 
                         <RadioButton
+                            android:id="@+id/rb_female_regi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/black"
@@ -259,7 +265,7 @@
                         app:srcCompat="@drawable/submit1" />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/button_submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"

@@ -36,11 +36,11 @@
         android:layout_marginLeft="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="back"
-        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar17"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backicon" />
+        app:srcCompat="@drawable/backicon"
+        app:tint="@color/black" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -86,8 +86,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:ems="10"
-                android:inputType="textPersonName"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+
                 android:text="Akshay Kumar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +147,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="302012"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_postal"
                 app:layout_constraintTop_toBottomOf="@+id/textView_postal" />
@@ -221,18 +221,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:checkedButton="@id/rb_male_setting_profile"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="@+id/spinner_city_setting_profile"
                 app:layout_constraintStart_toStartOf="@+id/textView49"
                 app:layout_constraintTop_toBottomOf="@+id/textView49">
 
                 <RadioButton
+                    android:id="@+id/rb_male_setting_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/black"
                     android:text="Male" />
 
                 <RadioButton
+                    android:id="@+id/rb_female_setting_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/black"
@@ -253,7 +256,7 @@
                 app:srcCompat="@drawable/submit1" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/button_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -268,6 +271,7 @@
                 android:paddingRight="72dp"
                 android:paddingBottom="8dp"
                 android:text="Submit"
+                android:onClick="update"
                 android:textAllCaps="false"
                 android:textColor="@color/white_text_color"
                 android:visibility="gone"
@@ -293,11 +297,12 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:padding="2dp"
-                android:tint="#040882"
+
                 app:layout_constraintBottom_toBottomOf="@+id/tv_edit_profile"
                 app:layout_constraintEnd_toStartOf="@+id/tv_edit_profile"
                 app:layout_constraintTop_toTopOf="@+id/tv_edit_profile"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
+                app:srcCompat="@android:drawable/ic_menu_edit"
+                app:tint="#040882" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
