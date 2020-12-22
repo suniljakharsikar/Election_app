@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -23,10 +26,23 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.hbb20.CountryCodePicker;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -35,8 +51,14 @@ public class LoginActivity extends AppCompatActivity {
     CircleImageView circleImageView;
     private EditText editText;
     boolean issubmit = false;
-//    ImageView imageView;
+    //    ImageView imageView;
     private AVLoadingIndicatorView avi;
+    private String mobile;
+    private int getcode = 1111;
+    private String mVerificationId;
+    private FirebaseAuth mAuth;
+    private String TAG = "ashok";
+    CountryCodePicker countryCodePicker;
 
     void startAnim() {
         avi.show();
@@ -66,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         avi = findViewById(R.id.avi);
-
-
+        mAuth = FirebaseAuth.getInstance();
+        countryCodePicker = findViewById(R.id.ccp);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -124,12 +146,110 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void submit(View view) {
-        String mobile = editText.getText().toString();
+        mobile = editText.getText().toString();
         if (mobile.length() != 10) {
             Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
             return;
         }
-        sendotp(mobile);
+        sendotp(mobile);//api
+//        sendotpusingfirebase(mobile);//firebase otp
+    }
+
+    private void sendotpusingfirebase(String phoneNumber) {
+        startAnim();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                Toast.makeText(LoginActivity.this, "verified", Toast.LENGTH_SHORT).show();
+                signInWithPhoneAuthCredential(credential);
+                stopAnim();
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                stopAnim();
+                Toast.makeText(LoginActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                editText.setFocusable(true);
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+//                stopAnim();
+                mVerificationId = s;
+                Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, OTPVerify.class);
+                intent.putExtra("mobile", mobile);
+                startActivityForResult(intent, getcode);
+//                startActivity(intent);
+            }
+        };
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(countryCodePicker.getSelectedCountryCodeWithPlus() + phoneNumber)       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .build();
+        Toast.makeText(this, "" + countryCodePicker.getSelectedCountryCodeWithPlus(), Toast.LENGTH_SHORT).show();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+        editText.setFocusable(false);
+
+    }
+
+    private void verifyPhoneNumberWithCode(String verificationId, String code) {
+        // [START verify_with_code]
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        // [END verify_with_code]
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    // [START sign_in_with_phone]
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+
+                            FirebaseUser user = task.getResult().getUser();
+                            // [START_EXCLUDE]
+//                            updateUI(STATE_SIGNIN_SUCCESS, user);
+                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
+                            // [END_EXCLUDE]
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                                // [START_EXCLUDE silent]
+//                                mBinding.fieldVerificationCode.setError("Invalid code.");
+                                Toast.makeText(LoginActivity.this, "Invalid code", Toast.LENGTH_SHORT).show();
+                                // [END_EXCLUDE]
+                            }
+                            // [START_EXCLUDE silent]
+                            // Update UI
+//                            updateUI(STATE_SIGNIN_FAILED);
+                            // [END_EXCLUDE]
+                        }
+                    }
+                });
+    }
+
+    // [END sign_in_with_phone]
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == getcode) {
+            if (data != null) {
+                String code = data.getStringExtra("code");
+                verifyPhoneNumberWithCode(mVerificationId, code);
+
+            }
+        }
     }
 
     private void sendotp(final String mobile) {
