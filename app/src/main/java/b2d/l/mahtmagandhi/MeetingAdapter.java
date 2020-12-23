@@ -52,7 +52,7 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Meeting meeting = meetings.get(position);
+        final Meeting meeting = meetings.get(position);
         holder.title.setText(meeting.getTitle());
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){

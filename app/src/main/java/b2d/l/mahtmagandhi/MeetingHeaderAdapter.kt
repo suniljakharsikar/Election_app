@@ -13,7 +13,7 @@ class MeetingHeaderAdapter(private val date:String): RecyclerView.Adapter<Meetin
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHeaderMeetingViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.raw_header_meeting,parent,false);
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.raw_header_meeting,parent,false)
         return MyHeaderMeetingViewHolder(view)
     }
 

@@ -38,7 +38,7 @@ public class Surveydapter extends RecyclerView.Adapter<Surveydapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        SurveyResponseModel.Data model = data.get(position);
+        final SurveyResponseModel.Data model = data.get(position);
         String s = data.get(position).getTitle();
         holder.textView.setText(s);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -11,12 +11,12 @@ class SurveyDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_survey_detail)
 
-       val data =  intent.getParcelableExtra<SurveyResponseModel.Data>("data");
+       val data =  intent.getParcelableExtra<SurveyResponseModel.Data>("data")
 
         textView_que_survey.text = data.title
 
         for(i in data.optionsData){
-            val rb = RadioButton(this);
+            val rb = RadioButton(this)
             rb.text = i.optionsData
             rb.tag = i.id.toString()
             rg_options_survey.addView(rb)

@@ -97,7 +97,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             @Override
             public void onClick(View view) {
                 like_dislike(1, x);
-                x.setLikes(x.getDislike() + 1);
+                x.setLikes(x.getLikes() + 1);
                 notifyDataSetChanged();
             }
         });
