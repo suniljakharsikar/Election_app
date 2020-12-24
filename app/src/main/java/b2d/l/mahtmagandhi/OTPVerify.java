@@ -93,8 +93,8 @@ public class OTPVerify extends AppCompatActivity {
                         editText5.getText().toString() +
                         editText6.getText().toString();
         if (otp.length() == 6) {
-            verifyotp(otp);
-//            verifyfirebse(otp);
+//            verifyotp(otp);
+            verifyfirebse(otp);
         } else {
             Toast.makeText(this, "please type 6 digit otp", Toast.LENGTH_SHORT).show();
         }

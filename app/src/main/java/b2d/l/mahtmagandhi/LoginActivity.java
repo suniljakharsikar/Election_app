@@ -39,6 +39,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.hbb20.CountryCodePicker;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -151,8 +152,8 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
             return;
         }
-        sendotp(mobile);//api
-//        sendotpusingfirebase(mobile);//firebase otp
+//        sendotp(mobile);//api
+        sendotpusingfirebase(mobile);//firebase otp
     }
 
     private void sendotpusingfirebase(String phoneNumber) {
@@ -163,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                 Toast.makeText(LoginActivity.this, "verified", Toast.LENGTH_SHORT).show();
                 signInWithPhoneAuthCredential(credential);
-                stopAnim();
+
             }
 
             @Override
@@ -192,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
                         .setActivity(this)                 // Activity (for callback binding)
                         .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                         .build();
-        Toast.makeText(this, "" + countryCodePicker.getSelectedCountryCodeWithPlus(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "" + countryCodePicker.getSelectedCountryCodeWithPlus(), Toast.LENGTH_SHORT).show();
         PhoneAuthProvider.verifyPhoneNumber(options);
         editText.setFocusable(false);
 
@@ -218,7 +219,75 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = task.getResult().getUser();
                             // [START_EXCLUDE]
 //                            updateUI(STATE_SIGNIN_SUCCESS, user);
-                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
+
+                            String url = Url.baseurl + "/users";
+                            JSONObject jsonrequest = new JSONObject();
+                            try {
+                                jsonrequest.put("userMobile", mobile);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonrequest, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        boolean success = response.getBoolean("success");
+                                        if (success) {
+                                            String token = response.getString("token");
+                                            JSONArray data1 = response.getJSONArray("data");
+                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putBoolean(Datas.loginstatus, true);
+                                            JSONObject jsonObject = data1.getJSONObject(0);
+                                            editor.putInt(Datas.id, jsonObject.getInt(Datas.id));
+                                            if (!jsonObject.getString(Datas.user_name).equals("null")) {
+                                                editor.putString(Datas.user_name, jsonObject.getString(Datas.user_name));
+                                            }
+                                            editor.putString(Datas.user_mobile, jsonObject.getString(Datas.user_mobile));
+                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                                editor.putString(Datas.user_age, jsonObject.getString(Datas.user_age));
+                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                                editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code));
+                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                                editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state));
+                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                                editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district));
+                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                                editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id));
+                                            editor.putString(Datas.token, token);
+                                            editor.apply();
+                                            startActivity(new Intent(LoginActivity.this, Register.class));
+                                            Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                            finish();
+
+                                        } else {
+                                            Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                            //login page
+                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.clear();
+                                            editor.apply();
+                                            startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+//                                        sendbtn.setEnabled(true);
+
+                                    }
+
+                                    stopAnim();
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    Log.d("ashok", error.toString());
+                                }
+                            });
+                            MySingleton.getInstance(LoginActivity.this).addToRequestQueue(jsonObjectRequest);
                             // [END_EXCLUDE]
                         } else {
                             // Sign in failed, display a message and update the UI
