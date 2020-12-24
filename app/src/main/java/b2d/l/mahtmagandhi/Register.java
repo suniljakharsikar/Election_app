@@ -99,7 +99,7 @@ public class Register extends AppCompatActivity {
         pincode.setText(preferences.getString(Datas.user_postal_code, ""));
         state.setText(preferences.getString(Datas.user_state, ""));
         distirct.setText(preferences.getString(Datas.user_district, ""));
-//        city.setText(preferences.getString(Datas.user_district, ""));
+//        city.setText(preferences.getString(Datas.user_village, ""));
         stopAnim();
 
         myCalendar = Calendar.getInstance();
@@ -112,7 +112,7 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onPositiveButtonClick(Long it) {
                         Date date = new Date(it);
-                        SimpleDateFormat formatter =new  SimpleDateFormat("dd MMM yyyy");
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
                         //formatter.setTimeZone(TimeZone.getTimeZone(""))
                         String dateFormatted = formatter.format(date);
                         age.setText(dateFormatted);
@@ -124,7 +124,6 @@ public class Register extends AppCompatActivity {
 
             }
         });
-
 
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -141,10 +140,9 @@ public class Register extends AppCompatActivity {
 
         };
 
-        pincode.addTextChangedListener(new TextWatcher (){
+        pincode.addTextChangedListener(new TextWatcher() {
                                            @Override
                                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                                            }
 
                                            @Override
@@ -157,7 +155,7 @@ public class Register extends AppCompatActivity {
                                                if (s.length() > 5 && s.length() == 6) fetchLoc(s.toString());
                                            }
                                        }
-            );
+        );
         /*age.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -357,29 +355,30 @@ public class Register extends AppCompatActivity {
 
                 Gson gson = new Gson();
                 PinCodeResponseModel pinCodeResponseModelItems = gson.fromJson(response, PinCodeResponseModel.class);
-                try{
-                    if (pinCodeResponseModelItems!=null && pinCodeResponseModelItems.size()>0){
+                try {
+                    if (pinCodeResponseModelItems != null && pinCodeResponseModelItems.size() > 0) {
                         PinCodeResponseModelItem postItem = pinCodeResponseModelItems.get(0);
                         List<PinCodeResponseModelItem.PostOffice> postOffice = postItem.getPostOffice();
-                    if (postOffice.size()>0){
-                        PinCodeResponseModelItem.PostOffice specificPost = postOffice.get(0);
+                        if (postOffice.size() > 0) {
+                            PinCodeResponseModelItem.PostOffice specificPost = postOffice.get(0);
 
-                        state.setText(specificPost.getState());
-                        distirct.setText(specificPost.getDistrict());
+                            state.setText(specificPost.getState());
+                            distirct.setText(specificPost.getDistrict());
 
-                        List<String> cities = new ArrayList<String>();
-                        for (PinCodeResponseModelItem.PostOffice postOff:postOffice){
-                            cities.add(postOff.getName());
+                            List<String> cities = new ArrayList<String>();
+                            for (PinCodeResponseModelItem.PostOffice postOff : postOffice) {
+                                cities.add(postOff.getName());
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line, cities);
+
+                            city.setAdapter(adapter);
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line, cities);
-
-                    city.setAdapter(adapter);
                     }
-                    }
-                }catch (Exception e){
+                } catch (Exception e) {
 
 
-                }            }
+                }
+            }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {

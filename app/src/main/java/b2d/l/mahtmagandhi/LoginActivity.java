@@ -247,13 +247,15 @@ public class LoginActivity extends AppCompatActivity {
                                             editor.putString(Datas.user_mobile, jsonObject.getString(Datas.user_mobile));
                                             if (!jsonObject.getString(Datas.user_age).equals("null"))
                                                 editor.putString(Datas.user_age, jsonObject.getString(Datas.user_age));
-                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                            if (!jsonObject.getString(Datas.user_postal_code).equals("null"))
                                                 editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code));
-                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                            if (!jsonObject.getString(Datas.user_state).equals("null"))
                                                 editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state));
-                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                            if (!jsonObject.getString(Datas.user_district).equals("null"))
                                                 editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district));
-                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                            if (!jsonObject.getString(Datas.user_village).equals("null"))
+                                                editor.putString(Datas.user_village, jsonObject.getString(Datas.user_village));
+                                            if (!jsonObject.getString(Datas.lagnuage_id).equals("null"))
                                                 editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id));
                                             editor.putString(Datas.token, token);
                                             editor.apply();
