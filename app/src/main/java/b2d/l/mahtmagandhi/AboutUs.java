@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -79,9 +80,14 @@ public class AboutUs extends AppCompatActivity {
                         String description = data.getString("description");
 
                         textView.setText(description);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            textView.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            textView.setText(Html.fromHtml(description));
+                        }
                         JSONArray data_images = response.getJSONArray("data_images");
                         for (int i = 0; i < data_images.length(); i++) {
-                            adapter.addItem(new SliderItem(data_images.getJSONObject(i).getString("image_name")));
+                            adapter.addItem(new SliderItem(Url.burl+data_images.getJSONObject(i).getString("image_url")));
 
                         }
                         sliderView.setSliderAdapter(adapter);

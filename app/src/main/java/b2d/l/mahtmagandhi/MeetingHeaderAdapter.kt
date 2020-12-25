@@ -1,5 +1,6 @@
 package b2d.l.mahtmagandhi
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,14 @@ class MeetingHeaderAdapter(private val date:String): RecyclerView.Adapter<Meetin
     }
 
     override fun onBindViewHolder(holder: MyHeaderMeetingViewHolder, position: Int) {
-        val sdf = SimpleDateFormat("yyyy-mm-dd")
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
         val d = sdf.parse(date)
+        Log.d("MeetingHeader", "onBindViewHolder: "+d.toString())
+
+
         val tf = SimpleDateFormat("MMMM dd, yyyy")
         val td = tf.format(d)
+        Log.d("MeetingHeader", "onBindViewHolder: "+td)
         holder.dateTv.text = td
     }
 

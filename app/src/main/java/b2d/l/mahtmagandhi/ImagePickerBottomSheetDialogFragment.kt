@@ -24,14 +24,23 @@ class ImagePickerBottomSheetDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         imageView_add_pic_camera.setOnClickListener {
-            (requireActivity() as CreateProblemAndSuggestionActivity).getPic(tag,"c")
+            try {
+                (requireActivity() as CreateProblemAndSuggestionActivity).getPic(tag,"c")
+            } catch (e: Exception) {
+                (requireActivity() as NewPost).getPic(tag,"c")
+
+            }
 
             dismiss()
         }
 
         imageView_add_pic_gallary.setOnClickListener {
-            (requireActivity() as CreateProblemAndSuggestionActivity).getPic(tag,"g")
+            try {
+                (requireActivity() as CreateProblemAndSuggestionActivity).getPic(tag,"g")
+            } catch (e: Exception) {
+                (requireActivity() as NewPost).getPic(tag,"g")
 
+            }
             dismiss()
 
         }

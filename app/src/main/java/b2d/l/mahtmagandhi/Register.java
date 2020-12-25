@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -109,7 +111,10 @@ public class Register extends AppCompatActivity {
         age.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
+
+               DialogFragment d =new   DatePickerFragment(age);
+               d.show(getSupportFragmentManager(),"date");
+                /*MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
                 dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
                     @Override
                     public void onPositiveButtonClick(Long it) {
@@ -120,7 +125,7 @@ public class Register extends AppCompatActivity {
                         age.setText(dateFormatted);
                     }
                 });
-                dp.show(getSupportFragmentManager(), "date");
+                dp.show(getSupportFragmentManager(), "date");*/
             }
         });
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -175,6 +180,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void submit(View view) {
+
         call();
 //        call1();
     }
@@ -277,6 +283,7 @@ public class Register extends AppCompatActivity {
             e.printStackTrace();
         }
         startAnim();
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRwquest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -347,10 +354,11 @@ public class Register extends AppCompatActivity {
     }
 
     private void fetchLoc(String s) {
+        startAnim();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/" + s, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                stopAnim();
                 Gson gson = new Gson();
                 PinCodeResponseModel pinCodeResponseModelItems = gson.fromJson(response, PinCodeResponseModel.class);
                 try {

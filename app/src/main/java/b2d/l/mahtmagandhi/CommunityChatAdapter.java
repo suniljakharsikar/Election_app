@@ -3,7 +3,9 @@ package b2d.l.mahtmagandhi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +83,12 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 context.startActivity(intent);
             }
         });
-        holder.dis.setText(x.getDescription());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.dis.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.dis.setText(Html.fromHtml(x.getDescription()));
+        }
         Glide.with(context).load(x.getImage_name()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
 
         holder.dislike.setOnClickListener(new View.OnClickListener() {
@@ -126,8 +133,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                         SharedPreferences.Editor editor = preferences.edit();
+                        editor.apply();;
                         editor.clear();
-                        editor.apply();
                         context.startActivity(new Intent(context, LoginActivity.class));
                     }
                 } catch (JSONException e) {

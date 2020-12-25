@@ -1,5 +1,6 @@
 package b2d.l.mahtmagandhi
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,9 @@ class ProblemSuggestionRecyclerViewAdapter(): RecyclerView.Adapter<ProblemSugges
     }
 
     override fun onBindViewHolder(holder: ProblemSuggestionViewHolder, position: Int) {
-
+            holder.itemView.setOnClickListener {
+                holder.itemView.context.startActivity(Intent(holder.itemView.context,ChatOnProblem::class.java))
+            }
     }
 
     override fun getItemCount(): Int {

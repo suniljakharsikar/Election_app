@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -65,7 +66,12 @@ public class VotingGuide extends AppCompatActivity {
                 try {
                     if (response.getBoolean("success")) {
                         String description = response.getJSONArray("data").getJSONObject(0).getString("description");
-                        textView.setText(description);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            textView.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            textView.setText(Html.fromHtml(description));
+                        }
+                        //textView.setText(description);
 //                        Toast.makeText(VotingGuide.this, "" + response.toString(), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(VotingGuide.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

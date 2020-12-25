@@ -49,6 +49,7 @@
         <activity android:name=".Register" />
         <activity android:name=".OTPVerify" />
         <activity android:name=".LoginActivity" />
+
     </application>
 
 </manifest>

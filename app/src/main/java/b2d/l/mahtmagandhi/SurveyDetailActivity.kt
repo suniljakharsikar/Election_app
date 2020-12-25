@@ -26,4 +26,6 @@ class SurveyDetailActivity : AppCompatActivity() {
     fun back(view: View) {
         finish()
     }
+
+    fun submit(view: View) {}
 }

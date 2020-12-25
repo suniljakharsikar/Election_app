@@ -2,34 +2,54 @@ package b2d.l.mahtmagandhi
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.text.*
+import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.Gson
+import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_setting_profile.*
 import org.json.JSONException
 import org.json.JSONObject
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
 class SettingProfile : AppCompatActivity() {
+
+
+    private var avi: AVLoadingIndicatorView? = null
+
+    fun startAnim() {
+        avi!!.show()
+        avi!!.visibility = View.VISIBLE
+        // or avi.smoothToShow();
+    }
+
+    fun stopAnim() {
+        avi!!.visibility = View.INVISIBLE
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_profile)
+        avi = findViewById<AVLoadingIndicatorView>(R.id.avi2)
+
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -40,9 +60,9 @@ class SettingProfile : AppCompatActivity() {
         editText_postal_code.inputType = InputType.TYPE_NULL
         editText_dob_setting_profile.inputType = InputType.TYPE_NULL
         editText_state.inputType = InputType.TYPE_NULL
-        editText_state.inputType = InputType.TYPE_NULL
         editText_district.inputType = InputType.TYPE_NULL
         button_submit.visibility = View.INVISIBLE
+
 
 
 
@@ -57,6 +77,15 @@ class SettingProfile : AppCompatActivity() {
                 if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
             }
         })
+
+        var preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        editTextPersonName2.setText(preferences.getString(Datas.user_name, ""))
+        editTextPhone2.setText(preferences.getString(Datas.user_mobile, ""))
+        editText_dob_setting_profile.setText(preferences.getString(Datas.user_age, ""))
+        editText_postal_code.setText(preferences.getString(Datas.user_postal_code, ""))
+        editText_state.setText(preferences.getString(Datas.user_state, ""))
+        editText_district.setText(preferences.getString(Datas.user_district, ""))
+        var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup)
         tv_edit_profile.setOnClickListener {
 
             button_submit.visibility = View.VISIBLE
@@ -75,7 +104,10 @@ class SettingProfile : AppCompatActivity() {
             editText_state.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             editText_district.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             editText_dob_setting_profile.setOnClickListener {
-              val dp =   MaterialDatePicker.Builder.datePicker().build()
+                val d: DialogFragment = DatePickerFragment(editText_dob_setting_profile)
+
+                d.show(supportFragmentManager, "date")
+              /*val dp =   MaterialDatePicker.Builder.datePicker().build()
                 dp.addOnPositiveButtonClickListener {
                     val date = Date(it)
                     val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
@@ -83,13 +115,17 @@ class SettingProfile : AppCompatActivity() {
                     val dateFormatted: String = formatter.format(date)
                     editText_dob_setting_profile.setText(dateFormatted)
                 }
-                dp.show(supportFragmentManager, "date")
+                dp.show(supportFragmentManager, "date")*/
             }
         }
+
+        stopAnim()
     }
     private fun fetchLoc(s: String) {
+        startAnim()
         val jsonObjectRequest = StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/$s",
                 { response ->
+                    stopAnim()
                     Log.d("Register", "onResponse: $response")
                     val gson = Gson()
                     val pinCodeResponseModelItems = gson.fromJson(response, PinCodeResponseModel::class.java)
@@ -103,7 +139,11 @@ class SettingProfile : AppCompatActivity() {
                             for (i in postOffice) {
                                 cities.add(i.name)
                             }
-                            spinner_city_setting_profile.setAdapter(ArrayAdapter(baseContext, android.R.layout.simple_dropdown_item_1line, cities))
+                            actv_city_locality.setAdapter(ArrayAdapter(baseContext, android.R.layout.simple_dropdown_item_1line, cities))
+                            if (cities.size > 0)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                    actv_city_locality.setText(cities.get(0), false)
+                                }
                         }
                     } catch (e: Exception) {
                     }
@@ -159,7 +199,7 @@ class SettingProfile : AppCompatActivity() {
         val url = Url.baseurl + "/update_profile"
         val jsonRwquest = JSONObject()
         val cityS: String
-        cityS = if (spinner_city_setting_profile.getSelectedItem() == null) "" else spinner_city_setting_profile.getSelectedItem().toString()
+        cityS = if (actv_city_locality.text == null) "" else actv_city_locality.text.toString()
         try {
             jsonRwquest.put("userMobile", editTextPhone2.getText().toString())
             jsonRwquest.put("userName", s)

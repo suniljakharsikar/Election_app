@@ -2,6 +2,8 @@ package b2d.l.mahtmagandhi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,12 @@ public class OurWorkAdapter extends RecyclerView.Adapter<OurWorkAdapter.ViewHold
 
         final OurWorkResponseModel.Data ourWorkData = data.get(position);
         holder.title.setText(ourWorkData.getTitle());
-        holder.content.setText(ourWorkData.getDescription());
+       // holder.content.setText(ourWorkData.getDescription());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.content.setText(Html.fromHtml(ourWorkData.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.content.setText(Html.fromHtml(ourWorkData.getDescription()));
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

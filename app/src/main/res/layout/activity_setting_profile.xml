@@ -55,6 +55,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avi2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:indicatorColor="#000000"
+                app:indicatorName="BallClipRotatePulse"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="150dp"
@@ -198,14 +209,29 @@
                 app:layout_constraintStart_toStartOf="@+id/editText_district"
                 app:layout_constraintTop_toBottomOf="@+id/editText_district" />
 
-            <Spinner
-                android:id="@+id/spinner_city_setting_profile"
-                android:layout_width="0dp"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_city_setting_profile"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:boxBackgroundMode="filled"
+                app:boxBackgroundColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="@+id/editText_dob_setting_profile"
                 app:layout_constraintStart_toStartOf="@+id/textView48"
-                app:layout_constraintTop_toBottomOf="@+id/textView48" />
+                app:layout_constraintTop_toBottomOf="@+id/textView48">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_city_locality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textView49"
@@ -213,8 +239,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Select Gender"
-                app:layout_constraintStart_toStartOf="@+id/spinner_city_setting_profile"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_city_setting_profile" />
+                app:layout_constraintStart_toStartOf="@+id/til_city_setting_profile"
+                app:layout_constraintTop_toBottomOf="@+id/til_city_setting_profile" />
 
             <RadioGroup
                 android:id="@+id/radioGroup"
@@ -223,7 +249,7 @@
                 android:layout_marginTop="8dp"
                 android:checkedButton="@id/rb_male_setting_profile"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="@+id/spinner_city_setting_profile"
+                app:layout_constraintEnd_toEndOf="@+id/til_city_setting_profile"
                 app:layout_constraintStart_toStartOf="@+id/textView49"
                 app:layout_constraintTop_toBottomOf="@+id/textView49">
 
@@ -236,10 +262,19 @@
 
                 <RadioButton
                     android:id="@+id/rb_female_setting_profile"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/black"
                     android:text="Female" />
+
+                <RadioButton
+                    android:id="@+id/rb_other_setting_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/black"
+
+                    android:text="Other" />
             </RadioGroup>
 
             <ImageView

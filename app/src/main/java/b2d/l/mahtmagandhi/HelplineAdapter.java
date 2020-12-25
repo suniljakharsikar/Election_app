@@ -1,6 +1,8 @@
 package b2d.l.mahtmagandhi;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +40,12 @@ public class HelplineAdapter extends RecyclerView.Adapter<HelplineAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.textView.setText(data.get(position).getTitle());
-        holder.textView1.setText(data.get(position).getDescription());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.textView1.setText(Html.fromHtml(data.get(position).getDescription(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.textView1.setText(Html.fromHtml(data.get(position).getDescription()));
+        }
+
     }
 
     @Override

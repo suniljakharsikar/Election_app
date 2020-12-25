@@ -1,6 +1,8 @@
 package b2d.l.mahtmagandhi;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +38,12 @@ public class ManifestoAdapter extends RecyclerView.Adapter<ManifestoAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
          ManifestoResponseModel.Data model = data.get(position);
          holder.titleMfs.setText(model.getTitle());
-         holder.detailMfs.setText(model.getDescription());
+        // holder.detailMfs.setText(model.getDescription());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.detailMfs.setText(Html.fromHtml(model.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.detailMfs.setText(Html.fromHtml(model.getDescription()));
+        }
     }
 
     @Override

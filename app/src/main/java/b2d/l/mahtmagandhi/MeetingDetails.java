@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -32,7 +33,12 @@ public class MeetingDetails extends AppCompatActivity {
             title.setText(meet.getTitle());
             date.setText(meet.getMeeting_date());
             time.setText(meet.getMeeting_time());
-            dis.setText(meet.getDescription());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                dis.setText(Html.fromHtml(meet.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                dis.setText(Html.fromHtml(meet.getDescription()));
+            }
+
 
         }
     }

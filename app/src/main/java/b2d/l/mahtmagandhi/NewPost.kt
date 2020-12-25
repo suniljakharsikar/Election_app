@@ -11,10 +11,10 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.FileProvider
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.*
 import java.io.File
@@ -22,30 +22,34 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateProblemAndSuggestionActivity : AppCompatActivity() {
+class NewPost : AppCompatActivity() {
+    var editText: EditText? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_problem_and_suggestion)
+        setContentView(R.layout.activity_new_post)
+        editText = findViewById(R.id.et_prob_sugg)
+
         tv_image_btn_prob_sug.setOnClickListener {
             val dialog = ImagePickerBottomSheetDialogFragment()
             dialog.show(supportFragmentManager, "pic")
         }
-
     }
 
-    fun back(view: View) {
+    fun back(view: View?) {
+        Toast.makeText(this, "post not implemented", Toast.LENGTH_SHORT).show()
         finish()
     }
 
-    fun isNullOrEmpty(str: String?): Boolean {
-        return if (str != null && !str.isEmpty()) false else true
+    fun newposting(view: View?) {
+        val s = editText!!.text.toString()
+        if (isNullOrEmpty(s)) {
+            Toast.makeText(this, "Please write something before post", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    fun submit(view: View) {
-
-        if (et_prob_sugg.text.isEmpty()) Toast.makeText(this, "Please write your problem and suggestion.", Toast.LENGTH_SHORT).show()
-        else {
-            Toast.makeText(this, "API not ready", Toast.LENGTH_SHORT).show()
+    companion object {
+        fun isNullOrEmpty(str: String?): Boolean {
+            return str == null || str.isEmpty()
         }
     }
 

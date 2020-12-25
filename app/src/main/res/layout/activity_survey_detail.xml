@@ -7,6 +7,25 @@
     android:background="@color/white_text_color"
     tools:context=".SurveyDetailActivity">
 
+    <Button
+        android:id="@+id/button_submit2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_bg"
+        android:enabled="true"
+        android:onClick="submit"
+        android:paddingLeft="72dp"
+        android:paddingTop="8dp"
+        android:paddingRight="72dp"
+        android:paddingBottom="8dp"
+        android:text="Submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar11"
         android:layout_width="0dp"

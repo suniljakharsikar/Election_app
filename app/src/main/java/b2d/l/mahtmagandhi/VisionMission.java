@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -62,7 +63,12 @@ public class VisionMission extends AppCompatActivity {
                         JSONArray data = response.getJSONArray("data");
                         JSONObject jsonObject = data.getJSONObject(0);
                         String description = jsonObject.getString("description");
-                        textView.setText(description);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            textView.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            textView.setText(Html.fromHtml(description));
+                        }
+                       // textView.setText(description);
 
                         JSONArray data1 = response.getJSONArray("data_images");
                         JSONObject jsonObject1 = data1.getJSONObject(0);
