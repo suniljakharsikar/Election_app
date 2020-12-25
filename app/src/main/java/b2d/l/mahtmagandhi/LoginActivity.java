@@ -182,6 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, OTPVerify.class);
                 intent.putExtra("mobile", mobile);
+                intent.putExtra("forceResendingToken", forceResendingToken);
                 startActivityForResult(intent, getcode);
 //                startActivity(intent);
             }

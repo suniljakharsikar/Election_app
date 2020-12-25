@@ -80,8 +80,6 @@ public class NewsUpdate extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     if (response.getBoolean("success")) {
-                        Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-
                         JSONArray data = response.getJSONArray("data");
                         chatData = new ArrayList<>();
                         for (int i = 0; i < data.length(); i++) {
@@ -90,7 +88,7 @@ public class NewsUpdate extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(getBaseContext(), chatData, "/nevent_like_unlike_post", "/nevent_comments","/nevent_comments_post");
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(getBaseContext(), chatData, "/nevent_like_unlike_post", "/nevent_comments", "/nevent_comments_post");
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();

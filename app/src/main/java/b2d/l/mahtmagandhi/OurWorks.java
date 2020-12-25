@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -50,14 +51,12 @@ public class OurWorks extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("ashok_ourwork", response.toString());
                 try {
                     Gson gson = new Gson();
-
-
                     OurWorkResponseModel ow = gson.fromJson(response.toString(), OurWorkResponseModel.class);
                     if (ow.getSuccess()) {
-
-                        RecyclerView.Adapter adapter = new OurWorkAdapter( ow.getData());
+                        RecyclerView.Adapter adapter = new OurWorkAdapter(ow.getData());
                         recyclerView.setAdapter(adapter);
                     } else {
                         Toast.makeText(OurWorks.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

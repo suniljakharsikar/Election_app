@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -57,14 +58,13 @@ public class Manifesto extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("ashok_mani", response.toString());
                 try {
                     Gson gson = new Gson();
-
-
                     ManifestoResponseModel m = gson.fromJson(response.toString(), ManifestoResponseModel.class);
                     if (m.getSuccess()) {
 
-                        RecyclerView.Adapter adapter = new ManifestoAdapter( m.getData());
+                        RecyclerView.Adapter adapter = new ManifestoAdapter(m.getData());
                         recyclerView.setAdapter(adapter);
                     } else {
                         Toast.makeText(Manifesto.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -105,6 +106,7 @@ public class CommunityChat extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("ashok_chat", response.toString());
 
                 try {
                     if (response.getBoolean("success")) {
@@ -116,7 +118,7 @@ public class CommunityChat extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData,"/ctalk_like_unlike_post","/ctalk_comments","/ctalk_comments_post");
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData, "/ctalk_like_unlike_post", "/ctalk_comments", "/ctalk_comments_post");
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(CommunityChat.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

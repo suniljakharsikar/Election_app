@@ -151,6 +151,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="?android:attr/selectableItemBackground"
+                android:onClick="resend"
                 android:text="Didn't Receive ? Resend OTP"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"

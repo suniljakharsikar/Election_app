@@ -189,6 +189,19 @@ public class OTPVerify extends AppCompatActivity {
         sendbtn.setEnabled(false);
     }
 
+   /* public void resend(View view) {
+        private void resendVerificationCode(String phoneNumber,
+                PhoneAuthProvider.ForceResendingToken token) {
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                    phoneNumber,        // Phone number to verify
+                    60,                 // Timeout duration
+                    TimeUnit.SECONDS,   // Unit of timeout
+                    this,               // Activity (for callback binding)
+                    mCallbacks,         // OnVerificationStateChangedCallbacks
+                    getIntent().ge);             // ForceResendingToken from callbacks
+        }
+    }*/
+
 
     public class PinTextWatcher implements TextWatcher {
 

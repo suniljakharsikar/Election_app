@@ -12,10 +12,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ public class Register extends AppCompatActivity {
     private SharedPreferences preferences;
     private AVLoadingIndicatorView avi;
     private Calendar myCalendar;
+    RadioGroup radioGroup;
 
     void startAnim() {
         avi.show();
@@ -99,6 +101,7 @@ public class Register extends AppCompatActivity {
         pincode.setText(preferences.getString(Datas.user_postal_code, ""));
         state.setText(preferences.getString(Datas.user_state, ""));
         distirct.setText(preferences.getString(Datas.user_district, ""));
+        radioGroup = findViewById(R.id.radioGroup);
 //        city.setText(preferences.getString(Datas.user_village, ""));
         stopAnim();
 
@@ -106,7 +109,6 @@ public class Register extends AppCompatActivity {
         age.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
                 dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
                     @Override
@@ -118,16 +120,10 @@ public class Register extends AppCompatActivity {
                         age.setText(dateFormatted);
                     }
                 });
-
                 dp.show(getSupportFragmentManager(), "date");
-
-
             }
         });
-
-
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
@@ -137,7 +133,6 @@ public class Register extends AppCompatActivity {
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
             }
-
         };
 
         pincode.addTextChangedListener(new TextWatcher() {
@@ -172,7 +167,6 @@ public class Register extends AppCompatActivity {
     private void updateLabel() {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
         age.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -266,6 +260,9 @@ public class Register extends AppCompatActivity {
         String cityS;
         if (city.getSelectedItem() == null) cityS = "";
         else cityS = city.getSelectedItem().toString();
+        int id = radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton = findViewById(id);
+        String gender = radioButton.getText().toString();
         try {
             jsonRwquest.put("userMobile", number.getText().toString());
             jsonRwquest.put("userName", s);
@@ -274,6 +271,7 @@ public class Register extends AppCompatActivity {
             jsonRwquest.put("userState", s3);
             jsonRwquest.put("userDistrict", s4);
             jsonRwquest.put("userVillage", cityS);
+            jsonRwquest.put("gender", gender);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -292,7 +290,6 @@ public class Register extends AppCompatActivity {
                         editor.apply();
                         startActivity(new Intent(Register.this, Language.class));
                         finish();
-
                     }
 
                 } catch (JSONException e) {
@@ -314,8 +311,10 @@ public class Register extends AppCompatActivity {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json");
                 headers.put("Token", preferences.getString(Datas.token, ""));
+                Log.d("token=", preferences.getString(Datas.token, ""));
                 return headers;
             }
+        }
 
            /* @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -327,8 +326,7 @@ public class Register extends AppCompatActivity {
                 x.put("userState", state.getText().toString());
                 x.put("userDistrict", distirct.getText().toString());
                 return x;
-            }*/
-        }
+            }*//*
                 /*{
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

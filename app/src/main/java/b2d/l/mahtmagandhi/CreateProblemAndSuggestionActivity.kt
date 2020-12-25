@@ -44,13 +44,10 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     fun submit(view: View) {
 
         if (et_prob_sugg.text.isEmpty()) Toast.makeText(this, "Please write your problem and suggestion.", Toast.LENGTH_SHORT).show()
-        else
-        {
-
+        else {
+            Toast.makeText(this, "API not ready", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 
 
     private fun dispatchTakePictureIntent(requestCode: Int) {
@@ -96,7 +93,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                 arrayOf(file.getName()), null)
     }
 
-    private  var currentPath: String = ""
+    private var currentPath: String = ""
     private val REQUEST_TAKE_GPHOTO: Int = 51
     private val REQUEST_TAKE_PHOTO: Int = 50
     lateinit var currentPhotoPath: String
@@ -118,7 +115,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode.equals(Activity.RESULT_OK) && requestCode >5){
+        if (resultCode.equals(Activity.RESULT_OK) && requestCode > 5) {
             val uri = data!!.data
 
             /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
@@ -135,19 +132,19 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
             // do something for phones running an SDK before lollipop
             currentPhotoPath = PathUtil.getPath(this, uri)
 
-            var result: Bitmap? =  BitmapFactory.decodeFile(currentPhotoPath)
-            if (result==null){
+            var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
+            if (result == null) {
                 val file = File(uri!!.path) //create path from uri
                 if (file.path.contains(":")) {
                     val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
 
                     currentPhotoPath = split[1]
-                }else currentPhotoPath = file.absolutePath
-                result =    BitmapFactory.decodeFile(currentPhotoPath)
-                if (result==null){
+                } else currentPhotoPath = file.absolutePath
+                result = BitmapFactory.decodeFile(currentPhotoPath)
+                if (result == null) {
                     val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
-                    val cursor: Cursor? =getContentResolver()?.query(
+                    val cursor: Cursor? = getContentResolver()?.query(
                             uri,
                             filePathColumn, null, null, null
                     )
@@ -158,7 +155,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                     cursor?.close()
                 }
 
-                result =    BitmapFactory.decodeFile(currentPhotoPath)
+                result = BitmapFactory.decodeFile(currentPhotoPath)
 
 
             }
@@ -202,7 +199,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
             imageView.setImageBitmap(bitmap)
             when (requestCode) {
 
-                 REQUEST_TAKE_GPHOTO -> {
+                REQUEST_TAKE_GPHOTO -> {
 
 
                     currentPath = currentPhotoPath
@@ -217,13 +214,13 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     }
 
     fun getPic(tag: String?, s: String) {
-        if (s.equals("c")){
-            when(tag){
+        if (s.equals("c")) {
+            when (tag) {
                 "pic" -> dispatchTakePictureIntent(REQUEST_TAKE_PHOTO)
 
             }
-        }else{
-            when(tag){
+        } else {
+            when (tag) {
                 "pic" -> dispatchTakeGalleryPictureIntent(REQUEST_TAKE_GPHOTO)
 
             }
