@@ -379,7 +379,7 @@ public class Register extends AppCompatActivity {
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line, cities);
                             city.setAdapter(adapter);
 
-                            if (city.length()>0){
+                            if (cities.size()>0){
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                     city.setText(cities.get(0),false);
                                 }

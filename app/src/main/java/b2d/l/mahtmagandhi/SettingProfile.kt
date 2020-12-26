@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -24,6 +23,7 @@ import com.android.volley.toolbox.StringRequest
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
+import kotlinx.android.synthetic.main.activity_request_appointment.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -80,14 +80,8 @@ class SettingProfile : AppCompatActivity() {
                 if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
             }
         })
+        fetchData()
 
-        var preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        editTextPersonName2.setText(preferences.getString(Datas.user_name, ""))
-        editTextPhone2.setText(preferences.getString(Datas.user_mobile, ""))
-        editText_dob_setting_profile.setText(preferences.getString(Datas.user_age, ""))
-        editText_postal_code.setText(preferences.getString(Datas.user_postal_code, ""))
-        editText_state.setText(preferences.getString(Datas.user_state, ""))
-        editText_district.setText(preferences.getString(Datas.user_district, ""))
         var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup)
         tv_edit_profile.setOnClickListener {
 
@@ -125,6 +119,69 @@ class SettingProfile : AppCompatActivity() {
 
         stopAnim()
     }
+
+    private fun fetchData() {
+        // [START_EXCLUDE]
+//                            updateUI(STATE_SIGNIN_SUCCESS, user);
+//                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
+        val url = Url.baseurl + "/users"
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+
+        val jsonrequest = JSONObject()
+        try {
+            jsonrequest.put("userMobile",preferences.getString(Datas.user_mobile, "") )
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonrequest, { response ->
+            try {
+                Log.d("Info", "fetchData: "+response)
+                val success = response.getBoolean("success")
+                if (success) {
+                    val token = response.getString("token")
+                    val data1 = response.getJSONArray("data")
+                    val editor = preferences.edit()
+                    editor.putBoolean(Datas.loginstatus, true)
+                    val jsonObject = data1.getJSONObject(0)
+                    editor.putInt(Datas.id, jsonObject.getInt(Datas.id))
+                    if (jsonObject.getString(Datas.user_name) != "null") {
+                        editor.putString(Datas.user_name, jsonObject.getString(Datas.user_name))
+                    }
+                    editor.putString(Datas.user_mobile, jsonObject.getString(Datas.user_mobile))
+                    if (jsonObject.getString(Datas.user_age) != "null") editor.putString(Datas.user_age, jsonObject.getString(Datas.user_age))
+                    if (jsonObject.getString(Datas.user_postal_code) != "null") editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code))
+                    if (jsonObject.getString(Datas.user_state) != "null") editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state))
+                    if (jsonObject.getString(Datas.user_district) != "null") editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district))
+                    if (jsonObject.getString(Datas.user_village) != "null") editor.putString(Datas.user_village, jsonObject.getString(Datas.user_village))
+                    if (jsonObject.getString(Datas.lagnuage_id) != "null") editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id))
+                    editor.putString(Datas.token, token)
+                    editor.apply()
+                    editTextPersonName2.setText(preferences.getString(Datas.user_name, ""))
+                    editTextPhone2.setText(preferences.getString(Datas.user_mobile, ""))
+                    editText_dob_setting_profile.setText(preferences.getString(Datas.user_age, ""))
+                    editText_postal_code.setText(preferences.getString(Datas.user_postal_code, ""))
+                    editText_state.setText(preferences.getString(Datas.user_state, ""))
+                    editText_district.setText(preferences.getString(Datas.user_district, ""))
+                    // Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                    //finish()
+                } else {
+                    Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                    //login page
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                    val editor = preferences.edit()
+                    editor.clear()
+                    editor.apply()
+                    startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                //                                        sendbtn.setEnabled(true);
+            }
+            stopAnim()
+        }) { error -> Log.d("ashok", error.toString()) }
+        MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
+    }
+
     private fun fetchLoc(s: String) {
         startAnim()
         val jsonObjectRequest = StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/$s",

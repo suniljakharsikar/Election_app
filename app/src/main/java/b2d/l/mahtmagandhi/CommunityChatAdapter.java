@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +133,23 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    Uri uri = null;
+                    if ( Patterns.WEB_URL.matcher(x.getImage_name()).matches())
+                     uri = Utility.INSTANCE.saveBitmap(
+                            view.getContext(),
+                            holder.imageView,
+                            Bitmap.CompressFormat.JPEG,
+                            "image/jpeg",
+                            "",
+                            "statement"
+                    );
+
+                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(),uri,view.getContext());
+
+                } catch (IOException e) {
+
+                }
 //                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
               /*  val sendIntent = Intent()
                 sendIntent.action = Intent.ACTION_SEND
