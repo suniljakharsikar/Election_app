@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,17 +17,30 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
 
 public class OTPVerify extends AppCompatActivity {
 
@@ -35,6 +49,9 @@ public class OTPVerify extends AppCompatActivity {
     Button sendbtn;
     boolean isOtpSent = false;
     private AVLoadingIndicatorView avi;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private String TAG = "Ashok";
+    private FirebaseAuth mAuth;
 
     void startAnim() {
         avi.show();
@@ -81,6 +98,142 @@ public class OTPVerify extends AppCompatActivity {
         editText5.setOnKeyListener(new PinOnKeyListener(4));
         editText6.setOnKeyListener(new PinOnKeyListener(5));
         stopAnim();
+        mAuth = FirebaseAuth.getInstance();
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                Toast.makeText(OTPVerify.this, "verified", Toast.LENGTH_SHORT).show();
+                signInWithPhoneAuthCredential(credential);
+
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                stopAnim();
+                Toast.makeText(OTPVerify.this, "failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                editText.setFocusable(true);
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(s, forceResendingToken);
+                stopAnim();
+//                mVerificationId = s;
+                Toast.makeText(OTPVerify.this, "code sent", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(OTPVerify.this, OTPVerify.class);
+//                intent.putExtra("mobile", mobile);
+//                intent.putExtra("forceResendingToken", forceResendingToken);
+//                intent.putExtra("mCallbacks", mCallbacks);
+//                startActivityForResult(intent, getcode);
+//                startActivity(intent);
+            }
+        };
+    }
+
+    // [START sign_in_with_phone]
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+
+                            FirebaseUser user = task.getResult().getUser();
+                            // [START_EXCLUDE]
+//                            updateUI(STATE_SIGNIN_SUCCESS, user);
+//                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
+
+                            String url = Url.baseurl + "/users";
+                            JSONObject jsonrequest = new JSONObject();
+                            try {
+                                jsonrequest.put("userMobile", getIntent().getStringExtra("mobile"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonrequest, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        boolean success = response.getBoolean("success");
+                                        if (success) {
+                                            String token = response.getString("token");
+                                            JSONArray data1 = response.getJSONArray("data");
+                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OTPVerify.this);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putBoolean(Datas.loginstatus, true);
+                                            JSONObject jsonObject = data1.getJSONObject(0);
+                                            editor.putInt(Datas.id, jsonObject.getInt(Datas.id));
+                                            if (!jsonObject.getString(Datas.user_name).equals("null")) {
+                                                editor.putString(Datas.user_name, jsonObject.getString(Datas.user_name));
+                                            }
+                                            editor.putString(Datas.user_mobile, jsonObject.getString(Datas.user_mobile));
+                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
+                                                editor.putString(Datas.user_age, jsonObject.getString(Datas.user_age));
+                                            if (!jsonObject.getString(Datas.user_postal_code).equals("null"))
+                                                editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code));
+                                            if (!jsonObject.getString(Datas.user_state).equals("null"))
+                                                editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state));
+                                            if (!jsonObject.getString(Datas.user_district).equals("null"))
+                                                editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district));
+                                            if (!jsonObject.getString(Datas.user_village).equals("null"))
+                                                editor.putString(Datas.user_village, jsonObject.getString(Datas.user_village));
+                                            if (!jsonObject.getString(Datas.lagnuage_id).equals("null"))
+                                                editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id));
+                                            editor.putString(Datas.token, token);
+                                            editor.apply();
+                                            stopAnim();
+                                            Toast.makeText(OTPVerify.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(OTPVerify.this, Register.class));
+                                            finish();
+
+                                        } else {
+                                            Toast.makeText(OTPVerify.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                            //login page
+                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OTPVerify.this);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.clear();
+                                            editor.apply();
+                                            startActivity(new Intent(OTPVerify.this, LoginActivity.class));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+//                                        sendbtn.setEnabled(true);
+
+                                    }
+
+                                    stopAnim();
+
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    Log.d("ashok", error.toString());
+                                }
+                            });
+                            MySingleton.getInstance(OTPVerify.this).addToRequestQueue(jsonObjectRequest);
+                            // [END_EXCLUDE]
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                                // [START_EXCLUDE silent]
+//                                mBinding.fieldVerificationCode.setError("Invalid code.");
+                                Toast.makeText(OTPVerify.this, "Invalid code", Toast.LENGTH_SHORT).show();
+                                // [END_EXCLUDE]
+                            }
+                            // [START_EXCLUDE silent]
+                            // Update UI
+//                            updateUI(STATE_SIGNIN_FAILED);
+                            // [END_EXCLUDE]
+                        }
+                    }
+                });
     }
 
     public void sumit(View view) {
@@ -189,19 +342,31 @@ public class OTPVerify extends AppCompatActivity {
         sendbtn.setEnabled(false);
     }
 
-   /* public void resend(View view) {
-        private void resendVerificationCode(String phoneNumber,
-                PhoneAuthProvider.ForceResendingToken token) {
-            PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                    phoneNumber,        // Phone number to verify
-                    60,                 // Timeout duration
-                    TimeUnit.SECONDS,   // Unit of timeout
-                    this,               // Activity (for callback binding)
-                    mCallbacks,         // OnVerificationStateChangedCallbacks
-                    getIntent().ge);             // ForceResendingToken from callbacks
-        }
-    }*/
+    public void resend(View view) {
+        startAnim();
+        resendVerificationCode(getIntent().getStringExtra("mobile"), LoginActivity.token);
+    }
 
+    /*private void resendVerificationCode(String phoneNumber) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                mCallbacks,         // OnVerificationStateChangedCallbacks
+                (PhoneAuthProvider.ForceResendingToken) getIntent().getParcelableExtra("forceResendingToken"));             // ForceResendingToken from callbacks
+    }*/
+    private void resendVerificationCode(String phoneNumber, PhoneAuthProvider.ForceResendingToken token) {
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(phoneNumber)       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .setForceResendingToken(token)     // ForceResendingToken from callbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
 
     public class PinTextWatcher implements TextWatcher {
 

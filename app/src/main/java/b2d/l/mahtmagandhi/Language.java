@@ -207,6 +207,7 @@ public class Language extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        startAnim();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -233,11 +234,13 @@ public class Language extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                stopAnim();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                stopAnim();
                 Toast.makeText(Language.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {

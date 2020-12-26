@@ -138,6 +138,8 @@ public class CommunityChat extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                stopAnim();
+                Toast.makeText(CommunityChat.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

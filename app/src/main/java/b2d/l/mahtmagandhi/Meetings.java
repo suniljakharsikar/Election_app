@@ -101,15 +101,15 @@ public class Meetings extends AppCompatActivity {
                                 List<Meeting> ts = map.get(item.getMeeting_date());
                                 ts.add(item);
                                 map.put(item.getMeeting_date(), ts);
-                            }else{
+                            } else {
                                 ms.add(item);
-                                map.put(item.getMeeting_date(),ms);
+                                map.put(item.getMeeting_date(), ms);
                             }
                         }
-                        Log.d("Meetings", "onResponse: "+map.toString());
+                        Log.d("Meetings", "onResponse: " + map.toString());
                         Set<String> keys = map.keySet();
                         ConcatAdapter concatAdapter = new ConcatAdapter();
-                        for (String key:keys) {
+                        for (String key : keys) {
                             concatAdapter.addAdapter(new MeetingHeaderAdapter(key));
                             List<Meeting> v = map.get(key);
                             concatAdapter.addAdapter(new MeetingAdapter(v, Meetings.this, recyclerView));
@@ -135,7 +135,7 @@ public class Meetings extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(Meetings.this, "" + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Meetings.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -144,7 +144,6 @@ public class Meetings extends AppCompatActivity {
                 header.put("Content-Type", "application/json");
                 header.put("token", preferences.getString(Datas.token, ""));
                 header.put("lid", preferences.getString(Datas.lagnuage_id, "1"));
-
                 return header;
             }
         };

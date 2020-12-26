@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,11 +38,27 @@ public class VisionMission extends AppCompatActivity {
 
     TextView textView;
     ImageView imageView;
+    private AVLoadingIndicatorView avi;
+
+    void startAnim() {
+        avi.show();
+        avi.setVisibility(View.VISIBLE);
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim() {
+        avi.setVisibility(View.INVISIBLE);
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vision_mission);
+        avi = findViewById(R.id.avi);
+
+
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -53,6 +70,7 @@ public class VisionMission extends AppCompatActivity {
         imageView = findViewById(R.id.imageView40);
         String url = Url.baseurl + "/vision";
         JSONObject json = new JSONObject();
+        startAnim();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -68,7 +86,7 @@ public class VisionMission extends AppCompatActivity {
                         } else {
                             textView.setText(Html.fromHtml(description));
                         }
-                       // textView.setText(description);
+                        // textView.setText(description);
 
                         JSONArray data1 = response.getJSONArray("data_images");
                         JSONObject jsonObject1 = data1.getJSONObject(0);
@@ -89,11 +107,13 @@ public class VisionMission extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                stopAnim();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                stopAnim();
                 Toast.makeText(VisionMission.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {

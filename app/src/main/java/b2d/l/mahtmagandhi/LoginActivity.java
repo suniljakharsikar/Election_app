@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String TAG = "ashok";
     CountryCodePicker countryCodePicker;
+    static PhoneAuthProvider.ForceResendingToken token;
 
     void startAnim() {
         avi.show();
@@ -181,8 +182,10 @@ public class LoginActivity extends AppCompatActivity {
                 mVerificationId = s;
                 Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, OTPVerify.class);
-                intent.putExtra("mobile", mobile);
+                intent.putExtra("mobile", countryCodePicker.getSelectedCountryCodeWithPlus() + mobile);
+                token = forceResendingToken;
                 intent.putExtra("forceResendingToken", forceResendingToken);
+//                intent.putExtra("mCallbacks", mCallbacks);
                 startActivityForResult(intent, getcode);
 //                startActivity(intent);
             }
@@ -225,7 +228,7 @@ public class LoginActivity extends AppCompatActivity {
                             String url = Url.baseurl + "/users";
                             JSONObject jsonrequest = new JSONObject();
                             try {
-                                jsonrequest.put("userMobile", mobile);
+                                jsonrequest.put("userMobile", countryCodePicker.getSelectedCountryCodeWithPlus() + mobile);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
