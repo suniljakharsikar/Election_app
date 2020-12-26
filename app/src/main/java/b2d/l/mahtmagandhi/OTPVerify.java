@@ -110,7 +110,7 @@ public class OTPVerify extends AppCompatActivity {
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 stopAnim();
-                Toast.makeText(OTPVerify.this, "failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OTPVerify.this, "failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
 //                editText.setFocusable(true);
             }
 
@@ -464,6 +464,8 @@ public class OTPVerify extends AppCompatActivity {
     }
 
     public void back(View view) {
+        Intent intent = getIntent();
+        setResult(1112, intent);
         finish();
     }
 }
