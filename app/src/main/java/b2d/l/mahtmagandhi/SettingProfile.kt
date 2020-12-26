@@ -21,11 +21,14 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_setting_profile.*
 import org.json.JSONException
 import org.json.JSONObject
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -104,10 +107,11 @@ class SettingProfile : AppCompatActivity() {
             editText_state.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             editText_district.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             editText_dob_setting_profile.setOnClickListener {
-                val d: DialogFragment = DatePickerFragment(editText_dob_setting_profile)
+               /* val d: DialogFragment = DatePickerFragment(editText_dob_setting_profile)
+                d.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme)
 
-                d.show(supportFragmentManager, "date")
-              /*val dp =   MaterialDatePicker.Builder.datePicker().build()
+                d.show(supportFragmentManager, "date")*/
+              val dp =   MaterialDatePicker.Builder.datePicker().build()
                 dp.addOnPositiveButtonClickListener {
                     val date = Date(it)
                     val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
@@ -115,7 +119,7 @@ class SettingProfile : AppCompatActivity() {
                     val dateFormatted: String = formatter.format(date)
                     editText_dob_setting_profile.setText(dateFormatted)
                 }
-                dp.show(supportFragmentManager, "date")*/
+                dp.show(supportFragmentManager, "date")
             }
         }
 

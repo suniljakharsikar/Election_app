@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -48,7 +49,7 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
 
     EditText name, number, age, pincode, state, distirct;
-    Spinner city;
+    AutoCompleteTextView city;
     private SharedPreferences preferences;
     private AVLoadingIndicatorView avi;
     private Calendar myCalendar;
@@ -95,7 +96,7 @@ public class Register extends AppCompatActivity {
         pincode = findViewById(R.id.editText_postal_code);
         state = findViewById(R.id.editText_state);
         distirct = findViewById(R.id.editText_district);
-        city = findViewById(R.id.spinner_city_regi);
+        city = findViewById(R.id.actv_city_locality);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         name.setText(preferences.getString(Datas.user_name, ""));
         number.setText(preferences.getString(Datas.user_mobile, ""));
@@ -112,9 +113,11 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-               DialogFragment d =new   DatePickerFragment(age);
-               d.show(getSupportFragmentManager(),"date");
-                /*MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
+              /*  DatePickerFragment d =new   DatePickerFragment(age);
+                d.setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);
+
+               d.show(getSupportFragmentManager(),"date");*/
+                MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
                 dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
                     @Override
                     public void onPositiveButtonClick(Long it) {
@@ -125,7 +128,7 @@ public class Register extends AppCompatActivity {
                         age.setText(dateFormatted);
                     }
                 });
-                dp.show(getSupportFragmentManager(), "date");*/
+                dp.show(getSupportFragmentManager(), "date");
             }
         });
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -264,8 +267,8 @@ public class Register extends AppCompatActivity {
         String url = Url.baseurl + "/update_profile";
         JSONObject jsonRwquest = new JSONObject();
         String cityS;
-        if (city.getSelectedItem() == null) cityS = "";
-        else cityS = city.getSelectedItem().toString();
+        if (city.getText() == null) cityS = "";
+        else cityS = city.getText().toString();
         int id = radioGroup.getCheckedRadioButtonId();
         RadioButton radioButton = findViewById(id);
         String gender = radioButton.getText().toString();
@@ -375,6 +378,12 @@ public class Register extends AppCompatActivity {
                             }
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line, cities);
                             city.setAdapter(adapter);
+
+                            if (city.length()>0){
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                    city.setText(cities.get(0),false);
+                                }
+                            }
                         }
                     }
                 } catch (Exception e) {

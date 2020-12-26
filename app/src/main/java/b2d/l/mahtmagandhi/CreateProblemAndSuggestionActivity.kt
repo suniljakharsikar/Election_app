@@ -1,7 +1,10 @@
 package b2d.l.mahtmagandhi
 
+import android.Manifest
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,23 +12,57 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.preference.PreferenceManager
 import android.provider.MediaStore
+import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.android.volley.NetworkResponse
+
+import com.android.volley.VolleyError
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import okhttp3.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class CreateProblemAndSuggestionActivity : AppCompatActivity() {
+
+    val images = arrayListOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_problem_and_suggestion)
+
+        val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        if (
+                write == PackageManager.PERMISSION_GRANTED &&
+                read == PackageManager.PERMISSION_GRANTED
+        ){
+
+        }
+        else {
+
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            ), PERMISSION_REQUEST_CODE)
+
+        }
         tv_image_btn_prob_sug.setOnClickListener {
             val dialog = ImagePickerBottomSheetDialogFragment()
             dialog.show(supportFragmentManager, "pic")
@@ -44,8 +81,105 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     fun submit(view: View) {
 
         if (et_prob_sugg.text.isEmpty()) Toast.makeText(this, "Please write your problem and suggestion.", Toast.LENGTH_SHORT).show()
+        else if (et_prob_sugg_title.text.isEmpty()) Toast.makeText(this, "Please write your title.", Toast.LENGTH_SHORT).show()
+
         else {
-            Toast.makeText(this, "API not ready", Toast.LENGTH_SHORT).show()
+            val url = Url.baseurl + "/psuggestion_post"
+
+            val client: OkHttpClient = OkHttpClient().newBuilder()
+                    .build()
+            val mediaType: MediaType = MediaType.parse("text/plain")!!
+            val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("title",et_prob_sugg_title.text.toString() )
+                    .addFormDataPart("descritpion",  et_prob_sugg.text.toString());
+
+            var counter = 0
+            for (i in images){
+                        bodyP.addFormDataPart("postImage["+i+"]", "p.jpg",RequestBody.create(MediaType.parse("application/octet-stream"), File(i)))
+                        counter = counter +1 ;
+            }
+
+                  val body =   bodyP.build()
+            val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+            val request: Request = Request.Builder()
+                    .url("https://election.suniljakhar.in/api/psuggestion_post")
+                    .method("POST", body)
+                    .addHeader("token", preferences.getString(Datas.token, "")!!)
+                    .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                    .addHeader("Content-Type", "application/json")
+
+                    .build()
+          GlobalScope.async {
+              val response: Response= client.newCall(request).execute()
+
+
+
+          }
+            images.clear()
+            textView_tag_img_select.text = "Image Selected : 0"
+            et_prob_sugg_title.setText("")
+            et_prob_sugg.setText("")
+
+
+
+    /*        val multipartRequest: VolleyMultipartRequest = object : VolleyMultipartRequest(Request.Method.POST, url, object : Response.Listener<NetworkResponse> {
+
+
+                override fun onResponse(response: NetworkResponse?) {
+                    Log.d("Response", "onResponse: " + response!!.data)
+                    images.clear()
+                    textView_tag_img_select.text = "Image Selected : 0"
+                    et_prob_sugg_title.setText("")
+                    et_prob_sugg.setText("")
+                }
+            }, object : Response.ErrorListener {
+
+
+                override fun onErrorResponse(error: VolleyError?) {
+                    Log.d("Response", "erroronResponse: " + error!!.networkResponse.data)
+                    Toast.makeText(baseContext, error.localizedMessage, Toast.LENGTH_SHORT).show()
+
+                }
+            }) {
+                override fun getHeaders(): MutableMap<String, String> {
+
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+                    val header: MutableMap<String, String> = java.util.HashMap()
+                    header["Content-Type"] = "application/json"
+                    header["token"] = preferences.getString(Datas.token, "")!!
+                    header["lid"] = preferences.getString(Datas.lagnuage_id, "1")!!
+
+                    return header
+
+
+                }
+
+                override fun getParams(): MutableMap<String, String> {
+                    val params: MutableMap<String, String> = mutableMapOf()
+
+                    params.put("title", et_prob_sugg_title.text.toString())
+                    params.put("descritpion", et_prob_sugg.text.toString())
+                return params
+                }
+
+                override fun getByteData(): Map<String, VolleyMultipartRequest.DataPart> {
+                    val params = HashMap<String, VolleyMultipartRequest.DataPart>();
+                    // file name could found file base or direct access from real path
+                    // for now just get bitmap data from ImageView
+                    var forcounter = 0
+                    for (i in images){
+                        params.put("postImage[" + forcounter + "]", DataPart("p.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), i.getDrawable()), "image/jpeg"));
+                        forcounter = forcounter+1
+                    }
+
+                    return params;
+                }
+            };
+
+            MySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
+*/
+
         }
     }
 
@@ -93,6 +227,8 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                 arrayOf(file.getName()), null)
     }
 
+    private var count_dismiss: Int = 0
+    private val PERMISSION_REQUEST_CODE: Int = 50
     private var currentPath: String = ""
     private val REQUEST_TAKE_GPHOTO: Int = 51
     private val REQUEST_TAKE_PHOTO: Int = 50
@@ -172,7 +308,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
     private fun setPic(requestCode: Int) {
         // Get the dimensions of the View
-        var imageView: ImageView = imageView_pic_create_new_prob_sug
+        var imageView: ImageView = imageView_pic_create_prob
 
         val targetW: Int = imageView.width
         val targetH: Int = imageView.height
@@ -197,6 +333,8 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
         BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
 
             imageView.setImageBitmap(bitmap)
+            images.add(currentPhotoPath)
+            textView_tag_img_select.setText("Image select : " + images.size)
             when (requestCode) {
 
                 REQUEST_TAKE_GPHOTO -> {
@@ -236,5 +374,58 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                 ), requestTakePhotoCode
         )
 
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when(requestCode){
+            PERMISSION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() &&
+                                grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                } else if (count_dismiss < 3) {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.CALL_PHONE), PERMISSION_REQUEST_CODE)
+                    count_dismiss += 1
+                } else openSetting()
+                return
+
+            }
+        }
+
+
+    }
+
+    private fun openSetting() {
+        val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Permissions Required")
+                .setMessage(
+                        "You have forcefully denied some of the required permissions " +
+                                "for this action. Please open settings, go to permissions and allow them."
+                )
+                .setPositiveButton(
+                        "Settings",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            val intent = Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", packageName, null)
+                            )
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        })
+                .setNegativeButton("Cancel",
+                        DialogInterface.OnClickListener { dialog, which -> })
+                .setCancelable(false)
+                .create()
+                .show()
     }
 }
