@@ -367,16 +367,13 @@ public class Register extends AppCompatActivity {
                         List<PinCodeResponseModelItem.PostOffice> postOffice = postItem.getPostOffice();
                         if (postOffice.size() > 0) {
                             PinCodeResponseModelItem.PostOffice specificPost = postOffice.get(0);
-
                             state.setText(specificPost.getState());
                             distirct.setText(specificPost.getDistrict());
-
                             List<String> cities = new ArrayList<String>();
                             for (PinCodeResponseModelItem.PostOffice postOff : postOffice) {
                                 cities.add(postOff.getName());
                             }
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line, cities);
-
                             city.setAdapter(adapter);
                         }
                     }

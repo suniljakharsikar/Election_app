@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 stopAnim();
-                Toast.makeText(LoginActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 editText.setFocusable(true);
             }
 

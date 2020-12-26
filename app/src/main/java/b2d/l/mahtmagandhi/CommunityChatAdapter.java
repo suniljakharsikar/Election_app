@@ -3,7 +3,11 @@ package b2d.l.mahtmagandhi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -29,7 +34,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +76,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final ChatData x = chatData.get(position);
 //        holder.imageView.setImageResource(x.getImage());
@@ -94,8 +105,13 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         holder.dislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (x.getUnlikeStatus() == 1) {
+                    Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 like_dislike(2, x);
                 x.setDislike(x.getDislike() + 1);
+                x.setUnlikeStatus(1);
                 notifyDataSetChanged();
             }
         });
@@ -103,13 +119,47 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (x.getLikeStatus() == 1) {
+                    Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 like_dislike(1, x);
                 x.setLikes(x.getLikes() + 1);
+                x.setLikeStatus(1);
                 notifyDataSetChanged();
             }
         });
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
+              /*  val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Send a simple text"
+                )
+                sendIntent.type = "text/plain"
+                startActivity(sendIntent)*/
+            }
+        });
     }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM), "Camera");
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
+        // Save a file: path for use with ACTION_VIEW intents
+//        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
     private void like_dislike(int i, ChatData x) {
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();
@@ -133,7 +183,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.apply();;
+                        editor.apply();
                         editor.clear();
                         context.startActivity(new Intent(context, LoginActivity.class));
                     }
@@ -170,8 +220,9 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView likes, dilikes, dis;
-        LinearLayout comment;
+        LinearLayout comment, share;
         ImageView like, dislike;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -182,6 +233,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             dis = itemView.findViewById(R.id.textView35);
             like = itemView.findViewById(R.id.imageView45);
             dislike = itemView.findViewById(R.id.imageView46);
+            share = itemView.findViewById(R.id.share);
 
         }
     }
