@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,11 +32,27 @@ public class NewsUpdate extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     ArrayList<ChatData> chatData;
     private SharedPreferences preferences;
+    private AVLoadingIndicatorView avi;
+
+    void startAnim() {
+        avi.show();
+        avi.setVisibility(View.VISIBLE);
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim() {
+        avi.setVisibility(View.INVISIBLE);
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_update);
+        avi = findViewById(R.id.avi);
+
+        startAnim();
       /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -102,12 +119,14 @@ public class NewsUpdate extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                stopAnim();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                stopAnim();
                 Toast.makeText(NewsUpdate.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {

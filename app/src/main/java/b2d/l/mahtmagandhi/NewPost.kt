@@ -37,9 +37,13 @@ class NewPost : AppCompatActivity() {
         editText = findViewById(R.id.et_prob_sugg)
 
         tv_image_btn_prob_sug.setOnClickListener {
-            val dialog = ImagePickerBottomSheetDialogFragment()
-            dialog.show(supportFragmentManager, "pic")
+            callm();
         }
+    }
+
+    private fun callm() {
+        val dialog = ImagePickerBottomSheetDialogFragment()
+        dialog.show(supportFragmentManager, "pic")
     }
 
     fun back(view: View?) {
@@ -279,5 +283,9 @@ class NewPost : AppCompatActivity() {
                 ), requestTakePhotoCode
         )
 
+    }
+
+    fun addimage(view: View) {
+        callm()
     }
 }
