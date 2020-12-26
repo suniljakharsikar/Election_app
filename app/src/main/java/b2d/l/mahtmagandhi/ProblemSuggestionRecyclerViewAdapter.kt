@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ProblemSuggestionRecyclerViewAdapter(): RecyclerView.Adapter<ProblemSuggestionRecyclerViewAdapter.ProblemSuggestionViewHolder>() {
+class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<ProblemsResponseModel.Data>) : RecyclerView.Adapter<ProblemSuggestionRecyclerViewAdapter.ProblemSuggestionViewHolder>() {
     class ProblemSuggestionViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
         val titleTv = itemView.findViewById<TextView>(R.id.textView_title_prob)
         val desTv = itemView.findViewById<TextView>(R.id.textView_summary_prob)
-        val upTv = itemView.findViewById<TextView>(R.id.textView_up_prob)
-        val downTv = itemView.findViewById<TextView>(R.id.textView_down_prob)
+
 
     }
 
@@ -22,12 +21,17 @@ class ProblemSuggestionRecyclerViewAdapter(): RecyclerView.Adapter<ProblemSugges
     }
 
     override fun onBindViewHolder(holder: ProblemSuggestionViewHolder, position: Int) {
+        val model = data.get(position)
             holder.itemView.setOnClickListener {
                 holder.itemView.context.startActivity(Intent(holder.itemView.context,ChatOnProblem::class.java))
             }
+        holder.titleTv.text = model.title
+        holder.desTv.text = model.description
+        //holder.upTv.text = model.
+
     }
 
     override fun getItemCount(): Int {
-            return 10
+            return data.size
     }
 }

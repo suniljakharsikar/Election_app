@@ -51,6 +51,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_city_setting_profile"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        app:boxBackgroundColor="@android:color/white"
+                        app:boxBackgroundMode="filled"
+                        app:layout_constraintEnd_toEndOf="@+id/editText_dob_setting_profile"
+                        app:layout_constraintStart_toStartOf="@+id/textView48"
+                        app:layout_constraintTop_toBottomOf="@+id/textView48">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actv_city_locality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <TextView
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
@@ -200,23 +223,16 @@
                         app:layout_constraintStart_toStartOf="@+id/editText_district"
                         app:layout_constraintTop_toBottomOf="@+id/editText_district" />
 
-                    <Spinner
-                        android:id="@+id/spinner_city_regi"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintEnd_toEndOf="@+id/editText_dob"
-                        app:layout_constraintStart_toStartOf="@+id/textView48"
-                        app:layout_constraintTop_toBottomOf="@+id/textView48" />
-
                     <TextView
                         android:id="@+id/textView49"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
                         android:text="Select Gender"
-                        app:layout_constraintStart_toStartOf="@+id/spinner_city_regi"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner_city_regi" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/til_city_setting_profile" />
 
                     <RadioGroup
                         android:id="@+id/radioGroup"
@@ -225,7 +241,6 @@
                         android:layout_marginTop="8dp"
                         android:checkedButton="@id/rb_male_regi"
                         android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="@+id/spinner_city_regi"
                         app:layout_constraintStart_toStartOf="@+id/textView49"
                         app:layout_constraintTop_toBottomOf="@+id/textView49">
 

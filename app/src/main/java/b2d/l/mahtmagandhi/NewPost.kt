@@ -9,6 +9,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.view.View
 import android.widget.EditText
@@ -17,10 +18,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.*
+import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.tv_image_btn_prob_sug
+import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import okhttp3.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class NewPost : AppCompatActivity() {
     var editText: EditText? = null
@@ -44,6 +51,38 @@ class NewPost : AppCompatActivity() {
         val s = editText!!.text.toString()
         if (isNullOrEmpty(s)) {
             Toast.makeText(this, "Please write something before post", Toast.LENGTH_SHORT).show()
+        }else{
+
+
+
+            val client = OkHttpClient().newBuilder()
+                    .build()
+            val mediaType = MediaType.parse("text/plain")
+            val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("postData",s )
+                    if (currentPhotoPath.length>0)
+                        bodyp .addFormDataPart("postImage", "qr.jpg",
+                                    RequestBody.create(MediaType.parse("application/octet-stream"),
+                                            File(currentPhotoPath)))
+
+
+                   val body = bodyp.build()
+            val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+            val request: Request = Request.Builder()
+                    .url("https://election.suniljakhar.in/api/ctalk_post")
+                    .method("POST", body)
+                    .addHeader("token", preferences.getString(Datas.token, "")!!)
+                    .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                    .addHeader("Content-Type", "application/json")
+
+                    .build()
+            GlobalScope.async {
+                val response: Response = client.newCall(request).execute()
+
+
+
+            }
         }
     }
 
@@ -100,7 +139,7 @@ class NewPost : AppCompatActivity() {
     private var currentPath: String = ""
     private val REQUEST_TAKE_GPHOTO: Int = 51
     private val REQUEST_TAKE_PHOTO: Int = 50
-    lateinit var currentPhotoPath: String
+     var currentPhotoPath: String  = ""
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
@@ -176,7 +215,7 @@ class NewPost : AppCompatActivity() {
 
     private fun setPic(requestCode: Int) {
         // Get the dimensions of the View
-        var imageView: ImageView = imageView_pic_create_new_prob_sug
+        var imageView: ImageView = imageView_new_post
 
         val targetW: Int = imageView.width
         val targetH: Int = imageView.height

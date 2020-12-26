@@ -8,6 +8,25 @@
     app:layout_constraintCircleRadius="6dp"
     tools:context=".CreateProblemAndSuggestionActivity">
 
+    <EditText
+        android:id="@+id/et_prob_sugg_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/stroke_rectangle_shape"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Title"
+        android:inputType="textMultiLine"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="0dp"
@@ -128,7 +147,7 @@
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+        app:layout_constraintTop_toBottomOf="@+id/et_prob_sugg_title" />
 
     <ImageView
         android:id="@+id/imageView_pic_create_new_prob_sug"
@@ -175,5 +194,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView_pic_create_prob"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_image_btn_prob_sug"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView_tag_img_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_image_btn_prob_sug"
+        app:layout_constraintStart_toStartOf="@+id/imageView_pic_create_new_prob_sug"
+        app:layout_constraintTop_toBottomOf="@+id/tv_image_btn_prob_sug" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
