@@ -186,6 +186,7 @@ public class LoginActivity extends AppCompatActivity {
                 token = forceResendingToken;
                 intent.putExtra("forceResendingToken", forceResendingToken);
 //                intent.putExtra("mCallbacks", mCallbacks);
+                stopAnim();
                 startActivityForResult(intent, getcode);
 //                startActivity(intent);
             }
@@ -320,10 +321,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == getcode) {
             if (data != null) {
+                startAnim();
                 String code = data.getStringExtra("code");
                 verifyPhoneNumberWithCode(mVerificationId, code);
 
             }
+        } else if (requestCode == 1112) {
+            stopAnim();
+            Toast.makeText(this, "called", Toast.LENGTH_SHORT).show();
         }
     }
 
