@@ -2,16 +2,13 @@ package b2d.l.mahtmagandhi;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hbb20.CountryCodePicker;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -61,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     private String TAG = "ashok";
     CountryCodePicker countryCodePicker;
     static PhoneAuthProvider.ForceResendingToken token;
+    private String tokenid;
 
     void startAnim() {
         avi.show();
@@ -79,6 +78,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean loginstatus = preferences.getBoolean("loginstatus", false);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        tokenid = task.getResult();
+
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
         if (loginstatus) {
             startActivity(new Intent(LoginActivity.this, Register.class));
             finish();
@@ -230,6 +247,28 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonrequest = new JSONObject();
                             try {
                                 jsonrequest.put("userMobile", countryCodePicker.getSelectedCountryCodeWithPlus() + mobile);
+                                if (tokenid == null) {
+                                    FirebaseMessaging.getInstance().getToken()
+                                            .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<String> task) {
+                                                    if (!task.isSuccessful()) {
+                                                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                                        return;
+                                                    }
+
+                                                    // Get new FCM registration token
+                                                    tokenid = task.getResult();
+
+                                                    // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                                jsonrequest.put("fcm_token", tokenid);
+                                Toast.makeText(LoginActivity.this, "token " + tokenid, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
