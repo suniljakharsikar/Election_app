@@ -252,7 +252,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode.equals(Activity.RESULT_OK) && requestCode > 5) {
-            val uri = data!!.data
+            val uri:Uri? = data?.data
 
             /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
                 // Do something for lollipop and above versions
@@ -266,6 +266,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                  }
             } else{*/
             // do something for phones running an SDK before lollipop
+            if (uri!=null)
             currentPhotoPath = PathUtil.getPath(this, uri)
 
             var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)

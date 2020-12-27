@@ -1,7 +1,10 @@
 package b2d.l.mahtmagandhi
 
+import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -16,8 +19,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.*
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.tv_image_btn_prob_sug
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.coroutines.GlobalScope
@@ -39,6 +43,32 @@ class NewPost : AppCompatActivity() {
         tv_image_btn_prob_sug.setOnClickListener {
             callm();
         }
+        val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        val  camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        if (
+                write == PackageManager.PERMISSION_GRANTED &&
+                read == PackageManager.PERMISSION_GRANTED &&
+                        camera == PackageManager.PERMISSION_GRANTED
+        ){
+
+        }
+        else {
+
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            ), 120)
+        }
+
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 511);
+
+
+
+
+
     }
 
     private fun callm() {
@@ -63,11 +93,11 @@ class NewPost : AppCompatActivity() {
                     .build()
             val mediaType = MediaType.parse("text/plain")
             val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("postData",s )
+                    .addFormDataPart("postData", s)
                     if (currentPhotoPath.length>0)
                         bodyp .addFormDataPart("postImage", "qr.jpg",
-                                    RequestBody.create(MediaType.parse("application/octet-stream"),
-                                            File(currentPhotoPath)))
+                                RequestBody.create(MediaType.parse("application/octet-stream"),
+                                        File(currentPhotoPath)))
 
 
                    val body = bodyp.build()
@@ -98,6 +128,7 @@ class NewPost : AppCompatActivity() {
 
 
     private fun dispatchTakePictureIntent(requestCode: Int) {
+
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
 
@@ -117,6 +148,8 @@ class NewPost : AppCompatActivity() {
                             "b2d.l.mahtmagandhi.fileprovider",
                             it
                     )
+
+
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, requestCode)
 
@@ -126,6 +159,7 @@ class NewPost : AppCompatActivity() {
 
             }
         }
+
     }
 
     private fun galleryAddPic() {
@@ -160,10 +194,14 @@ class NewPost : AppCompatActivity() {
         }
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode.equals(Activity.RESULT_OK) && requestCode > 5) {
-            val uri = data!!.data
+        if (resultCode.equals(Activity.RESULT_OK) ) {
+
+            var uri = data?.data
+
+
 
             /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
                 // Do something for lollipop and above versions
@@ -177,6 +215,7 @@ class NewPost : AppCompatActivity() {
                  }
             } else{*/
             // do something for phones running an SDK before lollipop
+            if (uri!=null)
             currentPhotoPath = PathUtil.getPath(this, uri)
 
             var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
@@ -274,7 +313,16 @@ class NewPost : AppCompatActivity() {
         }
 
     }
+    val REQUEST_IMAGE_CAPTURE = 1
 
+    private fun sdispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+        }
+    }
     private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
         startActivityForResult(
                 Intent(
@@ -288,4 +336,8 @@ class NewPost : AppCompatActivity() {
     fun addimage(view: View) {
         callm()
     }
+
+
+
+
 }
