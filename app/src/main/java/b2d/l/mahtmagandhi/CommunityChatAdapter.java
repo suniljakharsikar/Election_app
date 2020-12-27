@@ -80,6 +80,38 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final ChatData x = chatData.get(position);
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Uri uri = null;
+                    if ( Patterns.WEB_URL.matcher(x.getImage_name()).matches())
+                        uri = Utility.INSTANCE.saveBitmap(
+                                view.getContext(),
+                                holder.imageView,
+                                Bitmap.CompressFormat.JPEG,
+                                "image/jpeg",
+                                "",
+                                "statement"
+                        );
+
+                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(),uri,view.getContext());
+
+                } catch (IOException e) {
+
+                }
+//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
+              /*  val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Send a simple text"
+                )
+                sendIntent.type = "text/plain"
+                startActivity(sendIntent)*/
+            }
+        });
+
 //        holder.imageView.setImageResource(x.getImage());
         holder.likes.setText(x.getLikes() + "");
         holder.dilikes.setText(x.getDislike() + "");
@@ -135,7 +167,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             public void onClick(View view) {
                 try {
                     Uri uri = null;
-                    if ( Patterns.WEB_URL.matcher(x.getImage_name()).matches())
+                    
                      uri = Utility.INSTANCE.saveBitmap(
                             view.getContext(),
                             holder.imageView,

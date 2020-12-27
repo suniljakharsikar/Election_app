@@ -22,6 +22,7 @@ public class PathUtil {
      */
     @SuppressLint("NewApi")
     public static String getPath(Context context, Uri uri) throws URISyntaxException {
+        if (uri==null)return "";
         final boolean needToCheckUri = Build.VERSION.SDK_INT >= 19;
         String selection = null;
         String[] selectionArgs = null;
