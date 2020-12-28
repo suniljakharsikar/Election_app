@@ -302,17 +302,7 @@ class SettingProfile : AppCompatActivity() {
 
                 headers["Token"] = preferences.getString(Datas.token, "").toString()
                 return headers
-            } /* @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> x = new HashMap<>();
-                x.put("userMobile", number.getText().toString());
-                x.put("userName", name.getText().toString());
-                x.put("userAge", age.getText().toString());
-                x.put("userPostalCode", pincode.getText().toString());
-                x.put("userState", state.getText().toString());
-                x.put("userDistrict", distirct.getText().toString());
-                return x;
-            }*/
+            }
         } /*{
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

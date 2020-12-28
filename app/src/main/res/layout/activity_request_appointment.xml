@@ -5,10 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:id="@+id/sv_req_app"
     tools:context=".RequestAppointmentActivity">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_choose_time_appointment"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="Choose time"
+        app:boxBackgroundColor="@android:color/white"
+        app:boxBackgroundMode="outline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_appointment_date_book_app">
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_choose_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button3"
@@ -43,12 +71,13 @@
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_appointment_date_book_app">
+        app:layout_constraintTop_toBottomOf="@+id/til_choose_time_appointment">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_appointment_purpose_book_app"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
+            android:gravity="start"
             android:hint="Appointment purpose describe here."
             android:inputType="textLongMessage|textImeMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -65,16 +94,15 @@
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_appointment_mobile_book_app">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_noti2">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_appointment_date_book_app"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date of Appointment"
-            android:inputType="none"
             android:focusable="false"
-            />
+            android:hint="Date of Appointment"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.Toolbar
@@ -114,54 +142,6 @@
         app:srcCompat="@drawable/backicon"
         app:tint="@color/black" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_appointment_name_book_app"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_noti2">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tie_appointment_name_book_app"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contact Person Name"
-            android:inputType="textPersonName"
-            android:maxLines="1"
-            android:singleLine="true"
-            app:textInputLayoutFocusedRectEnabled="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_appointment_mobile_book_app"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_appointment_name_book_app">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tie_appointment_mobile_book_app"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mobile Number"
-            android:inputType="number"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
