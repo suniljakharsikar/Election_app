@@ -278,6 +278,7 @@
             </RadioGroup>
 
             <ImageView
+                android:id="@+id/imageView23"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -339,7 +340,18 @@
                 app:srcCompat="@android:drawable/ic_menu_edit"
                 app:tint="#040882" />
 
+            <ImageView
+                android:id="@+id/iv_edit_avtar_setting"
+                android:layout_width="24dp"
 
+                android:layout_height="24dp"
+                android:background="@drawable/round_bg"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toTopOf="@+id/profile_image"
+                app:layout_constraintVertical_bias="0.8"
+                app:srcCompat="@drawable/ic_icon_awesome_edit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

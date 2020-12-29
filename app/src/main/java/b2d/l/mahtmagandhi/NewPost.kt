@@ -63,7 +63,6 @@ class NewPost : AppCompatActivity() {
             ), 120)
         }
 
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 511);
 
 
 

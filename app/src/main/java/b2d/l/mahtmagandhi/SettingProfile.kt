@@ -1,10 +1,20 @@
 package b2d.l.mahtmagandhi
 
+import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.preference.PreferenceManager
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -13,9 +23,13 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -25,9 +39,13 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
+import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
+import kotlinx.android.synthetic.main.activity_setting_profile.button_submit
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.File
+import java.io.IOException
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -81,6 +99,10 @@ class SettingProfile : AppCompatActivity() {
                 if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
             }
         })
+        iv_edit_avtar_setting.setOnClickListener {
+            val dialog = ImagePickerBottomSheetDialogFragment()
+            dialog.show(supportFragmentManager, "pic")
+        }
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(OnCompleteListener<String> { task ->
@@ -136,6 +158,25 @@ class SettingProfile : AppCompatActivity() {
         }
 
         stopAnim()
+        val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        val  camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        if (
+                write == PackageManager.PERMISSION_GRANTED &&
+                read == PackageManager.PERMISSION_GRANTED &&
+                camera == PackageManager.PERMISSION_GRANTED
+        ){
+
+        }
+        else {
+
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            ), 120)
+        }
     }
 
     private fun fetchData(token: String) {
@@ -148,24 +189,7 @@ class SettingProfile : AppCompatActivity() {
         val jsonrequest = JSONObject()
         try {
             jsonrequest.put("userMobile", preferences.getString(Datas.user_mobile, ""))
-            jsonrequest.put("fcm_token",token
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            )
+            jsonrequest.put("fcm_token",token)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -361,4 +385,212 @@ class SettingProfile : AppCompatActivity() {
         //        requestQueue.add(jsonObjectRequest);
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
+
+
+    private fun dispatchTakePictureIntent(requestCode: Int) {
+
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+
+            (packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                            this,
+                            "b2d.l.mahtmagandhi.fileprovider",
+                            it
+                    )
+
+
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, requestCode)
+
+
+                }
+
+
+            }
+        }
+
+    }
+
+    private fun galleryAddPic() {
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            val f = File(currentPhotoPath)
+            mediaScanIntent.data = Uri.fromFile(f)
+            sendBroadcast(mediaScanIntent)
+        }
+
+        val file = File(currentPhotoPath)
+        MediaScannerConnection.scanFile(this, arrayOf(file.toString()),
+                arrayOf(file.getName()), null)
+    }
+
+    private var currentPath: String = ""
+    private val REQUEST_TAKE_GPHOTO: Int = 51
+    private val REQUEST_TAKE_PHOTO: Int = 50
+    var currentPhotoPath: String  = ""
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode.equals(Activity.RESULT_OK) ) {
+
+            var uri = data?.data
+
+
+
+            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                // Do something for lollipop and above versions
+                val file = File(uri!!.path) //create path from uri
+                 if (file.path.contains(":")) {
+                     val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
+
+                     currentPhotoPath = split[1]
+                 }else{
+                     currentPhotoPath =file.path
+                 }
+            } else{*/
+            // do something for phones running an SDK before lollipop
+            if (uri!=null)
+                currentPhotoPath = PathUtil.getPath(this, uri)
+
+            var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
+            if (result == null) {
+                val file = File(uri!!.path) //create path from uri
+                if (file.path.contains(":")) {
+                    val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
+
+                    currentPhotoPath = split[1]
+                } else currentPhotoPath = file.absolutePath
+                result = BitmapFactory.decodeFile(currentPhotoPath)
+                if (result == null) {
+                    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+                    val cursor: Cursor? = getContentResolver()?.query(
+                            uri,
+                            filePathColumn, null, null, null
+                    )
+                    cursor?.moveToFirst()
+
+                    val columnIndex: Int? = cursor?.getColumnIndex(filePathColumn[0])
+                    currentPhotoPath = columnIndex?.let { cursor?.getString(it) }.toString()
+                    cursor?.close()
+                }
+
+                result = BitmapFactory.decodeFile(currentPhotoPath)
+
+
+            }
+
+            //   BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?
+            //}
+
+
+        }
+        setPic(requestCode)
+
+
+    }
+
+    private fun setPic(requestCode: Int) {
+        // Get the dimensions of the View
+        var imageView: ImageView = profile_image
+
+        val targetW: Int = imageView.width
+        val targetH: Int = imageView.height
+
+        val bmOptions = BitmapFactory.Options().apply {
+            // Get the dimensions of the bitmap
+            inJustDecodeBounds = true
+
+            BitmapFactory.decodeFile(currentPhotoPath, this)
+
+            val photoW: Int = outWidth
+            val photoH: Int = outHeight
+
+            // Determine how much to scale down the image
+            val scaleFactor: Int = Math.max(1, Math.min(photoW / targetW, photoH / targetH))
+
+            // Decode the image file into a Bitmap sized to fill the View
+            inJustDecodeBounds = false
+            inSampleSize = scaleFactor
+            inPurgeable = true
+        }
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
+
+            imageView.setImageBitmap(bitmap)
+            when (requestCode) {
+
+                REQUEST_TAKE_GPHOTO -> {
+
+
+                    currentPath = currentPhotoPath
+                }
+
+            }
+
+            galleryAddPic()
+
+
+        }
+    }
+
+    fun getPic(tag: String?, s: String) {
+        if (s.equals("c")) {
+            when (tag) {
+                "pic" -> dispatchTakePictureIntent(REQUEST_TAKE_PHOTO)
+
+            }
+        } else {
+            when (tag) {
+                "pic" -> dispatchTakeGalleryPictureIntent(REQUEST_TAKE_GPHOTO)
+
+            }
+        }
+
+    }
+    val REQUEST_IMAGE_CAPTURE = 1
+
+    private fun sdispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+        }
+    }
+    private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
+        startActivityForResult(
+                Intent(
+                        Intent.ACTION_PICK,
+                        MediaStore.Images.Media.INTERNAL_CONTENT_URI
+                ), requestTakePhotoCode
+        )
+
+    }
+
 }
