@@ -10,7 +10,7 @@
     <color name="text_comment_name">#1A167F</color>
     <color name="blue_home_icon">#040882</color>
     <color name="commentself">#EBEBEB</color>
-    <color name="book">#52C462</color>
-    <color name="pending">#B7251D</color>
+    <color name="book">#03CC75</color>
+    <color name="pending">#FFF821</color>
     <color name="expired">#BEBEBE</color>
 </resources>

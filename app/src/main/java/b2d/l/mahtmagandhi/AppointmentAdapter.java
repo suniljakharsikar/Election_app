@@ -1,29 +1,41 @@
 package b2d.l.mahtmagandhi;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Response;
+
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Appointment_data> data;
+    private List<AppointmentModel.Data> data;
 
-    public AppointmentAdapter(Context context, ArrayList<Appointment_data> data) {
-        this.context = context;
+    public AppointmentAdapter( List<AppointmentModel.Data> data) {
+
         this.data = data;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
@@ -37,23 +49,55 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Appointment_data appointment_data = data.get(position);
-        holder.date.setText(appointment_data.getDate());
-        holder.status.setText(appointment_data.getStatus());
-        holder.detail.setText(appointment_data.getDetail());
+        AppointmentModel.Data appointment_data = data.get(position);
+
+        String ds = appointment_data.getApptDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat tranDateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        Date date = null;
+        try {
+           date =  simpleDateFormat.parse(ds);
+        } catch (ParseException e) {
+            //e.printStackTrace();
+        }
+        String dates = tranDateFormat.format(date);
+
+        holder.date.setText(dates);
+        //holder.status.setText(appointment_data.getBookedStatus());
+        holder.detail.setText(appointment_data.getMessage());
         int color;
 
-        switch (holder.status.getText().toString()) {
-            case "Pending":
+        switch (appointment_data.getBookedStatus()) {
+            case 0: {
+                holder.status.setText("Pending");
                 color = context.getResources().getColor(R.color.pending);
+                holder.llStatus.setBackgroundResource(R.drawable.rectangle_curly_box_stroke_pending);
+                holder.statusIcon.setImageResource(R.drawable.ic_pending);
+
                 break;
-            case "Expired":
+            }
+            case 1: {
+                holder.status.setText("Booked");
+                color = context.getResources().getColor(R.color.book);
+                holder.llStatus.setBackgroundResource(R.drawable.rectangle_curly_box_stroke_booked);
+                holder.statusIcon.setImageResource(R.drawable.ic_confirmed);
+
+                break;
+            }
+            case 2:{
+                holder.status.setText("Expired");
                 color = context.getResources().getColor(R.color.expired);
+                holder.llStatus.setBackgroundResource(R.drawable.rectangle_curly_box_stroke_expired);
+                holder.statusIcon.setImageResource(R.drawable.ic_expired);
+
                 break;
+            }
             default:
+                holder.status.setText("Booked");
                 color = context.getResources().getColor(R.color.book);
 
         }
+
         holder.status.setTextColor(color);
     }
 
@@ -64,12 +108,16 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView date, status, detail;
+        LinearLayout llStatus;
+        ImageView statusIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.textView9);
             status = itemView.findViewById(R.id.textView13);
             detail = itemView.findViewById(R.id.textView14);
+            llStatus = itemView.findViewById(R.id.ll_status_aapt);
+            statusIcon = itemView.findViewById(R.id.ic_status_apt);
         }
     }
 }

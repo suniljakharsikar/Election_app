@@ -260,6 +260,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     // Get new FCM registration token
                                                     tokenid = task.getResult();
 
+
                                                     // Log and toast
 //                        String msg = getString(R.string.msg_token_fmt, token);
 //                        Log.d(TAG, msg);

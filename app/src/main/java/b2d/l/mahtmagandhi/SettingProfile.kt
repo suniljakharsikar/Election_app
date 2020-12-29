@@ -20,10 +20,11 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
-import kotlinx.android.synthetic.main.activity_request_appointment.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -80,7 +81,24 @@ class SettingProfile : AppCompatActivity() {
                 if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
             }
         })
-        fetchData()
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(OnCompleteListener<String> { task ->
+                    if (!task.isSuccessful) {
+                        return@OnCompleteListener
+                    }
+
+                    // Get new FCM registration token
+
+                    fetchData(task.result)
+
+
+                    // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                })
+
 
         var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup)
         tv_edit_profile.setOnClickListener {
@@ -120,7 +138,7 @@ class SettingProfile : AppCompatActivity() {
         stopAnim()
     }
 
-    private fun fetchData() {
+    private fun fetchData(token: String) {
         // [START_EXCLUDE]
 //                            updateUI(STATE_SIGNIN_SUCCESS, user);
 //                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
@@ -129,13 +147,31 @@ class SettingProfile : AppCompatActivity() {
 
         val jsonrequest = JSONObject()
         try {
-            jsonrequest.put("userMobile",preferences.getString(Datas.user_mobile, "") )
+            jsonrequest.put("userMobile", preferences.getString(Datas.user_mobile, ""))
+            jsonrequest.put("fcm_token",token
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            )
         } catch (e: JSONException) {
             e.printStackTrace()
         }
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonrequest, { response ->
             try {
-                Log.d("Info", "fetchData: "+response)
+                Log.d("Info", "fetchData: " + response)
                 val success = response.getBoolean("success")
                 if (success) {
                     val token = response.getString("token")
@@ -178,7 +214,9 @@ class SettingProfile : AppCompatActivity() {
                 //                                        sendbtn.setEnabled(true);
             }
             stopAnim()
-        }) { error -> Log.d("ashok", error.toString()) }
+        }, { error ->
+            Log.d("ashok", error.toString())
+        })
         MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
     }
 

@@ -104,6 +104,7 @@ public class Register extends AppCompatActivity {
         pincode.setText(preferences.getString(Datas.user_postal_code, ""));
         state.setText(preferences.getString(Datas.user_state, ""));
         distirct.setText(preferences.getString(Datas.user_district, ""));
+        city.setText(preferences.getString(Datas.user_village,""),false);
         radioGroup = findViewById(R.id.radioGroup);
 //        city.setText(preferences.getString(Datas.user_village, ""));
         stopAnim();
