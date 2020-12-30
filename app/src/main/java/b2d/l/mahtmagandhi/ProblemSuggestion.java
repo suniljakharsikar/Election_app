@@ -40,8 +40,14 @@ public class ProblemSuggestion extends AppCompatActivity {
     private void initView() {
         rvProblems = findViewById(R.id.rv_probs);
         rvProblems.setLayoutManager(new LinearLayoutManager(this));
-        fetchData();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchData();
     }
 
     public void back(View view) {

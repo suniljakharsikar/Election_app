@@ -34,6 +34,7 @@ public class Comment extends AppCompatActivity {
     private SharedPreferences preferences;
     EditText comment;
     private AVLoadingIndicatorView avi;
+    private Boolean passToken;
 
     void startAnim() {
         avi.show();
@@ -69,6 +70,7 @@ public class Comment extends AppCompatActivity {
         RecyclerView.Adapter adapter = new CommentAdapter(this, data);
         recyclerView.setAdapter(adapter);*/
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        passToken = getIntent().getBooleanExtra("passToken",false);
         String url = Url.baseurl + getIntent().getStringExtra("url");//"/ctalk_comments";
         JSONObject json = new JSONObject();
         try {

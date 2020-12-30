@@ -137,6 +137,8 @@ class NewPost : AppCompatActivity() {
                        imageView_new_post.setImageDrawable(null)
                        et_prob_sugg.setText("")
                        stopAnim()
+                       Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                       finish()
                    }
 
                }

@@ -6,6 +6,7 @@
 
     <Button
         android:id="@+id/button_appointment"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -21,8 +22,6 @@
         android:paddingBottom="8dp"
         android:text="My Appointment"
         android:textAllCaps="false"
-        android:textColor="#040882"
-        app:backgroundTint="@color/white_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

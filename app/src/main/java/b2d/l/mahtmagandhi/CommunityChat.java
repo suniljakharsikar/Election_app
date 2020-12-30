@@ -98,6 +98,11 @@ public class CommunityChat extends AppCompatActivity {
 */
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         String url = Url.baseurl + "/ctalk_data";
@@ -118,7 +123,7 @@ public class CommunityChat extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData, "/ctalk_like_unlike_post", "/ctalk_comments", "/ctalk_comments_post");
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData, "/ctalk_like_unlike_post", "/ctalk_comments", "/ctalk_comments_post",false);
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(CommunityChat.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -153,6 +158,7 @@ public class CommunityChat extends AppCompatActivity {
             }
         };
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
     }
 
     public void back(View view) {

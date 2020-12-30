@@ -16,6 +16,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_request_appointment.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
 import org.json.JSONObject
@@ -25,11 +26,25 @@ import java.util.*
 
 class RequestAppointmentActivity : AppCompatActivity() {
     private var aptId: Int = 0
+    private var avi: AVLoadingIndicatorView? = null
 
+    fun startAnim() {
+        avi!!.show()
+        avi!!.visibility = View.VISIBLE
+        // or avi.smoothToShow();
+    }
+
+    fun stopAnim() {
+        avi!!.visibility = View.INVISIBLE
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request_appointment)
+        avi = avi8
 
+        stopAnim()
 
         tie_appointment_date_book_app.setOnClickListener {
             val dp =   MaterialDatePicker.Builder.datePicker().build()
@@ -62,17 +77,21 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
 
         actv_choose_time.setOnItemClickListener { parent, view, position, id ->
-            val item = parent.selectedItem as AppointmentTime
-            aptId = item.id
+            try {
+                val item = parent.selectedItem as AppointmentTime
+                aptId = item.id
+            } catch (e: Exception) {
+            }
         }
 
     }
 
     private fun validDateCheck(date: String) {
-
+        startAnim()
         val url = Url.baseurl + "/appt_time_slot_list"
         val jsonObjectRequet = object :JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
             override fun onResponse(response: JSONObject?) {
+                stopAnim()
                 val isSuccess = response!!.optBoolean("success")
                 val statusCode = response.optInt("status_code")
                 if (isSuccess && statusCode == 200) {
@@ -119,6 +138,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
         }, object : Response.ErrorListener {
             override fun onErrorResponse(error: VolleyError?) {
+                stopAnim()
                 Log.d("RequestAppointment", "onErrorResponse: "+error)
             }
 
@@ -170,13 +190,16 @@ class RequestAppointmentActivity : AppCompatActivity() {
              jo.put("appt_time",appt_time)
              jo.put("message",message)
 
+             startAnim()
              val url = Url.baseurl + "/appt_booking"
 
              val jor = object :JsonObjectRequest(Request.Method.POST, url, jo, Response.Listener<JSONObject> {
                  Log.d("Response", "submit: " + it)
 
+                 stopAnim()
              }, object : Response.ErrorListener {
                  override fun onErrorResponse(error: VolleyError?) {
+                    stopAnim()
                      Log.d("Response", "onErrorResponse: "+error)
                  }
              })

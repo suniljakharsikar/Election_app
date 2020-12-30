@@ -323,6 +323,7 @@ class SettingProfile : AppCompatActivity() {
             Toast.makeText(this, "Please type district name", Toast.LENGTH_SHORT).show()
             return
         }
+        startAnim()
         val url = Url.baseurl + "/update_profile"
         val jsonRwquest = JSONObject()
         val cityS: String
@@ -341,6 +342,7 @@ class SettingProfile : AppCompatActivity() {
         }
         //startAnim()
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRwquest, Response.Listener { response ->
+            stopAnim()
             try {
                 val success = response.getBoolean("success")
                 Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
@@ -357,8 +359,7 @@ class SettingProfile : AppCompatActivity() {
             }
             // stopAnim()
         }, Response.ErrorListener { error ->
-            error.printStackTrace()
-            // stopAnim()
+             stopAnim()
             Toast.makeText(this@SettingProfile, "e= $error", Toast.LENGTH_SHORT).show()
         }) {
             override fun getHeaders(): Map<String, String> {

@@ -128,13 +128,14 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
               if (response.isSuccessful){
                   GlobalScope.launch(Dispatchers.Main) {
-
+                      Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
                       et_prob_sugg_title.setText("")
                       et_prob_sugg.setText("")
                       images.clear()
                       imageView_pic_create_prob.setImageDrawable(null)
                       textView_tag_img_select.text = "Image Selected : 0"
                       stopAnim()
+                      finish()
 
                   }
               }

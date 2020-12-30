@@ -1,30 +1,46 @@
 package b2d.l.mahtmagandhi
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import android.widget.TextView
-import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import java.util.ArrayList
-import android.view.View
 import android.content.Intent
+import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
+import android.view.View
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import com.wang.avi.AVLoadingIndicatorView
+import kotlinx.android.synthetic.main.activity_appointment.*
 import org.json.JSONObject
-import java.util.HashMap
+import java.util.*
 
 class Appointment : AppCompatActivity() {
     var recyclerView: RecyclerView? = null
     var empty_message: TextView? = null
+
+    private var avi: AVLoadingIndicatorView? = null
+
+    fun startAnim() {
+        avi!!.show()
+        avi!!.visibility = View.VISIBLE
+        // or avi.smoothToShow();
+    }
+
+    fun stopAnim() {
+        avi!!.visibility = View.INVISIBLE
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_appointment)
+        avi = avi7
         recyclerView = findViewById<RecyclerView>(R.id.rv_appointment)
         val la: LayoutManager = LinearLayoutManager(this)
         recyclerView!!.setLayoutManager(la)
@@ -36,19 +52,20 @@ class Appointment : AppCompatActivity() {
     }
 
     private fun fetchData() {
+        startAnim()
         val url = Url.baseurl + "/appt_history"
         val jor = object :JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
             override fun onResponse(response: JSONObject?) {
+                stopAnim()
 
 
-                Log.d("Appointment", "onResponse: "+response)
+                Log.d("Appointment", "onResponse: " + response)
                 val gson = Gson()
                 val am = gson.fromJson<AppointmentModel>(response.toString(), AppointmentModel::class.java)
 
                 if (am.success) {
                     val data = am.data
-                    if (data.size==0)       empty_message!!.setVisibility(View.VISIBLE)
-
+                    if (data.size == 0) empty_message!!.setVisibility(View.VISIBLE)
 
 
                     val adapter = AppointmentAdapter(data)
@@ -59,7 +76,7 @@ class Appointment : AppCompatActivity() {
 
         }, object : Response.ErrorListener {
             override fun onErrorResponse(error: VolleyError?) {
-
+stopAnim()
             }
         })
         {

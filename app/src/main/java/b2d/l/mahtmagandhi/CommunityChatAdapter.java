@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -36,9 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,15 +47,17 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     private String s;
     private String s1;
     private String s2;
+    private Boolean passToken;
 
 
-    public CommunityChatAdapter(Context context, ArrayList<ChatData> chatData, String s, String s1, String s2) {
+    public CommunityChatAdapter(Context context, ArrayList<ChatData> chatData, String s, String s1, String s2, boolean pass) {
 
         this.context = context;
         this.chatData = chatData;
         this.s = s;
         this.s1 = s1;
         this.s2 = s2;
+        this.passToken = pass;
     }
 
     @NonNull
@@ -122,6 +120,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 intent.putExtra("pos", x.getId());
                 intent.putExtra("url", s1);
                 intent.putExtra("newposturl", s2);
+                intent.putExtra("passToken",passToken);
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
