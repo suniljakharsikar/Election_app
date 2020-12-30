@@ -87,7 +87,7 @@ public class AboutUs extends AppCompatActivity {
                         }
                         JSONArray data_images = response.getJSONArray("data_images");
                         for (int i = 0; i < data_images.length(); i++) {
-                            adapter.addItem(new SliderItem(Url.burl+data_images.getJSONObject(i).getString("image_url")));
+                            adapter.addItem(new SliderItem(Url.burl + data_images.getJSONObject(i).getString("image_url")));
 
                         }
                         sliderView.setSliderAdapter(adapter);

@@ -67,10 +67,11 @@ class SettingProfile : AppCompatActivity() {
 //        avi.hide();
         // or avi.smoothToHide();
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_profile)
-        avi = findViewById<AVLoadingIndicatorView>(R.id.avi2)
+        avi = findViewById(R.id.avi2)
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
@@ -84,8 +85,6 @@ class SettingProfile : AppCompatActivity() {
         editText_state.inputType = InputType.TYPE_NULL
         editText_district.inputType = InputType.TYPE_NULL
         button_submit.visibility = View.INVISIBLE
-
-
 
 
         //        city.setText(preferences.getString(Datas.user_district, ""));
@@ -126,7 +125,7 @@ class SettingProfile : AppCompatActivity() {
         tv_edit_profile.setOnClickListener {
 
             button_submit.visibility = View.VISIBLE
-           // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+            // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
             //editTextPersonName2.setFilters(arrayOf(getEditTextFilter()))
             //editTextPhone2.inputType = InputType.TYPE_CLASS_PHONE
             val digits = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // or any characters you want to allow
@@ -141,11 +140,11 @@ class SettingProfile : AppCompatActivity() {
             editText_state.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             editText_district.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             editText_dob_setting_profile.setOnClickListener {
-               /* val d: DialogFragment = DatePickerFragment(editText_dob_setting_profile)
-                d.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme)
+                /* val d: DialogFragment = DatePickerFragment(editText_dob_setting_profile)
+                 d.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme)
 
-                d.show(supportFragmentManager, "date")*/
-              val dp =   MaterialDatePicker.Builder.datePicker().build()
+                 d.show(supportFragmentManager, "date")*/
+                val dp = MaterialDatePicker.Builder.datePicker().build()
                 dp.addOnPositiveButtonClickListener {
                     val date = Date(it)
                     val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
@@ -161,15 +160,14 @@ class SettingProfile : AppCompatActivity() {
         val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
-        val  camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        val camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
         if (
                 write == PackageManager.PERMISSION_GRANTED &&
                 read == PackageManager.PERMISSION_GRANTED &&
                 camera == PackageManager.PERMISSION_GRANTED
-        ){
+        ) {
 
-        }
-        else {
+        } else {
 
 
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA,
@@ -190,7 +188,7 @@ class SettingProfile : AppCompatActivity() {
         val jsonrequest = JSONObject()
         try {
             jsonrequest.put("userMobile", preferences.getString(Datas.user_mobile, ""))
-            jsonrequest.put("fcm_token",token)
+            jsonrequest.put("fcm_token", token)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -273,11 +271,12 @@ class SettingProfile : AppCompatActivity() {
                         }
                     } catch (e: Exception) {
                     }
-                }) { error -> Log.d("Register", "onErrorResponse: $error")
-        stopAnim()}
+                }) { error ->
+            Log.d("Register", "onErrorResponse: $error")
+            stopAnim()
+        }
         MySingleton.getInstance(applicationContext).addToRequestQueue(jsonObjectRequest)
     }
-
 
 
     fun hideKeyboard(activity: Activity) {
@@ -290,7 +289,6 @@ class SettingProfile : AppCompatActivity() {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
 
 
     fun back(view: View?) {
@@ -442,7 +440,7 @@ class SettingProfile : AppCompatActivity() {
     private var currentPath: String = ""
     private val REQUEST_TAKE_GPHOTO: Int = 51
     private val REQUEST_TAKE_PHOTO: Int = 50
-    var currentPhotoPath: String  = ""
+    var currentPhotoPath: String = ""
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
@@ -462,10 +460,9 @@ class SettingProfile : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode.equals(Activity.RESULT_OK) ) {
+        if (resultCode.equals(Activity.RESULT_OK)) {
 
             var uri = data?.data
-
 
 
             /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
@@ -480,7 +477,7 @@ class SettingProfile : AppCompatActivity() {
                  }
             } else{*/
             // do something for phones running an SDK before lollipop
-            if (uri!=null)
+            if (uri != null)
                 currentPhotoPath = PathUtil.getPath(this, uri)
 
             var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
@@ -578,6 +575,7 @@ class SettingProfile : AppCompatActivity() {
         }
 
     }
+
     val REQUEST_IMAGE_CAPTURE = 1
 
     private fun sdispatchTakePictureIntent() {
@@ -588,6 +586,7 @@ class SettingProfile : AppCompatActivity() {
             // display error state to the user
         }
     }
+
     private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
         startActivityForResult(
                 Intent(

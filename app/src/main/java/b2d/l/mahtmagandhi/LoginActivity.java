@@ -271,7 +271,7 @@ public class LoginActivity extends AppCompatActivity {
                                             });
                                 }
                                 jsonrequest.put("fcm_token", tokenid);
-                                Toast.makeText(LoginActivity.this, "token " + tokenid, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(LoginActivity.this, "token " + tokenid, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -370,7 +370,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else if (requestCode == 1112) {
             stopAnim();
-            Toast.makeText(this, "called", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "called", Toast.LENGTH_SHORT).show();
         }
     }
 

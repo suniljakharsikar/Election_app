@@ -35,6 +35,7 @@
     <ImageView
         android:id="@+id/imageView20"
         android:layout_width="@dimen/back_dim"
+        android:padding="@dimen/backpad"
         android:layout_height="@dimen/back_dim"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -70,7 +71,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="32dp"
-        app:rippleColor="@color/black" />
+        app:rippleColor="@color/black"
+        android:focusable="true" />
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/avi"
