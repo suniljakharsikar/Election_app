@@ -100,7 +100,7 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
-                android:text="Akshay Kumar"
+                tools:text="Akshay Kumar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView45" />
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="phone"
-                android:text="9900990099"
+                tools:text="9900990099"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView46"
                 app:layout_constraintTop_toBottomOf="@+id/textView46" />
@@ -138,7 +138,7 @@
                 android:id="@+id/editText_dob_setting_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="30 August 2020 "
+                tools:text="30 August 2020 "
                 app:layout_constraintEnd_toEndOf="@+id/editTextPhone2"
                 app:layout_constraintStart_toStartOf="@+id/textView47"
                 app:layout_constraintTop_toBottomOf="@+id/textView47" />
@@ -176,7 +176,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:text="Rajasthan"
+                tools:text="Rajasthan"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_state"
                 app:layout_constraintTop_toBottomOf="@+id/textView_state" />
@@ -186,7 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Disctrict"
+                tools:text="Disctrict"
                 app:layout_constraintStart_toStartOf="@+id/editText_state"
                 app:layout_constraintTop_toBottomOf="@+id/editText_state" />
 
@@ -195,7 +195,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:text="Jaipur"
+                tools:text="Jaipur"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_district"
                 app:layout_constraintTop_toBottomOf="@+id/textView_district" />

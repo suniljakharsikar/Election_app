@@ -91,7 +91,7 @@ public class CommitteeMember extends AppCompatActivity {
                         Gson gson = new Gson();
                         CommitteMembersResponseModel c = gson.fromJson(response.toString(), CommitteMembersResponseModel.class);
 
-                        CommitteeMemberAdapter committeeMemberAdapter1 = new CommitteeMemberAdapter(CommitteeMember.this, c.getData());
+                        CommitteeMemberAdapter committeeMemberAdapter1 = new CommitteeMemberAdapter(CommitteeMember.this, c.getData(),c.getDomain_name());
                         recyclerView.setAdapter(committeeMemberAdapter1);
                     } else {
                         Toast.makeText(CommitteeMember.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

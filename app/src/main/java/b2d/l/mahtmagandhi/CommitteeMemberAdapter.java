@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,9 +23,10 @@ import java.util.List;
 public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMemberAdapter.ViewHolder> {
     private Context context;
     private List<CommitteMembersResponseModel.Data> committeeMemberData;
+    private String domain;
 
-    public CommitteeMemberAdapter(Context context, List<CommitteMembersResponseModel.Data> committeeMemberData) {
-
+    public CommitteeMemberAdapter(Context context, List<CommitteMembersResponseModel.Data> committeeMemberData, String domain_name) {
+this.domain = domain_name;
         this.context = context;
         this.committeeMemberData = committeeMemberData;
     }
@@ -48,12 +50,13 @@ public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMember
         final CommitteMembersResponseModel.Data data = committeeMemberData.get(position);
         holder.textView.setText(data.getFirstName() + " " + data.getLastName());
         holder.textView1.setText(data.getDesignation());
-        Glide.with(context).load(data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
 
+        Glide.with(context).load("https://election.suniljakhar.in/"+data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        //Toast.makeText(context, "https://election.suniljakhar.in/"+data.getImage(), Toast.LENGTH_SHORT).show();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                data.setImage("https://election.suniljakhar.in/"+data.getImage());
                 Intent intent = new Intent(holder.itemView.getContext(),CommitteeMemberDetailActivity.class);
                 intent.putExtra("data",data);
                 holder.itemView.getContext().startActivity(intent);

@@ -133,7 +133,11 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         } else {
             holder.dis.setText(Html.fromHtml(x.getDescription()));
         }
-        Glide.with(context).load(x.getImage_name()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+
+        String img = x.getImage_name();
+        if (!img.contains("https"))img = "https://"+img;
+
+        Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
 
         holder.dislike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,37 +166,37 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 notifyDataSetChanged();
             }
         });
-        holder.share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Uri uri = null;
-                    
-                     uri = Utility.INSTANCE.saveBitmap(
-                            view.getContext(),
-                            holder.imageView,
-                            Bitmap.CompressFormat.JPEG,
-                            "image/jpeg",
-                            "",
-                            "statement"
-                    );
-
-                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(),uri,view.getContext());
-
-                } catch (IOException e) {
-
-                }
-//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
-              /*  val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "Send a simple text"
-                )
-                sendIntent.type = "text/plain"
-                startActivity(sendIntent)*/
-            }
-        });
+//        holder.share.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    Uri uri = null;
+//
+//                     uri = Utility.INSTANCE.saveBitmap(
+//                            view.getContext(),
+//                            holder.imageView,
+//                            Bitmap.CompressFormat.JPEG,
+//                            "image/jpeg",
+//                            "",
+//                            "statement"
+//                    );
+//
+//                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(),uri,view.getContext());
+//
+//                } catch (IOException e) {
+//
+//                }
+////                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
+//              /*  val sendIntent = Intent()
+//                sendIntent.action = Intent.ACTION_SEND
+//                sendIntent.putExtra(
+//                        Intent.EXTRA_TEXT,
+//                        "Send a simple text"
+//                )
+//                sendIntent.type = "text/plain"
+//                startActivity(sendIntent)*/
+//            }
+//        });
     }
     private File createImageFile() throws IOException {
         // Create an image file name

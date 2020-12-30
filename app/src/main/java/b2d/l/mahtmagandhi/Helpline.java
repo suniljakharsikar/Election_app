@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +35,19 @@ public class Helpline extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     ArrayList<AddressData> addressData;
 
+    private AVLoadingIndicatorView avi;
 
+    void startAnim() {
+        avi.show();
+        avi.setVisibility(View.VISIBLE);
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim() {
+        avi.setVisibility(View.INVISIBLE);
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
 
 
 
@@ -42,6 +55,7 @@ public class Helpline extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helpline);
+        avi = findViewById(R.id.avi6);
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -62,6 +76,7 @@ public class Helpline extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                stopAnim();
                 Log.d("Helper", "onResponse: "+response);
                 try {
                     Gson gson = new Gson();
@@ -89,7 +104,7 @@ public class Helpline extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //stopAnim();
+                stopAnim();
                 Toast.makeText(Helpline.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {

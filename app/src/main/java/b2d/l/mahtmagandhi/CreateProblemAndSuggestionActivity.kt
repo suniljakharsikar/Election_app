@@ -15,7 +15,6 @@ import android.os.Environment
 import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -24,26 +23,39 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.android.volley.NetworkResponse
-
-import com.android.volley.VolleyError
+import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
     val images = arrayListOf<String>()
+    private var avi: AVLoadingIndicatorView? = null
 
+    fun startAnim() {
+        avi!!.show()
+        avi!!.visibility = View.VISIBLE
+        // or avi.smoothToShow();
+    }
+
+    fun stopAnim() {
+        avi!!.visibility = View.INVISIBLE
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_problem_and_suggestion)
+        avi = avi5
+        stopAnim()
 
         val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -84,18 +96,19 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
         else if (et_prob_sugg_title.text.isEmpty()) Toast.makeText(this, "Please write your title.", Toast.LENGTH_SHORT).show()
 
         else {
+            startAnim()
             val url = Url.baseurl + "/psuggestion_post"
 
             val client: OkHttpClient = OkHttpClient().newBuilder()
                     .build()
             val mediaType: MediaType = MediaType.parse("text/plain")!!
             val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("title",et_prob_sugg_title.text.toString() )
-                    .addFormDataPart("descritpion",  et_prob_sugg.text.toString());
+                    .addFormDataPart("title", et_prob_sugg_title.text.toString())
+                    .addFormDataPart("descritpion", et_prob_sugg.text.toString());
 
             var counter = 0
             for (i in images){
-                        bodyP.addFormDataPart("postImage["+i+"]", "p.jpg",RequestBody.create(MediaType.parse("application/octet-stream"), File(i)))
+                        bodyP.addFormDataPart("postImage[" + i + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(i)))
                         counter = counter +1 ;
             }
 
@@ -113,13 +126,24 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
           GlobalScope.async {
               val response: Response= client.newCall(request).execute()
 
+              if (response.isSuccessful){
+                  GlobalScope.launch(Dispatchers.Main) {
+
+                      et_prob_sugg_title.setText("")
+                      et_prob_sugg.setText("")
+                      images.clear()
+                      imageView_pic_create_prob.setImageDrawable(null)
+                      textView_tag_img_select.text = "Image Selected : 0"
+                      stopAnim()
+
+                  }
+              }
+
+
 
 
           }
-            images.clear()
-            textView_tag_img_select.text = "Image Selected : 0"
-            et_prob_sugg_title.setText("")
-            et_prob_sugg.setText("")
+
 
 
 

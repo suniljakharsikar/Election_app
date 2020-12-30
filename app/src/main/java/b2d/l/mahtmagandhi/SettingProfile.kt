@@ -157,7 +157,7 @@ class SettingProfile : AppCompatActivity() {
             }
         }
 
-        stopAnim()
+
         val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
@@ -180,6 +180,7 @@ class SettingProfile : AppCompatActivity() {
     }
 
     private fun fetchData(token: String) {
+        startAnim()
         // [START_EXCLUDE]
 //                            updateUI(STATE_SIGNIN_SUCCESS, user);
 //                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
@@ -195,6 +196,7 @@ class SettingProfile : AppCompatActivity() {
         }
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, jsonrequest, { response ->
             try {
+                stopAnim()
                 Log.d("Info", "fetchData: " + response)
                 val success = response.getBoolean("success")
                 if (success) {
@@ -240,6 +242,7 @@ class SettingProfile : AppCompatActivity() {
             stopAnim()
         }, { error ->
             Log.d("ashok", error.toString())
+            stopAnim()
         })
         MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
     }
@@ -270,7 +273,8 @@ class SettingProfile : AppCompatActivity() {
                         }
                     } catch (e: Exception) {
                     }
-                }) { error -> Log.d("Register", "onErrorResponse: $error") }
+                }) { error -> Log.d("Register", "onErrorResponse: $error")
+        stopAnim()}
         MySingleton.getInstance(applicationContext).addToRequestQueue(jsonObjectRequest)
     }
 

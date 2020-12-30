@@ -12,7 +12,9 @@ data class CommitteMembersResponseModel(
         @SerializedName("status_code")
     val statusCode: Int, // 200
         @SerializedName("success")
-    val success: Boolean // true
+    val success: Boolean, // true,
+        @SerializedName("domain_name")
+         val domain_name:String
 ):Parcelable {
     @Parcelize
     data class Data(
@@ -25,7 +27,7 @@ data class CommitteMembersResponseModel(
         @SerializedName("id")
         val id: Int, // 1
         @SerializedName("image")
-        val image: String, // https://www.ibts.org/wp-content/uploads/2017/08/iStock-476085198-300x300.jpg
+        var image: String, // https://www.ibts.org/wp-content/uploads/2017/08/iStock-476085198-300x300.jpg
         @SerializedName("last_name")
         val lastName: String // Agarwal
     ):Parcelable

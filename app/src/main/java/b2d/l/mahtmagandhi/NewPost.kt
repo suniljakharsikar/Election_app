@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,10 +23,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.tv_image_btn_prob_sug
 import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -35,9 +39,24 @@ import java.util.*
 
 class NewPost : AppCompatActivity() {
     var editText: EditText? = null
+    private var avi: AVLoadingIndicatorView? = null
+
+    fun startAnim() {
+        avi!!.show()
+        avi!!.visibility = View.VISIBLE
+        // or avi.smoothToShow();
+    }
+
+    fun stopAnim() {
+        avi!!.visibility = View.INVISIBLE
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
+        avi = avi4
+        stopAnim()
         editText = findViewById(R.id.et_prob_sugg)
 
         tv_image_btn_prob_sug.setOnClickListener {
@@ -87,7 +106,7 @@ class NewPost : AppCompatActivity() {
         }else{
 
 
-
+        startAnim()
             val client = OkHttpClient().newBuilder()
                     .build()
             val mediaType = MediaType.parse("text/plain")
@@ -110,12 +129,20 @@ class NewPost : AppCompatActivity() {
                     .addHeader("Content-Type", "application/json")
 
                     .build()
-            GlobalScope.async {
-                val response: Response = client.newCall(request).execute()
+           val job =  GlobalScope.async {
+               val response = client.newCall(request).execute()
+               Log.d("NewPost", "newposting: "+response.isSuccessful)
+               if (response.isSuccessful){
+                   GlobalScope.launch(Dispatchers.Main) {
+                       imageView_new_post.setImageDrawable(null)
+                       et_prob_sugg.setText("")
+                       stopAnim()
+                   }
 
+               }
 
+           }
 
-            }
         }
     }
 
