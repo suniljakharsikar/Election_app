@@ -32,6 +32,7 @@
         android:id="@+id/imageView32"
         android:layout_width="@dimen/back_dim"
         android:layout_height="@dimen/back_dim"
+        android:padding="@dimen/backpad"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:background="?android:attr/selectableItemBackground"
@@ -100,10 +101,10 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
-                tools:text="Akshay Kumar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView45" />
+                app:layout_constraintTop_toBottomOf="@+id/textView45"
+                tools:text="Akshay Kumar" />
 
             <TextView
                 android:id="@+id/textView46"
@@ -120,10 +121,10 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="phone"
-                tools:text="9900990099"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView46"
-                app:layout_constraintTop_toBottomOf="@+id/textView46" />
+                app:layout_constraintTop_toBottomOf="@+id/textView46"
+                tools:text="9900990099" />
 
             <TextView
                 android:id="@+id/textView47"
@@ -138,10 +139,10 @@
                 android:id="@+id/editText_dob_setting_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="30 August 2020 "
                 app:layout_constraintEnd_toEndOf="@+id/editTextPhone2"
                 app:layout_constraintStart_toStartOf="@+id/textView47"
-                app:layout_constraintTop_toBottomOf="@+id/textView47" />
+                app:layout_constraintTop_toBottomOf="@+id/textView47"
+                tools:text="30 August 2020 " />
 
 
             <TextView
@@ -176,29 +177,29 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                tools:text="Rajasthan"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_state"
-                app:layout_constraintTop_toBottomOf="@+id/textView_state" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_state"
+                tools:text="Rajasthan" />
 
             <TextView
                 android:id="@+id/textView_district"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                tools:text="Disctrict"
                 app:layout_constraintStart_toStartOf="@+id/editText_state"
-                app:layout_constraintTop_toBottomOf="@+id/editText_state" />
+                app:layout_constraintTop_toBottomOf="@+id/editText_state"
+                tools:text="Disctrict" />
 
             <EditText
                 android:id="@+id/editText_district"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                tools:text="Jaipur"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_district"
-                app:layout_constraintTop_toBottomOf="@+id/textView_district" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_district"
+                tools:text="Jaipur" />
 
             <TextView
                 android:id="@+id/textView48"
@@ -219,8 +220,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                app:boxBackgroundMode="filled"
                 app:boxBackgroundColor="@android:color/white"
+                app:boxBackgroundMode="filled"
                 app:layout_constraintEnd_toEndOf="@+id/editText_dob_setting_profile"
                 app:layout_constraintStart_toStartOf="@+id/textView48"
                 app:layout_constraintTop_toBottomOf="@+id/textView48">
@@ -302,12 +303,12 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/button_bg_drawable"
+                android:onClick="update"
                 android:paddingLeft="72dp"
                 android:paddingTop="8dp"
                 android:paddingRight="72dp"
                 android:paddingBottom="8dp"
                 android:text="Submit"
-                android:onClick="update"
                 android:textAllCaps="false"
                 android:textColor="@color/white_text_color"
                 android:visibility="gone"
@@ -316,34 +317,43 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/tv_edit_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/edit"
-                android:textColor="#040882"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView45"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:background="?android:attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="@+id/textView45"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView37"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:adjustViewBounds="true"
-                android:padding="2dp"
+                <ImageView
+                    android:id="@+id/imageView37"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:padding="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_edit_profile"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_edit_profile"
+                    app:layout_constraintTop_toTopOf="@+id/tv_edit_profile"
+                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:tint="#040882" />
 
-                app:layout_constraintBottom_toBottomOf="@+id/tv_edit_profile"
-                app:layout_constraintEnd_toStartOf="@+id/tv_edit_profile"
-                app:layout_constraintTop_toTopOf="@+id/tv_edit_profile"
-                app:srcCompat="@android:drawable/ic_menu_edit"
-                app:tint="#040882" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/edit"
+                    android:textColor="#040882"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/textView45"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+
 
             <ImageView
                 android:id="@+id/iv_edit_avtar_setting"
                 android:layout_width="24dp"
-
                 android:layout_height="24dp"
                 android:background="@drawable/round_bg"
                 android:padding="4dp"
