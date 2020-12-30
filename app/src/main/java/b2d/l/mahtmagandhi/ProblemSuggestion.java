@@ -66,7 +66,7 @@ public class ProblemSuggestion extends AppCompatActivity {
                     Gson gson = new Gson();
                     ProblemsResponseModel ow = gson.fromJson(response.toString(), ProblemsResponseModel.class);
                     if (ow.getSuccess()) {
-                        rvProblems.setAdapter(new ProblemSuggestionRecyclerViewAdapter(ow.getData()));
+                        rvProblems.setAdapter(new ProblemSuggestionRecyclerViewAdapter(ow.getData(),"/psuggestion_comment_list","/psuggestion_comment_post"));
                     } else {
                         Toast.makeText(ProblemSuggestion.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                         //login page

@@ -172,11 +172,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 //        sendotp(mobile);//api
         sendotpusingfirebase(mobile);//firebase otp
+        // Force reCAPTCHA flow
+//        FirebaseAuth.getInstance().getFirebaseAuthSettings().forceRecaptchaFlowForTesting(true);
     }
 
     private void sendotpusingfirebase(String phoneNumber) {
         startAnim();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
@@ -259,6 +260,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                                     // Get new FCM registration token
                                                     tokenid = task.getResult();
+                                                    Log.d("tokenid", tokenid);
 
 
                                                     // Log and toast

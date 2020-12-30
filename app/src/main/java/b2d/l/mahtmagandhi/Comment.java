@@ -118,6 +118,7 @@ public class Comment extends AppCompatActivity {
                 header.put("Content-Type", "application/json");
                 header.put("token", preferences.getString(Datas.token, ""));
                 header.put("lid", preferences.getString(Datas.lagnuage_id, "1"));
+                header.put("enc", "");
 
                 return header;
             }
