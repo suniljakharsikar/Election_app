@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +38,8 @@ import com.wang.avi.AVLoadingIndicatorView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -273,6 +274,16 @@ public class Register extends AppCompatActivity {
         int id = radioGroup.getCheckedRadioButtonId();
         RadioButton radioButton = findViewById(id);
         String gender = radioButton.getText().toString();
+
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+            Date date = formatter.parse(s5);
+            SimpleDateFormat transFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            s5 = transFormatter.format(date);
+
+        } catch (ParseException e) {
+            //e.printStackTrace();
+        }
         try {
             jsonRwquest.put("userMobile", number.getText().toString());
             jsonRwquest.put("userName", s);

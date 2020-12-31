@@ -39,14 +39,13 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
-import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
-import kotlinx.android.synthetic.main.activity_setting_profile.button_submit
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -301,7 +300,7 @@ class SettingProfile : AppCompatActivity() {
             Toast.makeText(this, "Please type name", Toast.LENGTH_SHORT).show()
             return
         }
-        val s5: String = editText_dob_setting_profile.getText().toString()
+        var s5: String = editText_dob_setting_profile.getText().toString()
         if (Register.isNullOrEmpty(s5)) {
             Toast.makeText(this, "Please type your age", Toast.LENGTH_SHORT).show()
             return
@@ -326,6 +325,14 @@ class SettingProfile : AppCompatActivity() {
         val jsonRwquest = JSONObject()
         val cityS: String
         cityS = if (actv_city_locality.text == null) "" else actv_city_locality.text.toString()
+        try {
+            val formatter = SimpleDateFormat("dd MMM yyyy")
+            val date = formatter.parse(s5)
+            val transFormatter = SimpleDateFormat("yyyy-MM-dd")
+            s5 = transFormatter.format(date)
+        } catch (e: ParseException) {
+            //e.printStackTrace();
+        }
         try {
             jsonRwquest.put("userMobile", editTextPhone2.getText().toString())
             jsonRwquest.put("userName", s)
@@ -357,7 +364,7 @@ class SettingProfile : AppCompatActivity() {
             }
             // stopAnim()
         }, Response.ErrorListener { error ->
-             stopAnim()
+            stopAnim()
             Toast.makeText(this@SettingProfile, "e= $error", Toast.LENGTH_SHORT).show()
         }) {
             override fun getHeaders(): Map<String, String> {
