@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,6 +81,15 @@ public class Comment extends AppCompatActivity {
         recyclerView.setAdapter(adapter);*/
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         passToken = getIntent().getBooleanExtra("passToken", true);
+
+        try {
+            ArrayList<ProblemsResponseModel.Data.ImageArr> imgs = getIntent().getParcelableArrayListExtra("imgs");
+
+            Log.d("Comment", "onCreate: "+imgs);
+        } catch (Exception e) {
+
+        }
+
         if (passToken) {
             Toast.makeText(this, "comming from problem", Toast.LENGTH_SHORT).show();
         }

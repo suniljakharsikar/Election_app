@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,9 @@ class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<Problem
             intent.putExtra("pos", model.id)
             intent.putExtra("url", s1)
             intent.putExtra("newposturl", s2)
+            var x = model.imageArr
+
+            intent.putExtra("imgs",x)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
             //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();

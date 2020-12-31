@@ -1,6 +1,8 @@
 package b2d.l.mahtmagandhi
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class ProblemsResponseModel(
         @SerializedName("data")
@@ -18,10 +20,11 @@ data class ProblemsResponseModel(
             @SerializedName("id")
             val id: String, // 1
             @SerializedName("imageArr")
-            val imageArr: List<ImageArr>,
+            val imageArr: ArrayList<ImageArr>,
             @SerializedName("title")
             val title: String // What is Lorem Ipsum?
     ) {
+        @Parcelize
         data class ImageArr(
                 @SerializedName("id")
                 val id: Int, // 1
@@ -29,6 +32,6 @@ data class ProblemsResponseModel(
                 val imageName: String, // election.suniljakhar.in/public/upload/problem_suggestion/764902-1604505719_profile.png
                 @SerializedName("parent_id")
                 val parentId: Int // 3
-        )
+        ):Parcelable
     }
 }
