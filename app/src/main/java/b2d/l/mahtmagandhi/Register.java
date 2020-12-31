@@ -248,7 +248,7 @@ public class Register extends AppCompatActivity {
         }
         String s5 = age.getText().toString();
         if (isNullOrEmpty(s5)) {
-            Toast.makeText(this, "Please type your age", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please type your Date of birth", Toast.LENGTH_SHORT).show();
             return;
         }
         String s1 = pincode.getText().toString();

@@ -83,7 +83,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             public void onClick(View view) {
                 try {
                     Uri uri = null;
-                    if ( Patterns.WEB_URL.matcher(x.getImage_name()).matches())
+                    if (Patterns.WEB_URL.matcher(x.getImage_name()).matches())
                         uri = Utility.INSTANCE.saveBitmap(
                                 view.getContext(),
                                 holder.imageView,
@@ -93,7 +93,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                                 "statement"
                         );
 
-                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(),uri,view.getContext());
+                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
 
                 } catch (IOException e) {
 
@@ -120,7 +120,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 intent.putExtra("pos", x.getId());
                 intent.putExtra("url", s1);
                 intent.putExtra("newposturl", s2);
-                intent.putExtra("passToken",passToken);
+                intent.putExtra("passToken", passToken);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
@@ -135,7 +135,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         }
 
         String img = x.getImage_name();
-        if (!img.contains("https"))img = "https://"+img;
+        if (img != null)
+            if (!img.contains("https")) img = "https://" + img;
 
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
 
@@ -198,6 +199,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 //            }
 //        });
     }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -214,6 +216,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 //        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
+
     private void like_dislike(int i, ChatData x) {
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();

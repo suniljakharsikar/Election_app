@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -42,6 +43,7 @@ public class Comment extends AppCompatActivity {
     EditText comment;
     private AVLoadingIndicatorView avi;
     private Boolean passToken;
+    TextView textView;
 
     void startAnim() {
         avi.show();
@@ -60,10 +62,12 @@ public class Comment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         final SliderView sliderView = findViewById(R.id.imageSlider);
+        textView = findViewById(R.id.textView30);
 
         final SliderAdapterExample adapter = new SliderAdapterExample(this);
 //        StatusBarUtil.setTransparent(this);
         avi = findViewById(R.id.avi);
+
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -82,16 +86,34 @@ public class Comment extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         passToken = getIntent().getBooleanExtra("passToken", true);
 
-        try {
-            ArrayList<ProblemsResponseModel.Data.ImageArr> imgs = getIntent().getParcelableArrayListExtra("imgs");
-
-            Log.d("Comment", "onCreate: "+imgs);
-        } catch (Exception e) {
-
-        }
 
         if (passToken) {
-            Toast.makeText(this, "comming from problem", Toast.LENGTH_SHORT).show();
+            sliderView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.VISIBLE);
+
+//            Toast.makeText(this, "comming from problem", Toast.LENGTH_SHORT).show();
+            try {
+                ArrayList<ProblemsResponseModel.Data.ImageArr> imgs = getIntent().getParcelableArrayListExtra("imgs");
+                textView.setText(getIntent().getStringExtra("dis"));
+                for (int i = 0; i < imgs.size(); i++) {
+                    adapter.addItem(new SliderItem("https://" + imgs.get(i).getImageName()));
+                }
+                sliderView.setSliderAdapter(adapter);
+
+                sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+                sliderView.setIndicatorSelectedColor(Color.WHITE);
+                sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
+                sliderView.startAutoCycle();
+                Log.d("Comment", "onCreate: " + imgs);
+            } catch (Exception e) {
+
+            }
+        } else {
+            sliderView.setVisibility(View.GONE);
+            textView.setVisibility(View.GONE);
         }
         String url = Url.baseurl + getIntent().getStringExtra("url");//"/ctalk_comments";
         JSONObject json = new JSONObject();
@@ -117,21 +139,9 @@ public class Comment extends AppCompatActivity {
                         RecyclerView.Adapter commentAdapter = new CommentAdapter(Comment.this, commentData, preferences.getInt(Datas.id, 1));
                         recyclerView.setAdapter(commentAdapter);
 
-                        JSONArray data_images = response.getJSONArray("data_images");
+//                        JSONArray data_images = response.getJSONArray("data_images");
 
-                        for (int i = 0; i < data_images.length(); i++) {
-                            adapter.addItem(new SliderItem(Url.burl + data_images.getJSONObject(i).getString("image_url")));
 
-                        }
-                        sliderView.setSliderAdapter(adapter);
-
-                        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-                        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-                        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-                        sliderView.setIndicatorSelectedColor(Color.WHITE);
-                        sliderView.setIndicatorUnselectedColor(Color.GRAY);
-                        sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
-                        sliderView.startAutoCycle();
                     } else {
                         Toast.makeText(Comment.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                         //login page

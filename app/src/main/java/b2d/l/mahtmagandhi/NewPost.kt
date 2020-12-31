@@ -52,6 +52,7 @@ class NewPost : AppCompatActivity() {
 //        avi.hide();
         // or avi.smoothToHide();
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
@@ -65,15 +66,14 @@ class NewPost : AppCompatActivity() {
         val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
-        val  camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        val camera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
         if (
                 write == PackageManager.PERMISSION_GRANTED &&
                 read == PackageManager.PERMISSION_GRANTED &&
-                        camera == PackageManager.PERMISSION_GRANTED
-        ){
+                camera == PackageManager.PERMISSION_GRANTED
+        ) {
 
-        }
-        else {
+        } else {
 
 
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA,
@@ -81,10 +81,6 @@ class NewPost : AppCompatActivity() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
             ), 120)
         }
-
-
-
-
 
 
     }
@@ -103,22 +99,22 @@ class NewPost : AppCompatActivity() {
         val s = editText!!.text.toString()
         if (isNullOrEmpty(s)) {
             Toast.makeText(this, "Please write something before post", Toast.LENGTH_SHORT).show()
-        }else{
+        } else {
 
 
-        startAnim()
+            startAnim()
             val client = OkHttpClient().newBuilder()
                     .build()
             val mediaType = MediaType.parse("text/plain")
             val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
                     .addFormDataPart("postData", s)
-                    if (currentPhotoPath.length>0)
-                        bodyp .addFormDataPart("postImage", "qr.jpg",
-                                RequestBody.create(MediaType.parse("application/octet-stream"),
-                                        File(currentPhotoPath)))
+            if (currentPhotoPath.length > 0)
+                bodyp.addFormDataPart("postImage", "qr.jpg",
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                File(currentPhotoPath)))
 
 
-                   val body = bodyp.build()
+            val body = bodyp.build()
             val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
             val request: Request = Request.Builder()
@@ -129,21 +125,26 @@ class NewPost : AppCompatActivity() {
                     .addHeader("Content-Type", "application/json")
 
                     .build()
-           val job =  GlobalScope.async {
-               val response = client.newCall(request).execute()
-               Log.d("NewPost", "newposting: "+response.isSuccessful)
-               if (response.isSuccessful){
-                   GlobalScope.launch(Dispatchers.Main) {
-                       imageView_new_post.setImageDrawable(null)
-                       et_prob_sugg.setText("")
-                       stopAnim()
-                       Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
-                       finish()
-                   }
+            val job = GlobalScope.async {
+                val response = client.newCall(request).execute()
+                Log.d("NewPost", "newposting: " + response.isSuccessful)
+                if (response.isSuccessful) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        imageView_new_post.setImageDrawable(null)
+                        et_prob_sugg.setText("")
+                        stopAnim()
+                        Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
 
-               }
+                        val intent = intent
+                        setResult(1010, intent)
+                        intent.putExtra("reload", true)
 
-           }
+                        finish()
+                    }
+
+                }
+
+            }
 
         }
     }
@@ -205,7 +206,7 @@ class NewPost : AppCompatActivity() {
     private var currentPath: String = ""
     private val REQUEST_TAKE_GPHOTO: Int = 51
     private val REQUEST_TAKE_PHOTO: Int = 50
-     var currentPhotoPath: String  = ""
+    var currentPhotoPath: String = ""
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
@@ -225,10 +226,9 @@ class NewPost : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode.equals(Activity.RESULT_OK) ) {
+        if (resultCode.equals(Activity.RESULT_OK)) {
 
             var uri = data?.data
-
 
 
             /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
@@ -243,8 +243,8 @@ class NewPost : AppCompatActivity() {
                  }
             } else{*/
             // do something for phones running an SDK before lollipop
-            if (uri!=null)
-            currentPhotoPath = PathUtil.getPath(this, uri)
+            if (uri != null)
+                currentPhotoPath = PathUtil.getPath(this, uri)
 
             var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
             if (result == null) {
@@ -341,6 +341,7 @@ class NewPost : AppCompatActivity() {
         }
 
     }
+
     val REQUEST_IMAGE_CAPTURE = 1
 
     private fun sdispatchTakePictureIntent() {
@@ -351,6 +352,7 @@ class NewPost : AppCompatActivity() {
             // display error state to the user
         }
     }
+
     private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
         startActivityForResult(
                 Intent(
@@ -364,8 +366,6 @@ class NewPost : AppCompatActivity() {
     fun addimage(view: View) {
         callm()
     }
-
-
 
 
 }
