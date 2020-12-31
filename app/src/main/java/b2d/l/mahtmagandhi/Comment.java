@@ -71,6 +71,9 @@ public class Comment extends AppCompatActivity {
         recyclerView.setAdapter(adapter);*/
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         passToken = getIntent().getBooleanExtra("passToken",false);
+        if(passToken){
+            Toast.makeText(this, "comming from problem", Toast.LENGTH_SHORT).show();
+        }
         String url = Url.baseurl + getIntent().getStringExtra("url");//"/ctalk_comments";
         JSONObject json = new JSONObject();
         try {
