@@ -1,5 +1,6 @@
 package b2d.l.mahtmagandhi;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,7 +68,8 @@ public class CommunityChat extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CommunityChat.this, NewPost.class));
+//                startActivity(new Intent(CommunityChat.this, NewPost.class));
+                startActivityForResult(new Intent(CommunityChat.this, NewPost.class), 1010);
             }
         });
         recyclerView = findViewById(R.id.rv4);
@@ -97,14 +99,21 @@ public class CommunityChat extends AppCompatActivity {
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam", 35, 6, R.drawable.comtalk3));
 */
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        reload();
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && requestCode == 1010 & data.getBooleanExtra("reload", false)) {
+            reload();
+            Toast.makeText(this, "runnind code", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void reload() {
         String url = Url.baseurl + "/ctalk_data";
         JSONObject json = new JSONObject();
         startAnim();
@@ -123,7 +132,7 @@ public class CommunityChat extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData, "/ctalk_like_unlike_post", "/ctalk_comments", "/ctalk_comments_post",false);
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, chatData, "/ctalk_like_unlike_post", "/ctalk_comments", "/ctalk_comments_post", false);
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(CommunityChat.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -158,10 +167,11 @@ public class CommunityChat extends AppCompatActivity {
             }
         };
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
     }
 
     public void back(View view) {
+
+
         finish();
     }
 }
