@@ -105,7 +105,7 @@ public class NewsUpdate extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(getBaseContext(), chatData, "/nevent_like_unlike_post", "/nevent_comments", "/nevent_comments_post", false);
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(getBaseContext(), chatData, "/nevent_like_unlike_post", "/nevent_comments", "/nevent_comments_post", false, avi);
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();

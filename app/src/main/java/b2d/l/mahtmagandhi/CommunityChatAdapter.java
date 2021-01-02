@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,9 +49,10 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     private String s1;
     private String s2;
     private Boolean passToken;
+    private AVLoadingIndicatorView avi;
 
 
-    public CommunityChatAdapter(Context context, ArrayList<ChatData> chatData, String s, String s1, String s2, boolean pass) {
+    public CommunityChatAdapter(Context context, ArrayList<ChatData> chatData, String s, String s1, String s2, boolean pass, AVLoadingIndicatorView avi) {
 
         this.context = context;
         this.chatData = chatData;
@@ -58,6 +60,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         this.s1 = s1;
         this.s2 = s2;
         this.passToken = pass;
+        this.avi = avi;
     }
 
     @NonNull
@@ -147,10 +150,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                     Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(2, x);
-                x.setDislike(x.getDislike() + 1);
-                x.setUnlikeStatus(1);
-                notifyDataSetChanged();
+                like_dislike(2, x, holder.dilikes);
+
             }
         });
 
@@ -161,10 +162,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                     Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(1, x);
-                x.setLikes(x.getLikes() + 1);
-                x.setLikeStatus(1);
-                notifyDataSetChanged();
+                like_dislike(1, x, holder.likes);
+
             }
         });
 //        holder.share.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +216,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         return image;
     }
 
-    private void like_dislike(int i, ChatData x) {
+    private void like_dislike(int i, ChatData x, TextView position) {
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();
         try {
@@ -227,12 +226,33 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        if (avi != null) {
+            avi.setVisibility(View.VISIBLE);
+        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     if (response.getBoolean("success")) {
-                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        if (i == 1) {
+                            x.setLikes(x.getLikes() + 1);
+                            x.setLikeStatus(1);
+//                            notifyDataSetChanged();
+//                            notifyItemChanged(position);
+                            position.setText(x.getLikes() + "");
+                            if (avi != null)
+                                avi.setVisibility(View.INVISIBLE);
+                        }
+                        if (i == 2) {
+                            x.setDislike(x.getDislike() + 1);
+                            x.setUnlikeStatus(1);
+//                            notifyItemChanged(position);
+                            position.setText(x.getDislike() + "");
+                            if (avi != null)
+                                avi.setVisibility(View.INVISIBLE);
+
+                        }
+//                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
 
                         //// TODO: 19/12/20 refresh number of likes
                     } else {

@@ -32,11 +32,11 @@
         android:id="@+id/imageView32"
         android:layout_width="@dimen/back_dim"
         android:layout_height="@dimen/back_dim"
-        android:padding="@dimen/backpad"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="back"
+        android:padding="@dimen/backpad"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar17"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -103,8 +103,7 @@
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView45"
-                tools:text="Akshay Kumar" />
+                app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
             <TextView
                 android:id="@+id/textView46"
@@ -123,8 +122,7 @@
                 android:inputType="phone"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView46"
-                app:layout_constraintTop_toBottomOf="@+id/textView46"
-                tools:text="9900990099" />
+                app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
             <TextView
                 android:id="@+id/textView47"
@@ -141,8 +139,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPhone2"
                 app:layout_constraintStart_toStartOf="@+id/textView47"
-                app:layout_constraintTop_toBottomOf="@+id/textView47"
-                tools:text="30 August 2020 " />
+                app:layout_constraintTop_toBottomOf="@+id/textView47" />
 
 
             <TextView
@@ -179,8 +176,7 @@
                 android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_state"
-                app:layout_constraintTop_toBottomOf="@+id/textView_state"
-                tools:text="Rajasthan" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_state" />
 
             <TextView
                 android:id="@+id/textView_district"
@@ -198,8 +194,7 @@
                 android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_district"
-                app:layout_constraintTop_toBottomOf="@+id/textView_district"
-                tools:text="Jaipur" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_district" />
 
             <TextView
                 android:id="@+id/textView48"

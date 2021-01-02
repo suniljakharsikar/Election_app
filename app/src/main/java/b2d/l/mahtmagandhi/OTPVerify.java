@@ -119,7 +119,7 @@ public class OTPVerify extends AppCompatActivity {
                 super.onCodeSent(s, forceResendingToken);
                 stopAnim();
 //                mVerificationId = s;
-                Toast.makeText(OTPVerify.this, "code sent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OTPVerify.this, "PTO sent successfully", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(OTPVerify.this, OTPVerify.class);
 //                intent.putExtra("mobile", mobile);
 //                intent.putExtra("forceResendingToken", forceResendingToken);

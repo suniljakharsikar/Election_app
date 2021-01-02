@@ -75,6 +75,7 @@ public class Comment extends AppCompatActivity {
         }*/
         recyclerView = findViewById(R.id.rv_comment);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setNestedScrollingEnabled(false);
         comment = findViewById(R.id.editTextTextMultiLine2);
         /*ArrayList<CommentData> data = new ArrayList<>();
         data.add(new CommentData("Pankaj Choudhary ", "Lorem ipsum dolor sit amet, "));
@@ -187,7 +188,7 @@ public class Comment extends AppCompatActivity {
         return true;
     }
 
-    public void newpost(View view) {
+    public void newcomment(View view) {
         String s = comment.getText().toString();
         if (isNullOrEmpty(s)) {
             Toast.makeText(this, "Please type comment first", Toast.LENGTH_SHORT).show();
@@ -217,8 +218,8 @@ public class Comment extends AppCompatActivity {
                         RecyclerView.Adapter adapter = new CommentAdapter(Comment.this, commentData, preferences.getInt(Datas.id, 1));
                         recyclerView.setAdapter(adapter);
                         comment.setText("");
-                    }
-                    Toast.makeText(Comment.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(Comment.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
