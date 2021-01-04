@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="b2d.l.mahtmagandhi">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -56,6 +57,7 @@
         <activity android:name=".Register" />
         <activity android:name=".OTPVerify" />
         <activity android:name=".LoginActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="b2d.l.mahtmagandhi.fileprovider"

@@ -2,6 +2,9 @@ package b2d.l.mahtmagandhi
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,10 +25,7 @@ import android.text.method.DigitsKeyListener
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,16 +35,24 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
+import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
+import kotlinx.android.synthetic.main.activity_setting_profile.button_submit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
-import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,6 +61,7 @@ import java.util.*
 class SettingProfile : AppCompatActivity() {
 
 
+    private lateinit var myCalendar: Calendar
     private var avi: AVLoadingIndicatorView? = null
 
     fun startAnim() {
@@ -120,8 +129,8 @@ class SettingProfile : AppCompatActivity() {
                 })
 
 
-        var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup)
-        tv_edit_profile.setOnClickListener {
+        var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup_gender)
+        materialButton_edit_setting_profie.setOnClickListener {
 
             button_submit.visibility = View.VISIBLE
             // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
@@ -138,21 +147,39 @@ class SettingProfile : AppCompatActivity() {
             //editText_dob_setting_profile.inputType = InputType.TYPE_CLASS_TEXT
             editText_state.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
             editText_district.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
-            editText_dob_setting_profile.setOnClickListener {
-                /* val d: DialogFragment = DatePickerFragment(editText_dob_setting_profile)
-                 d.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppTheme)
-
-                 d.show(supportFragmentManager, "date")*/
-                val dp = MaterialDatePicker.Builder.datePicker().build()
-                dp.addOnPositiveButtonClickListener {
-                    val date = Date(it)
-                    val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
-                    //formatter.setTimeZone(TimeZone.getTimeZone(""))
-                    val dateFormatted: String = formatter.format(date)
-                    editText_dob_setting_profile.setText(dateFormatted)
-                }
-                dp.show(supportFragmentManager, "date")
+            myCalendar = Calendar.getInstance()
+            val date = OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year)
+                myCalendar.set(Calendar.MONTH, monthOfYear)
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateLabel()
             }
+            editText_dob_setting_profile.setOnClickListener(View.OnClickListener { /*new DatePickerDialog(Register.this, date,myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH) ).show();*/
+                val datepickerdialog = DatePickerDialog(this@SettingProfile,
+                        AlertDialog.THEME_HOLO_DARK, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH))
+                datepickerdialog.show()
+                /*  DatePickerFragment d =new   DatePickerFragment(age);
+                d.setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);
+
+               d.show(getSupportFragmentManager(),"date");*/
+                /*MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
+
+                dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long it) {
+                        Date date = new Date(it);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+                        //formatter.setTimeZone(TimeZone.getTimeZone(""))
+                        String dateFormatted = formatter.format(date);
+                        age.setText(dateFormatted);
+                    }
+                });
+                dp.show(getSupportFragmentManager(), "date");*/
+            })
         }
 
 
@@ -176,6 +203,11 @@ class SettingProfile : AppCompatActivity() {
         }
     }
 
+    private fun updateLabel() {
+        val myFormat = "dd MMM yyyy" //In which you need put here
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        editText_dob_setting_profile.setText(sdf.format(myCalendar.time))
+    }
     private fun fetchData(token: String) {
         startAnim()
         // [START_EXCLUDE]
@@ -321,6 +353,7 @@ class SettingProfile : AppCompatActivity() {
             return
         }
         startAnim()
+
         val url = Url.baseurl + "/update_profile"
         val jsonRwquest = JSONObject()
         val cityS: String
@@ -336,6 +369,12 @@ class SettingProfile : AppCompatActivity() {
         try {
             jsonRwquest.put("userMobile", editTextPhone2.getText().toString())
             jsonRwquest.put("userName", s)
+
+            try {
+                val r = findViewById<RadioButton>(radioGroup_gender.checkedRadioButtonId)
+                jsonRwquest.put("gender", r.text.toString())
+            } catch (e: Exception) {
+            }
             //val x = s5.toInt()
             jsonRwquest.put("userAge", s5)
             jsonRwquest.put("userPostalCode", s1)
@@ -352,12 +391,7 @@ class SettingProfile : AppCompatActivity() {
                 val success = response.getBoolean("success")
                 Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                 if (success) {
-                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
-                    val editor = preferences.edit()
-                    editor.putBoolean(Datas.registration, true)
-                    editor.apply()
-                    startActivity(Intent(this@SettingProfile, Language::class.java))
-                    finish()
+                    newposting()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -526,6 +560,7 @@ class SettingProfile : AppCompatActivity() {
     }
 
     private fun setPic(requestCode: Int) {
+
         // Get the dimensions of the View
         var imageView: ImageView = profile_image
 
@@ -604,4 +639,50 @@ class SettingProfile : AppCompatActivity() {
 
     }
 
-}
+
+    fun newposting() {
+
+
+            startAnim()
+            val client = OkHttpClient().newBuilder()
+                    .build()
+            val mediaType = MediaType.parse("text/plain")
+            val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
+
+            if (currentPhotoPath.length > 0)
+                bodyp.addFormDataPart("'profileImage", "profile.jpg",
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                File(currentPhotoPath)))
+
+
+            val body = bodyp.build()
+            val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+            val request: okhttp3.Request = okhttp3.Request.Builder()
+                    .url("https://election.suniljakhar.in/api/profile_image")
+                    .method("POST", body)
+                    .addHeader("token", preferences.getString(Datas.token, "")!!)
+                    .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                    .addHeader("Content-Type", "application/json")
+
+                    .build()
+            val job = GlobalScope.async {
+                val response = client.newCall(request).execute()
+                Log.d("NewPost", "newposting: " + response.isSuccessful)
+                if (response.isSuccessful) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        profile_image.setImageDrawable(null)
+
+                        Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                        stopAnim()
+
+                    }
+                }
+                stopAnim()
+            }
+
+        }
+
+
+    }
+

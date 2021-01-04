@@ -5,8 +5,6 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -23,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.tv_image_btn_prob_sug
 import kotlinx.android.synthetic.main.activity_new_post.*
@@ -81,6 +81,8 @@ class NewPost : AppCompatActivity() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
             ), 120)
         }
+        rv_imgs_new_post.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
 
 
     }
@@ -132,22 +134,24 @@ class NewPost : AppCompatActivity() {
                     GlobalScope.launch(Dispatchers.Main) {
                         imageView_new_post.setImageDrawable(null)
                         et_prob_sugg.setText("")
-                        stopAnim()
-                        Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
 
+                        Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                        stopAnim()
                         val intent = intent
                         setResult(1010, intent)
                         intent.putExtra("reload", true)
 
                         finish()
                     }
-
                 }
-
+                stopAnim()
             }
 
         }
+
+
     }
+
 
     companion object {
         fun isNullOrEmpty(str: String?): Boolean {
@@ -225,69 +229,95 @@ class NewPost : AppCompatActivity() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+
+        if(requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK) {
+                if(data?.getClipData() != null) {
+                    var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    Toast.makeText(this, ""+count+"", Toast.LENGTH_SHORT).show()
+                    val list = mutableListOf<Uri>()
+                    for(i in 0..count-1) {
+                        val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();
+                            list.add(imageUri)
+                    }
+                   // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
+                    rv_imgs_new_post.adapter = ImagesRecyclerViewAdapter(list)
+                    //do something with the image (save it to some directory or whatever you need to do with it here)
+                }
+            } else if(data?.getData() != null) {
+                val imagePath = data.getData()!!.getPath();
+                //do something with the image (save it to some directory or whatever you need to do with it here)
+            }
+        }
+
+
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode.equals(Activity.RESULT_OK)) {
+    }    /*try {
+            if (resultCode.equals(Activity.RESULT_OK)) {
 
-            var uri = data?.data
+                var uri = data?.data
 
 
-            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                // Do something for lollipop and above versions
-                val file = File(uri!!.path) //create path from uri
-                 if (file.path.contains(":")) {
-                     val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
+                *//*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                    // Do something for lollipop and above versions
+                    val file = File(uri!!.path) //create path from uri
+                     if (file.path.contains(":")) {
+                         val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
 
-                     currentPhotoPath = split[1]
-                 }else{
-                     currentPhotoPath =file.path
-                 }
-            } else{*/
-            // do something for phones running an SDK before lollipop
-            if (uri != null)
-                currentPhotoPath = PathUtil.getPath(this, uri)
+                         currentPhotoPath = split[1]
+                     }else{
+                         currentPhotoPath =file.path
+                     }
+                } else{*//*
+                // do something for phones running an SDK before lollipop
+                if (uri != null)
+                    currentPhotoPath = PathUtil.getPath(this, uri)
 
-            var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
-            if (result == null) {
-                val file = File(uri!!.path) //create path from uri
-                if (file.path.contains(":")) {
-                    val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
-
-                    currentPhotoPath = split[1]
-                } else currentPhotoPath = file.absolutePath
-                result = BitmapFactory.decodeFile(currentPhotoPath)
+                var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
                 if (result == null) {
-                    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+                    val file = File(uri!!.path) //create path from uri
+                    if (file.path.contains(":")) {
+                        val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
 
-                    val cursor: Cursor? = getContentResolver()?.query(
-                            uri,
-                            filePathColumn, null, null, null
-                    )
-                    cursor?.moveToFirst()
+                        currentPhotoPath = split[1]
+                    } else currentPhotoPath = file.absolutePath
+                    result = BitmapFactory.decodeFile(currentPhotoPath)
+                    if (result == null) {
+                        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
-                    val columnIndex: Int? = cursor?.getColumnIndex(filePathColumn[0])
-                    currentPhotoPath = columnIndex?.let { cursor?.getString(it) }.toString()
-                    cursor?.close()
+                        val cursor: Cursor? = getContentResolver()?.query(
+                                uri,
+                                filePathColumn, null, null, null
+                        )
+                        cursor?.moveToFirst()
+
+                        val columnIndex: Int? = cursor?.getColumnIndex(filePathColumn[0])
+                        currentPhotoPath = columnIndex?.let { cursor?.getString(it) }.toString()
+                        cursor?.close()
+                    }
+
+                    result = BitmapFactory.decodeFile(currentPhotoPath)
+
+
                 }
 
-                result = BitmapFactory.decodeFile(currentPhotoPath)
+                //   BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?
+                //}
 
 
             }
-
-            //   BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?
-            //}
-
-
+        } catch (e: Exception) {
         }
-        setPic(requestCode)
+        setPic(requestCode)*/
 
 
-    }
+
 
     private fun setPic(requestCode: Int) {
         // Get the dimensions of the View
         var imageView: ImageView = imageView_new_post
-
+        imageView_new_post.visibility = View.VISIBLE
         val targetW: Int = imageView.width
         val targetH: Int = imageView.height
 
@@ -353,19 +383,27 @@ class NewPost : AppCompatActivity() {
         }
     }
 
-    private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
-        startActivityForResult(
-                Intent(
-                        Intent.ACTION_PICK,
-                        MediaStore.Images.Media.INTERNAL_CONTENT_URI
-                ), requestTakePhotoCode
-        )
+    var PICK_IMAGE_MULTIPLE = 1
+    var imageEncoded: String? = null
+    var imagesEncodedList: java.util.ArrayList<String>? = arrayListOf()
 
+    val OPEN_MEDIA_PICKER = 21
+
+    private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
+
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
     }
 
     fun addimage(view: View) {
-        callm()
+        //callm()
     }
 
-
 }
+
+
+
+

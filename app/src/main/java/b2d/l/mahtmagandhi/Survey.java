@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +32,19 @@ public class Survey extends AppCompatActivity {
     RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
 
+    private AVLoadingIndicatorView avi = null;
 
+    void startAnim() {
+        avi.show();
+        avi.setVisibility(View.VISIBLE);
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim() {
+        avi.setVisibility(View.INVISIBLE);
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +55,7 @@ public class Survey extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
         recyclerView = findViewById(R.id.rv4);
+        avi = findViewById(R.id.avi9);
 // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -51,6 +65,7 @@ public class Survey extends AppCompatActivity {
     }
 
     private void fetchData() {
+        startAnim();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 
@@ -60,6 +75,7 @@ public class Survey extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                stopAnim();
                 try {
                     Gson gson = new Gson();
                     SurveyResponseModel s = gson.fromJson(response.toString(), SurveyResponseModel.class);
@@ -86,7 +102,7 @@ public class Survey extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //stopAnim();
+                stopAnim();
                 Toast.makeText(Survey.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {

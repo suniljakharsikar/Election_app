@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">Mahtma Gandhi</string>
-    <string name="edit"><u>
-        Edit
-    </u></string>
+    <string name="edit">Edit</string>
 </resources>
