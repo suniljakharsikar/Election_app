@@ -23,8 +23,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.*
+import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.et_prob_sugg
+import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.tv_image_btn_prob_sug
+import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.fragment_image_picker_bottom_sheet.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -32,11 +37,13 @@ import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.File
 import java.io.IOException
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
+    private  var imageAdapter: ImagesRecyclerViewAdapter? = null
     val images = arrayListOf<String>()
     private var avi: AVLoadingIndicatorView? = null
 
@@ -80,6 +87,8 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
             dialog.show(supportFragmentManager, "pic")
         }
 
+        recyclerView_imgs_problem.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
     }
 
     fun back(view: View) {
@@ -107,8 +116,8 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                     .addFormDataPart("descritpion", et_prob_sugg.text.toString());
 
             var counter = 0
-            for (i in images){
-                        bodyP.addFormDataPart("postImage[" + i + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(i)))
+            for (i in imageAdapter!!.imagesEncodedList){
+                        bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(i,this)!!)))
                         counter = counter +1 ;
             }
 
@@ -257,7 +266,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     private var currentPath: String = ""
     private val REQUEST_TAKE_GPHOTO: Int = 51
     private val REQUEST_TAKE_PHOTO: Int = 50
-    lateinit var currentPhotoPath: String
+     var currentPhotoPath: String = ""
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
@@ -276,7 +285,26 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode.equals(Activity.RESULT_OK) && requestCode > 5) {
+        if(requestCode == REQUEST_TAKE_GPHOTO) {
+            if(resultCode == Activity.RESULT_OK) {
+                if(data?.getClipData() != null) {
+                    var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
+                    Toast.makeText(this, ""+count+"", Toast.LENGTH_SHORT).show()
+                    val list = mutableListOf<Uri>()
+                    for(i in 0..count-1) {
+                        val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();
+                        list.add(imageUri)
+                    }
+                    imageAdapter = ImagesRecyclerViewAdapter(list)
+                    // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
+                    recyclerView_imgs_problem.adapter = imageAdapter
+                    //do something with the image (save it to some directory or whatever you need to do with it here)
+                }
+            } else if(data?.getData() != null) {
+                val imagePath = data.getData()!!.getPath();
+                //do something with the image (save it to some directory or whatever you need to do with it here)
+            }
+        }else if (resultCode.equals(Activity.RESULT_OK) && requestCode == REQUEST_TAKE_PHOTO) {
             val uri:Uri? = data?.data
 
             /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
@@ -324,10 +352,10 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
             //   BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?
             //}
-
+            //setPic(requestCode)
 
         }
-        setPic(requestCode)
+
 
 
     }
@@ -393,12 +421,18 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     }
 
     private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
-        startActivityForResult(
+        /*startActivityForResult(
                 Intent(
                         Intent.ACTION_PICK,
                         MediaStore.Images.Media.INTERNAL_CONTENT_URI
                 ), requestTakePhotoCode
-        )
+        )*/
+
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestTakePhotoCode)
 
     }
 

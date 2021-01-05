@@ -1,5 +1,7 @@
 package b2d.l.mahtmagandhi
 
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RequestAppointmentActivity : AppCompatActivity() {
+    private lateinit var myCalendar: Calendar
     private var aptId: Int = 0
     private var avi: AVLoadingIndicatorView? = null
 
@@ -46,16 +49,37 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
         stopAnim()
 
+        myCalendar = Calendar.getInstance()
+        val date = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year)
+            myCalendar.set(Calendar.MONTH, monthOfYear)
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateLabel()
+        }
+
+
         tie_appointment_date_book_app.setOnClickListener {
-            val dp =   MaterialDatePicker.Builder.datePicker().build()
+            val datepickerdialog = DatePickerDialog(this@RequestAppointmentActivity,
+                    AlertDialog.THEME_HOLO_DARK, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH))
+
+            datepickerdialog.datePicker.minDate = System.currentTimeMillis() - 1000
+
+            datepickerdialog.show()
+
+            /*val dp =   MaterialDatePicker.Builder.datePicker().build()
             dp.addOnPositiveButtonClickListener {
                 val date = Date(it)
                 val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
                 //formatter.setTimeZone(TimeZone.getTimeZone(""))
                 val dateFormatted: String = formatter.format(date)
                 tie_appointment_date_book_app.setText(dateFormatted)
+
+
+
             }
-            dp.show(supportFragmentManager, "date")
+            dp.show(supportFragmentManager, "date")*/
         }
 
         tie_appointment_date_book_app.addTextChangedListener(object:TextWatcher{
@@ -85,7 +109,13 @@ class RequestAppointmentActivity : AppCompatActivity() {
         }
 
     }
+    private fun updateLabel() {
+        val myFormat = "dd MMM yyyy" //In which you need put here
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
 
+            tie_appointment_date_book_app.setText(sdf.format(myCalendar.time))
+
+    }
     private fun validDateCheck(date: String) {
         startAnim()
         val url = Url.baseurl + "/appt_time_slot_list"

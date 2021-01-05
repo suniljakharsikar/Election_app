@@ -1,10 +1,9 @@
 package b2d.l.mahtmagandhi;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,20 +17,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.gson.Gson;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -41,6 +36,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -106,33 +102,11 @@ public class Register extends AppCompatActivity {
         state.setText(preferences.getString(Datas.user_state, ""));
         distirct.setText(preferences.getString(Datas.user_district, ""));
         city.setText(preferences.getString(Datas.user_village,""),false);
-        radioGroup = findViewById(R.id.radioGroup);
+        radioGroup = findViewById(R.id.radioGroup_gender);
 //        city.setText(preferences.getString(Datas.user_village, ""));
         stopAnim();
 
         myCalendar = Calendar.getInstance();
-        age.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-              /*  DatePickerFragment d =new   DatePickerFragment(age);
-                d.setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);
-
-               d.show(getSupportFragmentManager(),"date");*/
-                MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
-                dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-                    @Override
-                    public void onPositiveButtonClick(Long it) {
-                        Date date = new Date(it);
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-                        //formatter.setTimeZone(TimeZone.getTimeZone(""))
-                        String dateFormatted = formatter.format(date);
-                        age.setText(dateFormatted);
-                    }
-                });
-                dp.show(getSupportFragmentManager(), "date");
-            }
-        });
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -144,6 +118,38 @@ public class Register extends AppCompatActivity {
                 updateLabel();
             }
         };
+        age.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*new DatePickerDialog(Register.this, date,myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH) ).show();*/
+                DatePickerDialog datepickerdialog = new DatePickerDialog(Register.this,
+                        AlertDialog.THEME_HOLO_DARK,date,myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+
+                datepickerdialog.show();
+              /*  DatePickerFragment d =new   DatePickerFragment(age);
+                d.setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);
+
+               d.show(getSupportFragmentManager(),"date");*/
+                /*MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
+
+                dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long it) {
+                        Date date = new Date(it);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+                        //formatter.setTimeZone(TimeZone.getTimeZone(""))
+                        String dateFormatted = formatter.format(date);
+                        age.setText(dateFormatted);
+                    }
+                });
+                dp.show(getSupportFragmentManager(), "date");*/
+            }
+        });
+
 
         pincode.addTextChangedListener(new TextWatcher() {
                                            @Override
@@ -173,9 +179,9 @@ public class Register extends AppCompatActivity {
         });*/
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "dd MMM yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         age.setText(sdf.format(myCalendar.getTime()));
     }
@@ -369,6 +375,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void fetchLoc(String s) {
+        Utility.INSTANCE.hideKeyboard(this);
         startAnim();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/" + s, new Response.Listener<String>() {
             @Override

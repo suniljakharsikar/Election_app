@@ -109,17 +109,21 @@ public class CommunityChat extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && requestCode == 1010 & data.getBooleanExtra("reload", false)) {
             reload();
-            Toast.makeText(this, "runnind code", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "runnind code", Toast.LENGTH_SHORT).show();
         }
     }
 
+
+
     private void reload() {
+        startAnim();
         String url = Url.baseurl + "/ctalk_data";
         JSONObject json = new JSONObject();
         startAnim();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                //stopAnim();
                 Log.d("ashok_chat", response.toString());
 
                 try {

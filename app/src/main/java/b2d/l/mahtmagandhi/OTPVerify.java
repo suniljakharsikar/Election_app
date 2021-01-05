@@ -420,6 +420,7 @@ public class OTPVerify extends AppCompatActivity {
             if (isAllEditTextsFilled() && isLast) { // isLast is optional
                 editTexts[currentIndex].clearFocus();
                 hideKeyboard();
+
             }
         }
 

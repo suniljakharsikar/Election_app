@@ -119,6 +119,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="phone"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView46"
@@ -137,6 +138,7 @@
                 android:id="@+id/editText_dob_setting_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPhone2"
                 app:layout_constraintStart_toStartOf="@+id/textView47"
                 app:layout_constraintTop_toBottomOf="@+id/textView47" />
@@ -174,6 +176,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_state"
                 app:layout_constraintTop_toBottomOf="@+id/textView_state" />
@@ -185,13 +188,14 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="@+id/editText_state"
                 app:layout_constraintTop_toBottomOf="@+id/editText_state"
-                tools:text="Disctrict" />
+                android:text="District" />
 
             <EditText
                 android:id="@+id/editText_district"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:enabled="false"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_district"
                 app:layout_constraintTop_toBottomOf="@+id/textView_district" />
@@ -239,7 +243,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_city_setting_profile" />
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/radioGroup_gender"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -281,10 +285,10 @@
                 android:adjustViewBounds="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@+id/radioGroup"
+                app:layout_constraintEnd_toEndOf="@+id/radioGroup_gender"
                 app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintStart_toStartOf="@+id/radioGroup"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+                app:layout_constraintStart_toStartOf="@+id/radioGroup_gender"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup_gender"
                 app:srcCompat="@drawable/submit1" />
 
             <Button
@@ -310,40 +314,24 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup_gender" />
 
 
-            <LinearLayout
-                android:id="@+id/tv_edit_profile"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButton_edit_setting_profie"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                app:layout_constraintBottom_toBottomOf="@+id/textView45"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <ImageView
-                    android:id="@+id/imageView37"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:adjustViewBounds="true"
-                    android:padding="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_edit_profile"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_edit_profile"
-                    app:layout_constraintTop_toTopOf="@+id/tv_edit_profile"
-                    app:srcCompat="@android:drawable/ic_menu_edit"
-                    app:tint="#040882" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:text="@string/edit"
-                    android:textColor="#040882"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/textView45"
-                    app:layout_constraintEnd_toEndOf="parent" />
-            </LinearLayout>
+                android:drawableLeft="@drawable/ic_baseline_edit_24"
+                android:insetLeft="0dp"
+                android:paddingStart="0dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text="@string/edit"
+                app:layout_constraintBottom_toTopOf="@+id/editTextPersonName2"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_conversion_absoluteHeight="48dp"
+                tools:layout_conversion_absoluteWidth="88dp" />
 
 
             <ImageView
