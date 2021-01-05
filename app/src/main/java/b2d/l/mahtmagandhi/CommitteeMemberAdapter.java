@@ -26,7 +26,7 @@ public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMember
     private String domain;
 
     public CommitteeMemberAdapter(Context context, List<CommitteMembersResponseModel.Data> committeeMemberData, String domain_name) {
-this.domain = domain_name;
+        this.domain = domain_name;
         this.context = context;
         this.committeeMemberData = committeeMemberData;
     }
@@ -50,15 +50,15 @@ this.domain = domain_name;
         final CommitteMembersResponseModel.Data data = committeeMemberData.get(position);
         holder.textView.setText(data.getFirstName() + " " + data.getLastName());
         holder.textView1.setText(data.getDesignation());
-
-        Glide.with(context).load("https://election.suniljakhar.in/"+data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        data.setImage(Url.burl + data.getImage());
+        Glide.with(context).load(data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         //Toast.makeText(context, "https://election.suniljakhar.in/"+data.getImage(), Toast.LENGTH_SHORT).show();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data.setImage("https://election.suniljakhar.in/"+data.getImage());
-                Intent intent = new Intent(holder.itemView.getContext(),CommitteeMemberDetailActivity.class);
-                intent.putExtra("data",data);
+                data.setImage(data.getImage());
+                Intent intent = new Intent(holder.itemView.getContext(), CommitteeMemberDetailActivity.class);
+                intent.putExtra("data", data);
                 holder.itemView.getContext().startActivity(intent);
             }
         });

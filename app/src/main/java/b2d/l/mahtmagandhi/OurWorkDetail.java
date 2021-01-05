@@ -30,7 +30,7 @@ public class OurWorkDetail extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
 
-        OurWorkResponseModel.Data data= getIntent().getParcelableExtra("data");
+        OurWorkResponseModel.Data data = getIntent().getParcelableExtra("data");
         SliderView sliderView = findViewById(R.id.imageSlider);
 
         SliderAdapterExample adapter = new SliderAdapterExample(this);
@@ -39,11 +39,11 @@ public class OurWorkDetail extends AppCompatActivity {
         ArrayList<SliderItem> list = new ArrayList<>();
         for (int i = 0; i < imgs.size(); i++) {
             OurWorkResponseModel.Data.DataImage img = imgs.get(i);
-            if (img.getImageUrl().length()>0) {
-                list.add(new SliderItem(img.getImageUrl()));
-                Log.d("OurWorkDetail", "onCreate: imageUrl"+img.getImageUrl());
-            }else{
-                Log.d("OurWorkDetail", "onCreate: imageName"+img.getImageName());
+            if (img.getImageUrl().length() > 0) {
+                list.add(new SliderItem(Url.burl + img.getImageUrl()));
+                Log.d("OurWorkDetail", "onCreate: imageUrl" + img.getImageUrl());
+            } else {
+                Log.d("OurWorkDetail", "onCreate: imageName" + img.getImageName());
 
                 list.add(new SliderItem(img.getImageName()));
 
@@ -66,6 +66,7 @@ public class OurWorkDetail extends AppCompatActivity {
         sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
         sliderView.startAutoCycle();
     }
+
     public void back(View view) {
         finish();
     }

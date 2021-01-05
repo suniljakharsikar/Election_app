@@ -72,7 +72,12 @@ public class Home extends AppCompatActivity {
         findViewById(R.id.imageView_noti_home).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), NotificationActivity.class));
+                Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+//                startActivity(new Intent(getBaseContext(), NotificationActivity.class));
+//                finish();
 
             }
         });

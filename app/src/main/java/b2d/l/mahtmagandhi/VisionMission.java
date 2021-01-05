@@ -74,6 +74,7 @@ public class VisionMission extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("ashok_vison", response.toString());
                 try {
                     if (response.getBoolean("success")) {
 //                        Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -93,7 +94,7 @@ public class VisionMission extends AppCompatActivity {
                         String s = jsonObject1.getString("image_url");
                         Log.d("ashok url", s);
 
-                        Glide.with(VisionMission.this).load(s).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+                        Glide.with(VisionMission.this).load(Url.burl + s).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
                     } else {
                         Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                         //login page

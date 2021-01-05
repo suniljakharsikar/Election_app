@@ -74,6 +74,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        /*if (getIntent().hasExtra("from")) {
+            Toast.makeText(this, "has extra", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, NotificationActivity.class));
+//            finish()l
+
+        }*/
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -165,6 +176,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void submit(View view) {
+//        Toast.makeText(this, "testing", Toast.LENGTH_SHORT).show();
         mobile = editText.getText().toString();
         if (mobile.length() != 10) {
             Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
@@ -172,8 +184,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 //        sendotp(mobile);//api
         sendotpusingfirebase(mobile);//firebase otp
-        // Force reCAPTCHA flow
-//        FirebaseAuth.getInstance().getFirebaseAuthSettings().forceRecaptchaFlowForTesting(true);
     }
 
     private void sendotpusingfirebase(String phoneNumber) {

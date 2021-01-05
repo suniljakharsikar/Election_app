@@ -13,4 +13,5 @@
     <color name="book">#03CC75</color>
     <color name="pending">#FFF821</color>
     <color name="expired">#BEBEBE</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -217,6 +217,7 @@ public class Language extends AppCompatActivity {
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Language.this);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putBoolean(Datas.language_selected, true);
+                        editor.putString(Datas.lagnuage_id, index);
                         editor.apply();
                         startActivity(new Intent(Language.this, Home.class));
                         finish();

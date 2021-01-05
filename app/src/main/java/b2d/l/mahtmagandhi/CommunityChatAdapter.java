@@ -81,6 +81,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final ChatData x = chatData.get(position);
+        holder.username.setText(x.getTitle());
         holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +140,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
         String img = x.getImage_name();
         if (img != null)
-            if (!img.contains("https")) img = "https://" + img;
+            if (!img.contains("https")) img = Url.http + img;
 
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
 
@@ -150,7 +151,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                     Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(2, x, holder.dilikes);
+                like_dislike(2, x, holder.likes, holder.dilikes);
 
             }
         });
@@ -162,7 +163,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                     Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(1, x, holder.likes);
+                like_dislike(1, x, holder.likes, holder.dilikes);
 
             }
         });
@@ -216,7 +217,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         return image;
     }
 
-    private void like_dislike(int i, ChatData x, TextView position) {
+    private void like_dislike(int i, ChatData x, TextView likes, TextView dilikes) {
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();
         try {
@@ -234,12 +235,18 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             public void onResponse(JSONObject response) {
                 try {
                     if (response.getBoolean("success")) {
-                        if (i == 1) {
+                        if (i == 1) {//like increase
                             x.setLikes(x.getLikes() + 1);
                             x.setLikeStatus(1);
 //                            notifyDataSetChanged();
 //                            notifyItemChanged(position);
-                            position.setText(x.getLikes() + "");
+                            likes.setText(x.getLikes() + "");
+                            if (x.getUnlikeStatus() == 1) {
+                                x.setDislike(x.getDislike() - 1);
+                                x.setUnlikeStatus(0);
+//                            notifyItemChanged(position);
+                                dilikes.setText(x.getDislike() + "");
+                            }
                             if (avi != null)
                                 avi.setVisibility(View.INVISIBLE);
                         }
@@ -247,7 +254,13 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                             x.setDislike(x.getDislike() + 1);
                             x.setUnlikeStatus(1);
 //                            notifyItemChanged(position);
-                            position.setText(x.getDislike() + "");
+                            dilikes.setText(x.getDislike() + "");
+                            if (x.getLikeStatus() == 1) {
+                                x.setLikes(x.getLikes() - 1);
+                                x.setLikeStatus(0);
+//                            notifyItemChanged(position);
+                                likes.setText(x.getDislike() + "");
+                            }
                             if (avi != null)
                                 avi.setVisibility(View.INVISIBLE);
 
@@ -296,7 +309,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView likes, dilikes, dis;
+        TextView likes, dilikes, dis, username;
         LinearLayout comment, share;
         ImageView like, dislike;
 
@@ -311,6 +324,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             like = itemView.findViewById(R.id.imageView45);
             dislike = itemView.findViewById(R.id.imageView46);
             share = itemView.findViewById(R.id.share);
+            username = itemView.findViewById(R.id.textView38);
 
         }
     }
