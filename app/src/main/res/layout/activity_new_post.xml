@@ -134,7 +134,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/stroke_rectangle_shape"
         android:ems="10"
-        android:gravity="center"
+        android:gravity="start"
         android:hint="Write your post here."
         android:inputType="textMultiLine"
         android:padding="8dp"

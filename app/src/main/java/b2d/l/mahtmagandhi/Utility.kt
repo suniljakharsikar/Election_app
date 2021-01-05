@@ -1,5 +1,6 @@
 package b2d.l.mahtmagandhi
 
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
@@ -10,6 +11,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -21,8 +24,17 @@ import java.io.OutputStream
 
 object Utility {
 
-
-    fun getPath(uri: Uri?,context: Context): String? {
+    fun hideKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    fun getPath(uri: Uri?, context: Context): String? {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor: Cursor = context.getContentResolver().query(uri!!, projection, null, null, null)
                 ?: return null

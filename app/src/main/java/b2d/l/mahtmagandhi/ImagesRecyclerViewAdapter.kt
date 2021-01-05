@@ -12,6 +12,7 @@ class ImagesRecyclerViewAdapter(val imagesEncodedList: MutableList<Uri>) : Recyc
 
     class ImagesRecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iv = itemView.imageView29
+        val removeIv = itemView.imageView_remove
 
     }
 
@@ -25,6 +26,13 @@ return ImagesRecyclerViewHolder(v)
 
         Glide.with(holder.itemView.context).load(imagesEncodedList?.get(position)).into(holder.iv)
 
+        holder.removeIv.setOnClickListener {
+            try {
+                imagesEncodedList?.removeAt(position)
+                notifyItemRemoved(position)
+            } catch (e: Exception) {
+            }
+        }
     }
 
     override fun getItemCount(): Int {

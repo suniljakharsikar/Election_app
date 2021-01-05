@@ -277,6 +277,7 @@ class SettingProfile : AppCompatActivity() {
     }
 
     private fun fetchLoc(s: String) {
+        Utility.hideKeyboard(this)
         startAnim()
         val jsonObjectRequest = StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/$s",
                 { response ->

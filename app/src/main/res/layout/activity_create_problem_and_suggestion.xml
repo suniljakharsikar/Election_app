@@ -21,8 +21,9 @@
         android:ems="10"
         android:gravity="center"
         android:hint="Title"
-        android:inputType="textMultiLine"
+        android:inputType="textShortMessage"
         android:padding="8dp"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
@@ -134,7 +135,7 @@
     <EditText
         android:id="@+id/et_prob_sugg"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -142,7 +143,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/stroke_rectangle_shape"
         android:ems="10"
-        android:gravity="center"
+        android:gravity="start"
         android:hint="Write your problem or suggestion here."
         android:inputType="textMultiLine"
         android:padding="8dp"

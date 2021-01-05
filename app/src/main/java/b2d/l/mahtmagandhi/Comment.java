@@ -97,7 +97,7 @@ public class Comment extends AppCompatActivity {
                 ArrayList<ProblemsResponseModel.Data.ImageArr> imgs = getIntent().getParcelableArrayListExtra("imgs");
                 textView.setText(getIntent().getStringExtra("dis"));
                 for (int i = 0; i < imgs.size(); i++) {
-                    adapter.addItem(new SliderItem("https://" + imgs.get(i).getImageName()));
+                    adapter.addItem(new SliderItem("https://election.suniljakhar.in"+ imgs.get(i).getImageName()));
                 }
                 sliderView.setSliderAdapter(adapter);
 

@@ -40,7 +40,7 @@ public class OurWorkDetail extends AppCompatActivity {
         for (int i = 0; i < imgs.size(); i++) {
             OurWorkResponseModel.Data.DataImage img = imgs.get(i);
             if (img.getImageUrl().length()>0) {
-                list.add(new SliderItem(img.getImageUrl()));
+                list.add(new SliderItem(Url.burl+img.getImageUrl()));
                 Log.d("OurWorkDetail", "onCreate: imageUrl"+img.getImageUrl());
             }else{
                 Log.d("OurWorkDetail", "onCreate: imageName"+img.getImageName());

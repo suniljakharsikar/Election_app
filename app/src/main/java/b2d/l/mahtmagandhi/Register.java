@@ -375,6 +375,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void fetchLoc(String s) {
+        Utility.INSTANCE.hideKeyboard(this);
         startAnim();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/" + s, new Response.Listener<String>() {
             @Override
