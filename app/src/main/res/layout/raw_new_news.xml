@@ -134,7 +134,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_like_count" />
 
         <TextView
-            android:id="@+id/tv_btn_like_news"
+            android:id="@+id/textView_btn_like_commu_talk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Share"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tv_btn_like_news"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.35"
             app:layout_constraintStart_toStartOf="@+id/guideline4" />
@@ -162,9 +162,9 @@
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_btn_like_news"
-            app:layout_constraintEnd_toStartOf="@+id/tv_btn_like_news"
-            app:layout_constraintTop_toTopOf="@+id/tv_btn_like_news"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_btn_like_commu_talk"
+            app:layout_constraintEnd_toStartOf="@+id/textView_btn_like_commu_talk"
+            app:layout_constraintTop_toTopOf="@+id/textView_btn_like_commu_talk"
             app:srcCompat="@drawable/ic_icon_awesome_thumbs_up" />
 
         <ImageView

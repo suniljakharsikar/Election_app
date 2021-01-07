@@ -23,7 +23,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView_count_share2"
+            android:id="@+id/textView_count_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toStartOf="@+id/textView_count_share" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_avtar_news"
+            android:id="@+id/iv_avtar_commu_talk"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="16dp"
@@ -46,28 +46,28 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_name_news"
+            android:id="@+id/tv_name_commu_talk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:text="Mahtma Gandhi"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            app:layout_constraintStart_toEndOf="@+id/iv_avtar_news"
-            app:layout_constraintTop_toTopOf="@+id/iv_avtar_news" />
+            app:layout_constraintStart_toEndOf="@+id/iv_avtar_commu_talk"
+            app:layout_constraintTop_toTopOf="@+id/iv_avtar_commu_talk" />
 
         <TextView
-            android:id="@+id/tv_time_news"
+            android:id="@+id/tv_time_commu_talk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2 Hours Ago"
             android:textColor="#BEBEBE"
             android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_name_news"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_news" />
+            app:layout_constraintStart_toStartOf="@+id/tv_name_commu_talk"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name_commu_talk" />
 
         <TextView
-            android:id="@+id/tv_des_news"
+            android:id="@+id/tv_des_commu_talk"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -82,10 +82,10 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_avtar_news" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_avtar_commu_talk" />
 
         <ImageView
-            android:id="@+id/imageView_desc_news"
+            android:id="@+id/imageView_desc_commu_talk"
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_marginStart="16dp"
@@ -93,12 +93,11 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:background="@color/expired"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_des_news"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_commu_talk"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
@@ -109,7 +108,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView_desc_news"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_desc_commu_talk"
             app:srcCompat="@drawable/icon1" />
 
         <TextView
@@ -152,7 +151,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_like_count" />
 
         <TextView
-            android:id="@+id/tv_btn_like_news"
+            android:id="@+id/textView_btn_like_commu_talk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -175,7 +174,7 @@
             android:layout_marginRight="16dp"
             android:text="Share"
             android:textSize="12sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tv_btn_like_news"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/guideline4" />
@@ -186,9 +185,9 @@
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_btn_like_news"
-            app:layout_constraintEnd_toStartOf="@+id/tv_btn_like_news"
-            app:layout_constraintTop_toTopOf="@+id/tv_btn_like_news"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_btn_like_commu_talk"
+            app:layout_constraintEnd_toStartOf="@+id/textView_btn_like_commu_talk"
+            app:layout_constraintTop_toTopOf="@+id/textView_btn_like_commu_talk"
             app:srcCompat="@drawable/ic_icon_awesome_thumbs_up" />
 
         <ImageView
@@ -221,7 +220,7 @@
             app:srcCompat="@drawable/icon2" />
 
         <TextView
-            android:id="@+id/textView39"
+            android:id="@+id/textView_disike_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -239,34 +238,34 @@
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView50"
-            app:layout_constraintEnd_toStartOf="@+id/textView50"
-            app:layout_constraintTop_toTopOf="@+id/textView50"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_btn_dislike_commu_talk"
+            app:layout_constraintEnd_toStartOf="@+id/textView_btn_dislike_commu_talk"
+            app:layout_constraintTop_toTopOf="@+id/textView_btn_dislike_commu_talk"
             app:srcCompat="@drawable/ic_icon_awesome_thumbs_down" />
 
         <TextView
-            android:id="@+id/textView50"
+            android:id="@+id/textView_btn_dislike_commu_talk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:text="Dislike"
             android:textSize="12sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tv_btn_like_news"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
             app:layout_constraintEnd_toStartOf="@+id/guideline4" />
 
         <ImageView
             android:id="@+id/imageView56"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView52"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_btn_comment_commu_talk"
             app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toTopOf="@+id/textView52"
+            app:layout_constraintTop_toTopOf="@+id/textView_btn_comment_commu_talk"
             app:srcCompat="@drawable/ic_icon_awesome_comment_alt" />
 
         <TextView
-            android:id="@+id/textView52"
-            android:layout_width="0dp"
+            android:id="@+id/textView_btn_comment_commu_talk"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"

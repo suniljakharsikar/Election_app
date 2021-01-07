@@ -81,16 +81,16 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final ChatData x = chatData.get(position);
-/*        holder.username.setText(x.getTitle());
-        holder.share.setOnClickListener(new View.OnClickListener() {
+        holder.usernameTv.setText(x.getTitle());
+        holder.shareBtnTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
                     Uri uri = null;
-                    if (Patterns.WEB_URL.matcher(x.getImage_name()).matches())
+                    if (x.getImage_name()!= null && Patterns.WEB_URL.matcher(x.getImage_name()).matches())
                         uri = Utility.INSTANCE.saveBitmap(
                                 view.getContext(),
-                                holder.imageView,
+                                holder.descIv,
                                 Bitmap.CompressFormat.JPEG,
                                 "image/jpeg",
                                 "",
@@ -103,21 +103,14 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
                 }
 //                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
-              *//*  val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "Send a simple text"
-                )
-                sendIntent.type = "text/plain"
-                startActivity(sendIntent)*//*
+
             }
         });
 
 //        holder.imageView.setImageResource(x.getImage());
-        holder.likes.setText(x.getLikes() + "");
-        holder.dilikes.setText(x.getDislike() + "");
-        holder.comment.setOnClickListener(new View.OnClickListener() {
+        holder.likesCountTv.setText(x.getLikes() + "");
+        holder.dislikesCountTv.setText(x.getDislike() + "");
+        holder.commentBtnTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, Comment.class);
@@ -133,40 +126,43 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.dis.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+            holder.descTv.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
         } else {
-            holder.dis.setText(Html.fromHtml(x.getDescription()));
+            holder.descTv.setText(Html.fromHtml(x.getDescription()));
         }
 
         String img = x.getImage_name();
         if (img != null)
             if (!img.contains("https")) img = Url.http + img;
 
-        Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+        if (x.getImage_name()==null)holder.descIv.setVisibility(View.GONE);
+        else holder.descIv.setVisibility(View.VISIBLE);
 
-        holder.dislike.setOnClickListener(new View.OnClickListener() {
+        Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
+
+        holder.dislikeBtnTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (x.getUnlikeStatus() == 1) {
                     Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(2, x, holder.likes, holder.dilikes);
+                like_dislike(2, x, holder.likesCountTv, holder.dislikesCountTv);
 
             }
         });
 
-        holder.like.setOnClickListener(new View.OnClickListener() {
+        holder.likesCountTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (x.getLikeStatus() == 1) {
                     Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(1, x, holder.likes, holder.dilikes);
+                like_dislike(1, x, holder.likesCountTv, holder.dislikesCountTv);
 
             }
-        });*/
+        });
     }
 
     private File createImageFile() throws IOException {
@@ -277,23 +273,26 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-     /*   ImageView imageView;
-        TextView likes, dilikes, dis, username;
-        LinearLayout comment, share;
-        ImageView like, dislike;*/
+        ImageView descIv,avtarIv;
+        TextView likesCountTv,likeBtnTv,dislikeBtnTv,commentBtnTv,shareCountTv,shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv,descTv;
+
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            /*imageView = itemView.findViewById(R.id.imageView44);
-            likes = itemView.findViewById(R.id.textView36);
-            dilikes = itemView.findViewById(R.id.textView37);
-            comment = itemView.findViewById(R.id.comment);
-            dis = itemView.findViewById(R.id.textView35);
-            like = itemView.findViewById(R.id.imageView45);
-            dislike = itemView.findViewById(R.id.imageView46);
-            share = itemView.findViewById(R.id.share);
-            username = itemView.findViewById(R.id.textView38);*/
+            descIv = itemView.findViewById(R.id.imageView_desc_commu_talk);
+            avtarIv = itemView.findViewById(R.id.iv_avtar_commu_talk);
+            likesCountTv = itemView.findViewById(R.id.textView_like_count);
+            dislikesCountTv = itemView.findViewById(R.id.textView_disike_count);
+            commentCountTv = itemView.findViewById(R.id.textView_count_comment);
+            dislikeBtnTv = itemView.findViewById(R.id.textView_btn_dislike_commu_talk);
+            likeBtnTv = itemView.findViewById(R.id.textView_btn_like_commu_talk);
+            commentBtnTv = itemView.findViewById(R.id.textView_btn_comment_commu_talk);
+            shareBtnTextView = itemView.findViewById(R.id.tv_btn_share);
+            shareCountTv = itemView.findViewById(R.id.textView_count_share);
+            usernameTv = itemView.findViewById(R.id.tv_name_commu_talk);
+            descTv = itemView.findViewById(R.id.tv_des_commu_talk);
+
 
         }
     }
