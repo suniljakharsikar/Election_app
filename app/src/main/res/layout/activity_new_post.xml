@@ -144,16 +144,26 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
 
     <ImageView
+        android:id="@+id/imageView37"
+        android:layout_width="150dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_image_btn_prob_sug"
+        app:layout_constraintEnd_toEndOf="@+id/tv_image_btn_prob_sug"
+        app:layout_constraintStart_toStartOf="@+id/imageView_pic_create_new_prob_sug"
+        app:layout_constraintTop_toTopOf="@+id/tv_image_btn_prob_sug"
+        app:srcCompat="@drawable/solid_rectangle_shape" />
+
+    <ImageView
         android:id="@+id/imageView_pic_create_new_prob_sug"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
         android:onClick="addimage"
         app:layout_constraintEnd_toStartOf="@+id/tv_image_btn_prob_sug"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_prob_sugg"
+        app:layout_constraintTop_toBottomOf="@+id/rv_imgs_new_post"
         app:srcCompat="@drawable/imageload" />
 
     <TextView
@@ -162,6 +172,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         android:background="?android:attr/selectableItemBackground"
         android:text="Add Image"
         android:textColor="@color/black"
@@ -177,7 +189,7 @@
         android:id="@+id/button_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/btn_bg"
         android:onClick="newposting"
         android:paddingLeft="72dp"
@@ -187,25 +199,9 @@
         android:text="Post"
         android:textAllCaps="false"
         android:textColor="@color/white_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_imgs_new_post" />
-
-    <ImageView
-        android:id="@+id/imageView_new_post"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_image_btn_prob_sug"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_imgs_new_post"
@@ -214,5 +210,6 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_pic_create_new_prob_sug" />
+        app:layout_constraintTop_toBottomOf="@+id/et_prob_sugg" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

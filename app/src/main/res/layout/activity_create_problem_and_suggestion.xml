@@ -19,7 +19,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/stroke_rectangle_shape"
         android:ems="10"
-        android:gravity="center"
+        android:gravity="start"
         android:hint="Title"
         android:inputType="textShortMessage"
         android:padding="8dp"
@@ -43,7 +43,7 @@
         android:id="@+id/textView29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Problem Or Suggstion"
+        android:text="Create New "
         android:textColor="@color/black"
         android:textSize="@dimen/headingtextsize"
         app:layout_constraintBottom_toBottomOf="@+id/imageView21"
@@ -55,11 +55,11 @@
         android:id="@+id/imageView21"
         android:layout_width="@dimen/back_dim"
         android:layout_height="@dimen/back_dim"
-        android:padding="@dimen/backpad"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="back"
+        android:padding="@dimen/backpad"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -152,31 +152,39 @@
         app:layout_constraintTop_toBottomOf="@+id/et_prob_sugg_title" />
 
     <ImageView
+        android:id="@+id/imageView31"
+        android:layout_width="150dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_image_btn_prob_sug"
+        app:layout_constraintEnd_toEndOf="@+id/tv_image_btn_prob_sug"
+        app:layout_constraintStart_toStartOf="@+id/imageView_pic_create_new_prob_sug"
+        app:layout_constraintTop_toTopOf="@+id/tv_image_btn_prob_sug"
+        app:srcCompat="@drawable/solid_rectangle_shape" />
+
+    <ImageView
         android:id="@+id/imageView_pic_create_new_prob_sug"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_image_btn_prob_sug"
         app:layout_constraintEnd_toStartOf="@+id/tv_image_btn_prob_sug"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_prob_sugg"
+        app:layout_constraintTop_toTopOf="@+id/tv_image_btn_prob_sug"
         app:srcCompat="@drawable/imageload" />
 
     <TextView
         android:id="@+id/tv_image_btn_prob_sug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         android:text="Add Image"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_pic_create_new_prob_sug"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView_pic_create_new_prob_sug"
-        app:layout_constraintTop_toTopOf="@+id/imageView_pic_create_new_prob_sug" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_imgs_problem" />
 
     <Button
         android:id="@+id/button_submit"
@@ -193,6 +201,7 @@
         android:text="Submit"
         android:textAllCaps="false"
         android:textColor="@color/white_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView_imgs_problem" />
@@ -233,8 +242,9 @@
         android:id="@+id/recyclerView_imgs_problem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_image_btn_prob_sug" />
+        app:layout_constraintTop_toBottomOf="@+id/et_prob_sugg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,13 +30,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
@@ -61,6 +65,7 @@ import java.util.*
 class SettingProfile : AppCompatActivity() {
 
 
+    private var resultUri: Uri? = null
     private lateinit var myCalendar: Calendar
     private var avi: AVLoadingIndicatorView? = null
 
@@ -94,6 +99,17 @@ class SettingProfile : AppCompatActivity() {
         editText_district.inputType = InputType.TYPE_NULL
         button_submit.visibility = View.INVISIBLE
 
+        editTextPersonName2.isEnabled = false
+        editTextPhone2.isEnabled = false
+        editText_postal_code.isEnabled = false
+        editText_dob_setting_profile.isEnabled = false
+        editText_state.isEnabled = false
+        editText_district.isEnabled = false
+        actv_city_locality.isEnabled = false
+        radioGroup_gender.isEnabled = false
+        rb_male_setting_profile.isEnabled = false
+        rb_female_setting_profile.isEnabled = false
+        rb_other_setting_profile.isEnabled = false
 
         //        city.setText(preferences.getString(Datas.user_district, ""));
         editText_postal_code.addTextChangedListener(object : TextWatcher {
@@ -107,8 +123,12 @@ class SettingProfile : AppCompatActivity() {
             }
         })
         iv_edit_avtar_setting.setOnClickListener {
-            val dialog = ImagePickerBottomSheetDialogFragment()
-            dialog.show(supportFragmentManager, "pic")
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
+
+           // val dialog = ImagePickerBottomSheetDialogFragment()
+         //   dialog.show(supportFragmentManager, "pic")
         }
 
         FirebaseMessaging.getInstance().getToken()
@@ -131,12 +151,26 @@ class SettingProfile : AppCompatActivity() {
 
         var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup_gender)
         materialButton_edit_setting_profie.setOnClickListener {
+            materialButton_edit_setting_profie.visibility = View.GONE
+            imageView43.visibility = View.GONE
+            editTextPersonName2.isEnabled = true
+            editTextPhone2.isEnabled = true
+            editText_postal_code.isEnabled = true
+            editText_dob_setting_profile.isEnabled = true
+            editText_state.isEnabled = true
+            editText_district.isEnabled = true
+            actv_city_locality.isEnabled = true
+            radioGroup_gender.isEnabled = true
+            rb_male_setting_profile.isEnabled = true
+            rb_female_setting_profile.isEnabled = true
+            rb_other_setting_profile.isEnabled = true
+
 
             button_submit.visibility = View.VISIBLE
             // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
             //editTextPersonName2.setFilters(arrayOf(getEditTextFilter()))
             //editTextPhone2.inputType = InputType.TYPE_CLASS_PHONE
-            val digits = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // or any characters you want to allow
+            val digits = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // or any characters you want to allow
             editTextPersonName2.keyListener = DigitsKeyListener.getInstance(digits)
             editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
 
@@ -502,7 +536,17 @@ class SettingProfile : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode.equals(Activity.RESULT_OK)) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult (data);
+            if (resultCode == RESULT_OK) {
+                 resultUri = result!!.getUri ();
+                Glide.with(this).load(resultUri).into(profile_image)
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result!!. getError ();
+            }
+        }
+        else  if (resultCode.equals(Activity.RESULT_OK)) {
 
             var uri = data?.data
 
@@ -555,7 +599,7 @@ class SettingProfile : AppCompatActivity() {
 
 
         }
-        setPic(requestCode)
+        //setPic(requestCode)
 
 
     }
@@ -650,10 +694,10 @@ class SettingProfile : AppCompatActivity() {
             val mediaType = MediaType.parse("text/plain")
             val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
 
-            if (currentPhotoPath.length > 0)
+            if (resultUri !=null)
                 bodyp.addFormDataPart("'profileImage", "profile.jpg",
                         RequestBody.create(MediaType.parse("application/octet-stream"),
-                                File(currentPhotoPath)))
+                                File(resultUri?.path)))
 
 
             val body = bodyp.build()
@@ -672,7 +716,7 @@ class SettingProfile : AppCompatActivity() {
                 Log.d("NewPost", "newposting: " + response.isSuccessful)
                 if (response.isSuccessful) {
                     GlobalScope.launch(Dispatchers.Main) {
-                        profile_image.setImageDrawable(null)
+                       // profile_image.setImageDrawable(null)
 
                         Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
                         stopAnim()

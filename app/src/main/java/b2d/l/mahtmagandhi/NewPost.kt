@@ -132,7 +132,7 @@ class NewPost : AppCompatActivity() {
                 Log.d("NewPost", "newposting: " + response.isSuccessful)
                 if (response.isSuccessful) {
                     GlobalScope.launch(Dispatchers.Main) {
-                        imageView_new_post.setImageDrawable(null)
+                       // imageView_new_post.setImageDrawable(null)
                         et_prob_sugg.setText("")
 
                         Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
@@ -316,8 +316,8 @@ class NewPost : AppCompatActivity() {
 
     private fun setPic(requestCode: Int) {
         // Get the dimensions of the View
-        var imageView: ImageView = imageView_new_post
-        imageView_new_post.visibility = View.VISIBLE
+        var imageView: ImageView = ImageView(this)
+        //imageView_new_post.visibility = View.VISIBLE
         val targetW: Int = imageView.width
         val targetH: Int = imageView.height
 

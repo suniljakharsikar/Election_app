@@ -1,5 +1,7 @@
 package b2d.l.mahtmagandhi;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -65,12 +68,28 @@ public class OTPVerify extends AppCompatActivity {
         // or avi.smoothToHide();
     }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_o_t_p);
         avi = findViewById(R.id.avi);
 
+        ConstraintLayout constraintLayout  = findViewById(R.id.cl_otp);
+        InputMethodManager inputMethodManager =
+                (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(constraintLayout
+                .getApplicationWindowToken(),
+                InputMethodManager.SHOW_FORCED, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -379,8 +398,11 @@ public class OTPVerify extends AppCompatActivity {
 
             if (currentIndex == 0)
                 this.isFirst = true;
-            else if (currentIndex == editTexts.length - 1)
+            else if (currentIndex == editTexts.length - 1) {
+
                 this.isLast = true;
+                hideKeyboard();
+            }
         }
 
         @Override

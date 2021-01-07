@@ -1,11 +1,13 @@
 package b2d.l.mahtmagandhi
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -13,7 +15,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_survey_detail.*
 import org.json.JSONObject
-import java.util.HashMap
+import java.util.*
+
 
 class SurveyDetailActivity : AppCompatActivity() {
     private var data: SurveyResponseModel.Data? = null
@@ -43,9 +46,15 @@ class SurveyDetailActivity : AppCompatActivity() {
 
         for (i in data!!.optionsData) {
             val rb = RadioButton(this)
+            rb.setPadding(0, 32, 0, 32)
             rb.text = i.optionsData
             rb.tag = i.id.toString()
+
+            val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            params.setMargins(15, 20, 15, 20)
+            rb.setLayoutParams(params)
             rg_options_survey.addView(rb)
+
         }
 
 

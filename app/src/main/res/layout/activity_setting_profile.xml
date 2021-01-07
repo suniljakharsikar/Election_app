@@ -175,8 +175,8 @@
                 android:id="@+id/editText_state"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:enabled="false"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_state"
                 app:layout_constraintTop_toBottomOf="@+id/textView_state" />
@@ -186,16 +186,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:text="District"
                 app:layout_constraintStart_toStartOf="@+id/editText_state"
-                app:layout_constraintTop_toBottomOf="@+id/editText_state"
-                android:text="District" />
+                app:layout_constraintTop_toBottomOf="@+id/editText_state" />
 
             <EditText
                 android:id="@+id/editText_district"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:enabled="false"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@+id/editTextPersonName2"
                 app:layout_constraintStart_toStartOf="@+id/textView_district"
                 app:layout_constraintTop_toBottomOf="@+id/textView_district" />
@@ -322,7 +322,6 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_baseline_edit_24"
                 android:insetLeft="0dp"
                 android:paddingStart="0dp"
                 android:paddingLeft="0dp"
@@ -345,6 +344,18 @@
                 app:layout_constraintTop_toTopOf="@+id/profile_image"
                 app:layout_constraintVertical_bias="0.8"
                 app:srcCompat="@drawable/ic_icon_awesome_edit" />
+
+            <ImageView
+                android:id="@+id/imageView43"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/materialButton_edit_setting_profie"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="@+id/materialButton_edit_setting_profie"
+                app:layout_constraintTop_toTopOf="@+id/materialButton_edit_setting_profie"
+                app:layout_constraintVertical_bias="0.45"
+                app:srcCompat="@drawable/ic_baseline_edit_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

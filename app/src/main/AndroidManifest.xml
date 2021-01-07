@@ -59,6 +59,8 @@
         <activity android:name=".Register" />
         <activity android:name=".OTPVerify" />
         <activity android:name=".LoginActivity" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

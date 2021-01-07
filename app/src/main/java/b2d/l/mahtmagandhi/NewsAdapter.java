@@ -21,7 +21,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -42,7 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdapter.ViewHolder> {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private Context context;
     private ArrayList<ChatData> chatData;
     private String s;
@@ -52,7 +51,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     private AVLoadingIndicatorView avi;
 
 
-    public CommunityChatAdapter(Context context, ArrayList<ChatData> chatData, String s, String s1, String s2, boolean pass, AVLoadingIndicatorView avi) {
+    public NewsAdapter(Context context, ArrayList<ChatData> chatData, String s, String s1, String s2, boolean pass, AVLoadingIndicatorView avi) {
 
         this.context = context;
         this.chatData = chatData;
@@ -65,108 +64,24 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
     @NonNull
     @Override
-    public CommunityChatAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.raw_comunitytalk, parent, false);
+        View contactView = inflater.inflate(R.layout.raw_new_news, parent, false);
 
 //        contactView.setOnClickListener(i);
         // Return a new holder instance
-        return new CommunityChatAdapter.ViewHolder(contactView);
+        return new NewsAdapter.ViewHolder(contactView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final ChatData x = chatData.get(position);
-/*        holder.username.setText(x.getTitle());
-        holder.share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Uri uri = null;
-                    if (Patterns.WEB_URL.matcher(x.getImage_name()).matches())
-                        uri = Utility.INSTANCE.saveBitmap(
-                                view.getContext(),
-                                holder.imageView,
-                                Bitmap.CompressFormat.JPEG,
-                                "image/jpeg",
-                                "",
-                                "statement"
-                        );
+       // holder.username.setText(x.getTitle());
 
-                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
-
-                } catch (IOException e) {
-
-                }
-//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
-              *//*  val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "Send a simple text"
-                )
-                sendIntent.type = "text/plain"
-                startActivity(sendIntent)*//*
-            }
-        });
-
-//        holder.imageView.setImageResource(x.getImage());
-        holder.likes.setText(x.getLikes() + "");
-        holder.dilikes.setText(x.getDislike() + "");
-        holder.comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, Comment.class);
-                intent.putExtra("pos", x.getId());
-                intent.putExtra("url", s1);
-                intent.putExtra("newposturl", s2);
-                intent.putExtra("passToken", passToken);
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
-                context.startActivity(intent);
-            }
-        });
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.dis.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            holder.dis.setText(Html.fromHtml(x.getDescription()));
-        }
-
-        String img = x.getImage_name();
-        if (img != null)
-            if (!img.contains("https")) img = Url.http + img;
-
-        Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
-
-        holder.dislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (x.getUnlikeStatus() == 1) {
-                    Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                like_dislike(2, x, holder.likes, holder.dilikes);
-
-            }
-        });
-
-        holder.like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (x.getLikeStatus() == 1) {
-                    Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                like_dislike(1, x, holder.likes, holder.dilikes);
-
-            }
-        });*/
     }
 
     private File createImageFile() throws IOException {
@@ -277,23 +192,23 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-     /*   ImageView imageView;
+        ImageView imageView;
         TextView likes, dilikes, dis, username;
         LinearLayout comment, share;
-        ImageView like, dislike;*/
+        ImageView like, dislike;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            /*imageView = itemView.findViewById(R.id.imageView44);
-            likes = itemView.findViewById(R.id.textView36);
-            dilikes = itemView.findViewById(R.id.textView37);
-            comment = itemView.findViewById(R.id.comment);
-            dis = itemView.findViewById(R.id.textView35);
-            like = itemView.findViewById(R.id.imageView45);
-            dislike = itemView.findViewById(R.id.imageView46);
-            share = itemView.findViewById(R.id.share);
-            username = itemView.findViewById(R.id.textView38);*/
+//            imageView = itemView.findViewById(R.id.imageView_desc_news);
+//            likes = itemView.findViewById(R.id.textView_like_count);
+//            //dilikes = itemView.findViewById(R.id.textView37);
+//            //comment = itemView.findViewById(R.id.comment);
+//            //dis = itemView.findViewById(R.id.textView35);
+////            like = itemView.findViewById(R.id.tv_btn_like_news);
+//           // dislike = itemView.findViewById(R.id.imageView46);
+//            share = itemView.findViewById(R.id.tv_btn_share);
+//            username = itemView.findViewById(R.id.tv_name_news);
 
         }
     }

@@ -62,10 +62,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/white_text_color"
         android:clickable="true"
         android:onClick="createNewProbSug"
-        android:backgroundTint="@color/white_text_color"
 
+        app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24" />
