@@ -6,6 +6,7 @@ import androidx.collection.ArraySet;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -54,7 +55,11 @@ public class OurWorkDetail extends AppCompatActivity {
         TextView descTv = findViewById(R.id.tv_our_work_desc);
 
         titleTv.setText(data.getTitle());
-        descTv.setText(data.getDescription());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            descTv.setText(Html.fromHtml(data.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            descTv.setText(Html.fromHtml(data.getDescription()));
+        }
 
         sliderView.setSliderAdapter(adapter);
 
