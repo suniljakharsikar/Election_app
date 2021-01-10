@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,6 +41,7 @@ public class Meetings extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private SharedPreferences preferences;
     private AVLoadingIndicatorView avi;
+    private TextView timeHeading;
 
     void startAnim() {
         avi.show();
@@ -58,6 +60,7 @@ public class Meetings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
         avi = findViewById(R.id.avi);
+        timeHeading = findViewById(R.id.textView_month_year_meeting);
 
       /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
@@ -110,7 +113,7 @@ public class Meetings extends AppCompatActivity {
                         Set<String> keys = map.keySet();
                         ConcatAdapter concatAdapter = new ConcatAdapter();
                         for (String key : keys) {
-                            concatAdapter.addAdapter(new MeetingHeaderAdapter(key));
+                            concatAdapter.addAdapter(new MeetingHeaderAdapter(key,timeHeading));
                             List<Meeting> v = map.get(key);
                             concatAdapter.addAdapter(new MeetingAdapter(v, Meetings.this, recyclerView));
                         }

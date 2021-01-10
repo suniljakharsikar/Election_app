@@ -98,16 +98,11 @@ public class NewsUpdate extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("ashok_news", response.toString());
                 try {
-                    if (response.getBoolean("success")) {
-                        JSONArray data = response.getJSONArray("data");
-                        chatData = new ArrayList<>();
-                        for (int i = 0; i < data.length(); i++) {
-                            JSONObject jsonObject = data.getJSONObject(i);
-                            Gson gson = new Gson();
-                            ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
-                            chatData.add(c);
-                        }
-                        NewsAdapter communityChatAdapter = new NewsAdapter(getBaseContext(), chatData, "/nevent_like_unlike_post", "/nevent_comments", "/nevent_comments_post", false, avi);
+                    Gson gson = new Gson();
+                    NewsUpdateResponseModel nm = gson.fromJson(response.toString(), NewsUpdateResponseModel.class);
+                    if (nm.getSuccess()) {
+
+                        NewsAdapter communityChatAdapter = new NewsAdapter(getBaseContext(), nm.getData(), "/nevent_like_unlike_post", "/nevent_comments", "/nevent_comments_post", false, avi);
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();

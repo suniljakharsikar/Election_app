@@ -44,6 +44,9 @@ class SurveyDetailActivity : AppCompatActivity() {
 
         textView_que_survey.text = data?.title
 
+        if (data !=null && data!!.isAnswered==1)button_submit2.visibility = View.GONE
+
+
         for (i in data!!.optionsData) {
             val rb = RadioButton(this)
             rb.setPadding(0, 32, 0, 32)

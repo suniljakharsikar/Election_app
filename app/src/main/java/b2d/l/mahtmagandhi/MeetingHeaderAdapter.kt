@@ -4,11 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.raw_header_meeting.view.*
 import java.text.SimpleDateFormat
 
-class MeetingHeaderAdapter(private val date:String): RecyclerView.Adapter<MeetingHeaderAdapter.MyHeaderMeetingViewHolder>() {
+class MeetingHeaderAdapter(private val date: String, val timeHeading: TextView): RecyclerView.Adapter<MeetingHeaderAdapter.MyHeaderMeetingViewHolder>() {
     class MyHeaderMeetingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dateTv = itemView.textView_date_header_meeting
     }
@@ -22,12 +23,15 @@ class MeetingHeaderAdapter(private val date:String): RecyclerView.Adapter<Meetin
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val d = sdf.parse(date)
         Log.d("MeetingHeader", "onBindViewHolder: "+d.toString())
-
+        val headFormat = SimpleDateFormat("MMMM yyyy")
 
         val tf = SimpleDateFormat("MMMM dd, yyyy")
+        val head = headFormat.format(d)
         val td = tf.format(d)
-        Log.d("MeetingHeader", "onBindViewHolder: "+td)
+        Log.d("MeetingHeader", "onBindViewHolder: "+head)
         holder.dateTv.text = td
+        timeHeading.text = head
+
     }
 
     override fun getItemCount(): Int {

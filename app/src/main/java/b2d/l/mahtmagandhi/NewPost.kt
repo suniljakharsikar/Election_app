@@ -38,6 +38,7 @@ import java.util.*
 
 
 class NewPost : AppCompatActivity() {
+    private  var imageAdapter: ImagesRecyclerViewAdapter? =null
     var editText: EditText? = null
     private var avi: AVLoadingIndicatorView? = null
 
@@ -108,15 +109,16 @@ class NewPost : AppCompatActivity() {
             val client = OkHttpClient().newBuilder()
                     .build()
             val mediaType = MediaType.parse("text/plain")
-            val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
+            val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
                     .addFormDataPart("postData", s)
-            if (currentPhotoPath.length > 0)
-                bodyp.addFormDataPart("postImage", "qr.jpg",
-                        RequestBody.create(MediaType.parse("application/octet-stream"),
-                                File(currentPhotoPath)))
+            var counter = 0
+            for (i in imageAdapter!!.imagesEncodedList){
+                bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(i,this)!!)))
+                counter = counter +1 ;
+            }
 
 
-            val body = bodyp.build()
+            val body = bodyP.build()
             val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
             val request: Request = Request.Builder()
@@ -242,7 +244,8 @@ class NewPost : AppCompatActivity() {
                             list.add(imageUri)
                     }
                    // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
-                    rv_imgs_new_post.adapter = ImagesRecyclerViewAdapter(list)
+                    imageAdapter = ImagesRecyclerViewAdapter(list)
+                    rv_imgs_new_post.adapter =imageAdapter
                     //do something with the image (save it to some directory or whatever you need to do with it here)
                 }
             } else if(data?.getData() != null) {

@@ -1,6 +1,5 @@
 package b2d.l.mahtmagandhi
 
-import NotificationResponseModel
 import android.os.Build
 import android.text.Html
 import android.view.LayoutInflater

@@ -39,11 +39,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<ChatData> chatData;
+    private List<NewsUpdateResponseModel.Data> chatData;
     private String s;
     private String s1;
     private String s2;
@@ -51,7 +52,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private AVLoadingIndicatorView avi;
 
 
-    public NewsAdapter(Context context, ArrayList<ChatData> chatData, String s, String s1, String s2, boolean pass, AVLoadingIndicatorView avi) {
+    public NewsAdapter(Context context, List<NewsUpdateResponseModel.Data> chatData, String s, String s1, String s2, boolean pass, AVLoadingIndicatorView avi) {
 
         this.context = context;
         this.chatData = chatData;
@@ -79,15 +80,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-        final ChatData x = chatData.get(position);
+        NewsUpdateResponseModel.Data x = chatData.get(position);
        // holder.username.setText(x.getTitle());
-        holder.usernameTv.setText(x.getTitle());
+
         holder.shareBtnTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
                     Uri uri = null;
-                    if (x.getImage_name()!= null && Patterns.WEB_URL.matcher(x.getImage_name()).matches())
+                    if (x.getImage_name()!= null && Patterns.WEB_URL.matcher(x.getImage_name().toString()).matches())
                         uri = Utility.INSTANCE.saveBitmap(
                                 view.getContext(),
                                 holder.descIv,
@@ -130,15 +131,52 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         } else {
             holder.descTv.setText(Html.fromHtml(x.getDescription()));
         }
+        Object img = x.getImage_name();
 
-        String img = x.getImage_name();
-        if (img != null)
-            if (!img.contains("https")) img = Url.http + img;
 
+
+        if (img != null && img.toString().contains("election")) {
+            if (!img.toString().contains("https")) img = Url.http + img;
+        }
+            else if (img != null && !img.toString().contains("election"))img = Url.burl+img;
+
+        if (img==null)holder.descIv.setVisibility(View.GONE);
+        else holder.descIv.setVisibility(View.VISIBLE);
+
+        Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
+
+        Object finalImg = img;
+        holder.shareBtnTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Uri uri = null;
+                    if (finalImg !=null && finalImg.toString().length()>0)
+                        uri = Utility.INSTANCE.saveBitmap(
+                                view.getContext(),
+                                holder.descIv,
+                                Bitmap.CompressFormat.JPEG,
+                                "image/jpeg",
+                                "",
+                                "statement"
+                        );
+
+                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
+
+                } catch (IOException e) {
+
+                }
+//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
+
+            }
+        });
         if (x.getImage_name()==null)holder.descIv.setVisibility(View.GONE);
         else holder.descIv.setVisibility(View.VISIBLE);
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
-
+       if (x.getUserData()!=null && x.getUserData().size()>0) {
+           Glide.with(context).load(x.getUserData().get(0).getUser_image()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
+           holder.usernameTv.setText(x.getUserData().get(0).getUser_name());
+       }
 /*
         holder.dislikeBtnTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +222,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return image;
     }
 
-    private void like_dislike(int i, ChatData x, TextView likes, TextView dilikes) {
+    private void like_dislike(int i, NewsUpdateResponseModel.Data x, TextView likes, TextView dilikes) {
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();
         try {

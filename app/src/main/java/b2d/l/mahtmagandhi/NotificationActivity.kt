@@ -1,6 +1,5 @@
 package b2d.l.mahtmagandhi
 
-import NotificationResponseModel
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager

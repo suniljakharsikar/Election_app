@@ -19,6 +19,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
@@ -27,9 +31,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VotingGuide extends AppCompatActivity {
+public class VotingGuide extends YouTubeBaseActivity {
     TextView textView;
     private AVLoadingIndicatorView avi;
+    private YouTubePlayerView youTubePlayerView;
 
     void startAnim() {
         avi.show();
@@ -48,6 +53,7 @@ public class VotingGuide extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting_guide);
         avi = findViewById(R.id.avi);
+        youTubePlayerView = findViewById(R.id.youtube_voting_guide);
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //
@@ -66,11 +72,29 @@ public class VotingGuide extends AppCompatActivity {
                 try {
                     if (response.getBoolean("success")) {
                         String description = response.getJSONArray("data").getJSONObject(0).getString("description");
+                        String media = response.getJSONArray("data").getJSONObject(0).getString("media");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             textView.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
                         } else {
                             textView.setText(Html.fromHtml(description));
                         }
+                        youTubePlayerView.initialize("AIzaSyD5IrFsnu-cC6ODQM1r_KcIg_G584aBvzY", new YouTubePlayer.OnInitializedListener() {
+                            @Override
+                            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+
+                                String[] ms = media.split("=");
+                                youTubePlayer.loadVideo(ms[1]);
+
+                                youTubePlayer.play();
+
+                            }
+
+                            @Override
+                            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+                            }
+                        });
+
                         //textView.setText(description);
 //                        Toast.makeText(VotingGuide.this, "" + response.toString(), Toast.LENGTH_SHORT).show();
                     } else {

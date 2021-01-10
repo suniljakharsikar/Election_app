@@ -30,9 +30,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.view.isVisible
+import androidx.core.net.toFile
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.bumptech.glide.Glide
@@ -42,9 +43,7 @@ import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.wang.avi.AVLoadingIndicatorView
-import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
-import kotlinx.android.synthetic.main.activity_setting_profile.button_submit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -154,7 +153,7 @@ class SettingProfile : AppCompatActivity() {
             materialButton_edit_setting_profie.visibility = View.GONE
             imageView43.visibility = View.GONE
             editTextPersonName2.isEnabled = true
-            editTextPhone2.isEnabled = true
+            editTextPhone2.isEnabled = false
             editText_postal_code.isEnabled = true
             editText_dob_setting_profile.isEnabled = true
             editText_state.isEnabled = true
@@ -281,6 +280,11 @@ class SettingProfile : AppCompatActivity() {
                     if (jsonObject.getString(Datas.lagnuage_id) != "null") editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id))
                     editor.putString(Datas.token, token)
                     editor.apply()
+                    val img = jsonObject.getString(Datas.user_image)
+                    if (img.contains("http")) Glide.with(this).load(img).into(profile_image)
+                    else if (img.length > 0) Glide.with(this).load(Url.burl + img).into(profile_image)
+
+
                     editTextPersonName2.setText(preferences.getString(Datas.user_name, ""))
                     editTextPhone2.setText(preferences.getString(Datas.user_mobile, ""))
                     editText_dob_setting_profile.setText(preferences.getString(Datas.user_age, ""))
@@ -426,7 +430,7 @@ class SettingProfile : AppCompatActivity() {
                 val success = response.getBoolean("success")
                 Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                 if (success) {
-                    newposting()
+                    //newposting()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -537,10 +541,11 @@ class SettingProfile : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult (data);
+            val result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                  resultUri = result!!.getUri ();
                 Glide.with(this).load(resultUri).into(profile_image)
+                newposting()
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result!!. getError ();
@@ -688,17 +693,66 @@ class SettingProfile : AppCompatActivity() {
     fun newposting() {
 
 
-            startAnim()
-            val client = OkHttpClient().newBuilder()
+
+
+
+
+
+        startAnim()
+        val vollley = object : VolleyMultipartRequest(Request.Method.POST, "https://election.suniljakhar.in/api/profile_image", Response.Listener {
+        //    Toast.makeText(this, it.statusCode, Toast.LENGTH_LONG).show()
+            stopAnim()
+
+        }, object : Response.ErrorListener {
+            override fun onErrorResponse(error: VolleyError?) {
+                Toast.makeText(this@SettingProfile, error!!.localizedMessage, Toast.LENGTH_LONG).show()
+
+
+                stopAnim()
+            }
+
+        }){
+
+            override fun getByteData(): MutableMap<String, DataPart> {
+                val params: MutableMap<String, DataPart> = mutableMapOf()
+                // file name could found file base or direct access from real path
+                // for now just get bitmap data from ImageView
+                // file name could found file base or direct access from real path
+                // for now just get bitmap data from ImageView
+                params.put("profileImage", DataPart("file_avatar.jpg", resultUri!!.toFile().readBytes(), "image/jpeg"))
+
+                return params
+            }
+
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                //headers["Content-Type"] = "application/json"
+                var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+                //headers["Token"] = preferences.getString(Datas.token, "").toString()
+                headers.put("token", preferences.getString(Datas.token, "")!!)
+                headers.put("Content-Type", "application/json")
+                headers.put("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                return headers
+            }
+
+
+
+        }
+        MySingleton.getInstance(this).addToRequestQueue(vollley)
+        return
+        val client = OkHttpClient().newBuilder()
                     .build()
             val mediaType = MediaType.parse("text/plain")
-            val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
+            val bodyp = MultipartBody.Builder().setType(MultipartBody.MIXED)
 
-            if (resultUri !=null)
-                bodyp.addFormDataPart("'profileImage", "profile.jpg",
+            if (resultUri !=null) {
+                bodyp.addFormDataPart("'profileImage", "profilej.jpg",
                         RequestBody.create(MediaType.parse("application/octet-stream"),
-                                File(resultUri?.path)))
+                                resultUri!!.toFile()))
 
+
+            }
 
             val body = bodyp.build()
             val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)

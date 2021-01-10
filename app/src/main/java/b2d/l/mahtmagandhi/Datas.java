@@ -5,6 +5,7 @@ public class Datas {
     public static String loginstatus="loginstatus";
     public static String user_name="user_name";
     public static String user_mobile="user_mobile";
+    public static String user_image="user_image";
     public static String user_age="user_age";
     public static String user_postal_code="user_postal_code";
     public static String user_state="user_state";
