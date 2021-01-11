@@ -178,10 +178,10 @@ public class LoginActivity extends AppCompatActivity {
     public void submit(View view) {
 //        Toast.makeText(this, "testing", Toast.LENGTH_SHORT).show();
         mobile = editText.getText().toString();
-        if (mobile.length() != 10) {
+        /*if (mobile.length() != 10) {
             Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 //        sendotp(mobile);//api
         sendotpusingfirebase(mobile);//firebase otp
     }

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    app:cardBackgroundColor="@color/white"
     android:layout_marginStart="8dp"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginBottom="8dp"
+    android:clipToPadding="false"
+    app:cardBackgroundColor="@color/white"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
@@ -21,18 +21,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textView_count_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="185 Comment"
-            android:textColor="#686666"
-            android:textSize="12sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView_like_count"
-            app:layout_constraintEnd_toStartOf="@+id/textView_count_share" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_avtar_commu_talk"
@@ -128,14 +116,15 @@
             android:id="@+id/textView_count_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="10 Share"
+            android:text="Share"
             android:textColor="#686666"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView_like_count"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView_count_comment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView_count_comment"
+            app:layout_constraintTop_toTopOf="@+id/textView_count_comment" />
 
         <ImageView
             android:id="@+id/imageView51"
@@ -151,62 +140,183 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_like_count" />
 
-        <TextView
-            android:id="@+id/textView_btn_like_commu_talk"
+
+        <LinearLayout
+            android:id="@+id/like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Like"
-            android:textColor="@color/dividercolor"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:layout_margin="4dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintEnd_toStartOf="@+id/dislike"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView51" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView51">
 
-        <TextView
-            android:id="@+id/tv_btn_share"
+            <ImageView
+                android:id="@+id/imageView53"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/dividercolor"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_btn_like_commu_talk"
+                app:layout_constraintEnd_toStartOf="@+id/textView_btn_like_commu_talk"
+                app:layout_constraintTop_toTopOf="@+id/textView_btn_like_commu_talk"
+                app:srcCompat="@drawable/ic_icon_awesome_thumbs_up" />
+
+            <TextView
+                android:id="@+id/textView_btn_like_commu_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:text="Like"
+                android:textColor="@color/dividercolor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="0.06"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView51" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/dislike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Share"
-            android:textColor="@color/dividercolor"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
+            android:layout_margin="4dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView_count_comment"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/like"
+            app:layout_constraintTop_toBottomOf="@+id/imageView51">
+
+            <ImageView
+                android:id="@+id/imageView49"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:tint="@color/dividercolor"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_btn_dislike_commu_talk"
+                app:layout_constraintEnd_toStartOf="@+id/textView_btn_dislike_commu_talk"
+                app:layout_constraintTop_toTopOf="@+id/textView_btn_dislike_commu_talk"
+                app:srcCompat="@drawable/ic_icon_awesome_thumbs_down" />
+
+            <TextView
+                android:id="@+id/textView_btn_dislike_commu_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:text="Dislike"
+                android:textColor="@color/dividercolor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/dislike"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dislike"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/dislike">
+
+            <ImageView
+                android:id="@+id/imageView56"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:tint="@color/dividercolor"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_btn_comment_commu_talk"
+                app:layout_constraintStart_toStartOf="@+id/guideline4"
+                app:layout_constraintTop_toTopOf="@+id/textView_btn_comment_commu_talk"
+                app:srcCompat="@drawable/ic_icon_awesome_comment_alt" />
+
+            <TextView
+                android:id="@+id/textView_btn_comment_commu_talk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Comment"
+                android:textColor="@color/dividercolor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_btn_share"
+                app:layout_constraintEnd_toStartOf="@+id/imageView54"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView56" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline4" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout">
 
-        <ImageView
-            android:id="@+id/imageView53"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:tint="@color/dividercolor"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_btn_like_commu_talk"
-            app:layout_constraintEnd_toStartOf="@+id/textView_btn_like_commu_talk"
-            app:layout_constraintTop_toTopOf="@+id/textView_btn_like_commu_talk"
-            app:srcCompat="@drawable/ic_icon_awesome_thumbs_up" />
+            <ImageView
+                android:id="@+id/imageView54"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:tint="@color/dividercolor"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_btn_share"
+                app:layout_constraintEnd_toStartOf="@+id/tv_btn_share"
+                app:layout_constraintTop_toTopOf="@+id/tv_btn_share"
+                app:srcCompat="@drawable/ic_icon_awesome_share_alt" />
 
-        <ImageView
-            android:id="@+id/imageView54"
+            <TextView
+                android:id="@+id/tv_btn_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Share"
+                android:textColor="@color/dividercolor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline4" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_count_comment"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:tint="@color/dividercolor"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_btn_share"
-            app:layout_constraintEnd_toStartOf="@+id/tv_btn_share"
-            app:layout_constraintTop_toTopOf="@+id/tv_btn_share"
-            app:srcCompat="@drawable/ic_icon_awesome_share_alt" />
+            android:layout_height="wrap_content"
+            android:text="185 Comment"
+            android:textColor="#686666"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView48"
+            app:layout_constraintEnd_toStartOf="@+id/textView_count_share"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dislike"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/imageView48" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
@@ -239,58 +349,6 @@
             app:layout_constraintStart_toEndOf="@+id/imageView48"
             app:layout_constraintTop_toTopOf="@+id/imageView48" />
 
-        <ImageView
-            android:id="@+id/imageView49"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:tint="@color/dividercolor"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_btn_dislike_commu_talk"
-            app:layout_constraintEnd_toStartOf="@+id/textView_btn_dislike_commu_talk"
-            app:layout_constraintTop_toTopOf="@+id/textView_btn_dislike_commu_talk"
-            app:srcCompat="@drawable/ic_icon_awesome_thumbs_down" />
 
-        <TextView
-            android:id="@+id/textView_btn_dislike_commu_talk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
-            android:text="Dislike"
-            android:textColor="@color/dividercolor"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4" />
-
-        <ImageView
-            android:id="@+id/imageView56"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:tint="@color/dividercolor"
-            app:layout_constraintBottom_toBottomOf="@+id/textView_btn_comment_commu_talk"
-            app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toTopOf="@+id/textView_btn_comment_commu_talk"
-            app:srcCompat="@drawable/ic_icon_awesome_comment_alt" />
-
-        <TextView
-            android:id="@+id/textView_btn_comment_commu_talk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="Comment"
-            android:textColor="@color/dividercolor"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tv_btn_share"
-            app:layout_constraintEnd_toStartOf="@+id/imageView54"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView56" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Surveydapter extends RecyclerView.Adapter<Surveydapter.ViewHolder> {
@@ -29,7 +28,7 @@ public class Surveydapter extends RecyclerView.Adapter<Surveydapter.ViewHolder> 
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.survey_raw, parent, false);
+        View contactView = inflater.inflate(R.layout.raw_survey, parent, false);
 
 //        contactView.setOnClickListener(i);
         // Return a new holder instance

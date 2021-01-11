@@ -109,10 +109,9 @@ public class CommunityChat extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && requestCode == 1010 & data.getBooleanExtra("reload", false)) {
             reload();
-           // Toast.makeText(this, "runnind code", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "runnind code", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
     private void reload() {
@@ -138,7 +137,7 @@ public class CommunityChat extends AppCompatActivity {
                             ChatData c = gson.fromJson(jsonObject.toString(), ChatData.class);
                             chatData.add(c);
                         }*/
-                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, cm.getData(), "/ctalk_like_unlike_post", "/ctalk_comments", "/ctalk_comments_post", false,avi);
+                        CommunityChatAdapter communityChatAdapter = new CommunityChatAdapter(CommunityChat.this, cm.getData(), "/ctalk_like_unlike_post", "/ctalk_comments", "/ctalk_comments_post", false, avi);
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
                         Toast.makeText(CommunityChat.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -176,8 +175,6 @@ public class CommunityChat extends AppCompatActivity {
     }
 
     public void back(View view) {
-
-
         finish();
     }
 }

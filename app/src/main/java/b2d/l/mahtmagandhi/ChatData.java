@@ -1,14 +1,15 @@
 package b2d.l.mahtmagandhi;
 
 public class ChatData {
-    String id,title,description,image_name;
-    int likes,dislike,likeStatus,UnlikeStatus;
+    String id, user_id, title, description, image_name;
+    int likes, dislike, likeStatus, UnlikeStatus, commentCount;
 
     public ChatData() {
     }
 
-    public ChatData(String id, String title, String description, String image_name, int likes, int dislike, int likeStatus, int unlikeStatus) {
+    public ChatData(String id, String user_id, String title, String description, String image_name, int likes, int dislike, int likeStatus, int unlikeStatus, int commentCount) {
         this.id = id;
+        this.user_id = user_id;
         this.title = title;
         this.description = description;
         this.image_name = image_name;
@@ -16,6 +17,7 @@ public class ChatData {
         this.dislike = dislike;
         this.likeStatus = likeStatus;
         UnlikeStatus = unlikeStatus;
+        this.commentCount = commentCount;
     }
 
     public String getId() {
@@ -24,6 +26,14 @@ public class ChatData {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getTitle() {
@@ -80,5 +90,13 @@ public class ChatData {
 
     public void setUnlikeStatus(int unlikeStatus) {
         UnlikeStatus = unlikeStatus;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }

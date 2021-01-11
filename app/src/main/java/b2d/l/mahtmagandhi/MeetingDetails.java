@@ -1,19 +1,20 @@
 package b2d.l.mahtmagandhi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.Serializable;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MeetingDetails extends AppCompatActivity {
 
     TextView title, date, time, dis;
+    private Meeting meet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class MeetingDetails extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
-        Meeting meet = (Meeting) getIntent().getSerializableExtra("meet");
+        meet = (Meeting) getIntent().getSerializableExtra("meet");
         title = findViewById(R.id.textView26);
         date = findViewById(R.id.textView27);
         time = findViewById(R.id.textView28);
@@ -38,12 +39,24 @@ public class MeetingDetails extends AppCompatActivity {
             } else {
                 dis.setText(Html.fromHtml(meet.getDescription()));
             }
-
-
         }
+
     }
 
     public void back(View view) {
         finish();
+    }
+
+    public void map(View view) {
+//        meet.setLatitude("27.6225423");
+//        meet.setLongitude("75.1662117");
+        if (meet.getLatitude().equals("null") || meet.getLongitude().equals("null")) {
+            Toast.makeText(this, "Location not available", Toast.LENGTH_SHORT).show();
+        } else {
+            String strUri = "http://maps.google.com/maps?q=loc:" + meet.getLatitude() + "," + meet.getLongitude() + " (" + meet.getTitle() + ")";
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(strUri));
+            intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+            startActivity(intent);
+        }
     }
 }

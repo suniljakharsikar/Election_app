@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,11 +31,26 @@ import java.util.Map;
 public class OurWorks extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    private AVLoadingIndicatorView avi;
+
+    void startAnim() {
+        avi.show();
+        avi.setVisibility(View.VISIBLE);
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim() {
+        avi.setVisibility(View.INVISIBLE);
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_our_works);
+        avi = findViewById(R.id.avi);
+
         recyclerView = findViewById(R.id.rv_our_works);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fetchData();
@@ -47,7 +63,7 @@ public class OurWorks extends AppCompatActivity {
 
         String url = Url.baseurl + "/work_data";
         JSONObject jsonRequest = new JSONObject();
-        //startAnim();
+        startAnim();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -70,14 +86,14 @@ public class OurWorks extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //stopAnim();
+                stopAnim();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //stopAnim();
+                stopAnim();
                 Toast.makeText(OurWorks.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {

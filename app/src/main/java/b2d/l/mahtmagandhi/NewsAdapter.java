@@ -21,10 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -57,9 +54,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         this.context = context;
         this.chatData = chatData;
         this.s = s;
-        this.s1 = s1;
-        this.s2 = s2;
-        this.passToken = pass;
+        Boolean passToken = pass;
         this.avi = avi;
     }
 
@@ -81,31 +76,28 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         NewsUpdateResponseModel.Data x = chatData.get(position);
-       // holder.username.setText(x.getTitle());
+        // holder.username.setText(x.getTitle());
 
-        holder.shareBtnTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Uri uri = null;
-                    if (x.getImage_name()!= null && Patterns.WEB_URL.matcher(x.getImage_name().toString()).matches())
-                        uri = Utility.INSTANCE.saveBitmap(
-                                view.getContext(),
-                                holder.descIv,
-                                Bitmap.CompressFormat.JPEG,
-                                "image/jpeg",
-                                "",
-                                "statement"
-                        );
+        holder.share.setOnClickListener(view -> {
+            try {
+                Uri uri = null;
+                if (x.getImage_name() != null && Patterns.WEB_URL.matcher(x.getImage_name().toString()).matches())
+                    uri = Utility.INSTANCE.saveBitmap(
+                            view.getContext(),
+                            holder.descIv,
+                            Bitmap.CompressFormat.JPEG,
+                            "image/jpeg",
+                            "",
+                            "statement"
+                    );
 
-                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
+                Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
 
-                } catch (IOException e) {
-
-                }
-//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
 
             }
+//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
+
         });
 
 //        holder.imageView.setImageResource(x.getImage());
@@ -124,7 +116,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
             }
-        })*/;
+        })*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             holder.descTv.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
@@ -170,7 +162,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
             }
         });
-        if (x.getImage_name()==null)holder.descIv.setVisibility(View.GONE);
+        if (x.getImage_name() == null) holder.descIv.setVisibility(View.GONE);
         else holder.descIv.setVisibility(View.VISIBLE);
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
        if (x.getUserData()!=null && x.getUserData().size()>0) {
@@ -191,16 +183,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         });
 */
 
-        holder.likesCountTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (x.getLikeStatus() == 1) {
-                    Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                like_dislike(1, x, holder.likesCountTv, holder.likesCountTv);
-
+        holder.like.setOnClickListener(view -> {
+            if (x.getLikeStatus() == 1) {
+                Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
+                return;
             }
+            like_dislike(1, x, holder.likesCountTv, holder.likesCountTv);
+
         });
 
     }
@@ -235,67 +224,58 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         if (avi != null) {
             avi.setVisibility(View.VISIBLE);
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    if (response.getBoolean("success")) {
-                        if (i == 1) {//like increase
-                            x.setLikes(x.getLikes() + 1);
-                            x.setLikeStatus(1);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, response -> {
+            try {
+                if (response.getBoolean("success")) {
+                    if (i == 1) {//like increase
+                        x.setLikes(x.getLikes() + 1);
+                        x.setLikeStatus(1);
 //                            notifyDataSetChanged();
 //                            notifyItemChanged(position);
-                            likes.setText(x.getLikes() + "");
-                            if (x.getUnlikeStatus() == 1) {
-                                x.setDislike(x.getDislike() - 1);
-                                x.setUnlikeStatus(0);
-//                            notifyItemChanged(position);
-                                dilikes.setText(x.getDislike() + "");
-                            }
-                            if (avi != null)
-                                avi.setVisibility(View.INVISIBLE);
-                        }
-                        if (i == 2) {
-                            x.setDislike(x.getDislike() + 1);
-                            x.setUnlikeStatus(1);
+                        likes.setText(x.getLikes() + "");
+                        if (x.getUnlikeStatus() == 1) {
+                            x.setDislike(x.getDislike() - 1);
+                            x.setUnlikeStatus(0);
 //                            notifyItemChanged(position);
                             dilikes.setText(x.getDislike() + "");
-                            if (x.getLikeStatus() == 1) {
-                                x.setLikes(x.getLikes() - 1);
-                                x.setLikeStatus(0);
-//                            notifyItemChanged(position);
-                                likes.setText(x.getDislike() + "");
-                            }
-                            if (avi != null)
-                                avi.setVisibility(View.INVISIBLE);
-
                         }
+                        if (avi != null)
+                            avi.setVisibility(View.INVISIBLE);
+                    }
+                    if (i == 2) {
+                        x.setDislike(x.getDislike() + 1);
+                        x.setUnlikeStatus(1);
+//                            notifyItemChanged(position);
+                        dilikes.setText(x.getDislike() + "");
+                        if (x.getLikeStatus() == 1) {
+                            x.setLikes(x.getLikes() - 1);
+                            x.setLikeStatus(0);
+//                            notifyItemChanged(position);
+                            likes.setText(x.getDislike() + "");
+                        }
+                        if (avi != null)
+                            avi.setVisibility(View.INVISIBLE);
+
+                    }
 //                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
 
-                        //// TODO: 19/12/20 refresh number of likes
-                    } else {
-                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-                        //login page
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.apply();
-                        editor.clear();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    //// TODO: 19/12/20 refresh number of likes
+                } else {
+                    Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                    //login page
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.apply();
+                    editor.clear();
+                    context.startActivity(new Intent(context, LoginActivity.class));
                 }
-
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(context, "" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
+        }, error -> Toast.makeText(context, "" + error.toString(), Toast.LENGTH_SHORT).show()) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> header = new HashMap<>();
                 header.put("Content-Type", "application/json");
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -313,9 +293,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView descIv,avtarIv;
-        TextView likesCountTv,likeBtnTv,shareCountTv,shareBtnTextView,   usernameTv,descTv,timeTv;
-
+        ImageView descIv, avtarIv;
+        TextView likesCountTv, usernameTv, descTv, timeTv;
+        LinearLayout like, share;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -327,14 +307,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             //dislikesCountTv = itemView.findViewById(R.id.textView_disike_count);
             //commentCountTv = itemView.findViewById(R.id.textView_count_comment);
             //dislikeBtnTv = itemView.findViewById(R.id.textView_btn_dislike_commu_talk);
-            likeBtnTv = itemView.findViewById(R.id.textView_btn_like_commu_talk);
             //commentBtnTv = itemView.findViewById(R.id.textView_btn_comment_commu_talk);
-            shareBtnTextView = itemView.findViewById(R.id.tv_btn_share);
-            shareCountTv = itemView.findViewById(R.id.textView_count_share);
             usernameTv = itemView.findViewById(R.id.tv_name_news);
             descTv = itemView.findViewById(R.id.tv_des_news);
-
-
+            like = itemView.findViewById(R.id.like_news);
+            share = itemView.findViewById(R.id.dislike_news);
 
 
         }

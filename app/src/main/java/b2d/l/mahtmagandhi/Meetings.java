@@ -87,13 +87,14 @@ public class Meetings extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("ashok_meeting", response.toString());
                 try {
                     if (response.getBoolean("success")) {
                         JSONArray data = response.getJSONArray("data");
                         ArrayList<Meeting> meetings = new ArrayList<>();
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonObject = data.getJSONObject(i);
-                            meetings.add(new Meeting(jsonObject.getString("id"), jsonObject.getString("title"), jsonObject.getString("description"), jsonObject.getString("meeting_date"), jsonObject.getString("meeting_time")));
+                            meetings.add(new Meeting(jsonObject.getString("id"), jsonObject.getString("title"), jsonObject.getString("description"), jsonObject.getString("meeting_date"), jsonObject.getString("meeting_time"),jsonObject.getString("latitude"),jsonObject.getString("longitude")));
                         }
                         Map<String, List<Meeting>> map = new HashMap<>();
                         for (int i = 0; i < meetings.size(); i++) {

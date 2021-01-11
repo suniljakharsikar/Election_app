@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -77,6 +78,7 @@ public class CommitteeMember extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("ashok_comm", response.toString());
 
                 try {
                     if (response.getBoolean("success")) {
@@ -91,7 +93,7 @@ public class CommitteeMember extends AppCompatActivity {
                         Gson gson = new Gson();
                         CommitteMembersResponseModel c = gson.fromJson(response.toString(), CommitteMembersResponseModel.class);
 
-                        CommitteeMemberAdapter committeeMemberAdapter1 = new CommitteeMemberAdapter(CommitteeMember.this, c.getData(),c.getDomain_name());
+                        CommitteeMemberAdapter committeeMemberAdapter1 = new CommitteeMemberAdapter(CommitteeMember.this, c.getData(), c.getDomain_name());
                         recyclerView.setAdapter(committeeMemberAdapter1);
                     } else {
                         Toast.makeText(CommitteeMember.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

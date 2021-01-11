@@ -88,6 +88,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 //        holder.imageView.setImageResource(x.getImage());
         holder.likesCountTv.setText(x.getLikes() + "");
         holder.dislikesCountTv.setText(x.getDislike() + "");
+        holder.commentCountTv.setText(x.getCommentCount() + " Comment");
         holder.commentBtnTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +123,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             if (!img.contains("https")) img = Url.http + img;
         else if (!img.contains("election"))img = Url.burl+img;
 
-        if (img==null)holder.descIv.setVisibility(View.GONE);
+        if (img == null) holder.descIv.setVisibility(View.GONE);
         else holder.descIv.setVisibility(View.VISIBLE);
 
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
@@ -153,7 +154,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             }
         });
 
-        holder.dislikeBtnTv.setOnClickListener(new View.OnClickListener() {
+        holder.dislike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (x.getUnlikeStatus() == 1) {
@@ -165,7 +166,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             }
         });
 
-        holder.likesCountTv.setOnClickListener(new View.OnClickListener() {
+        holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (x.getLikeStatus() == 1) {
@@ -223,13 +224,10 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                         if (i == 1) {//like increase
                             x.setLikes(x.getLikes() + 1);
                             x.setLikeStatus(1);
-//                            notifyDataSetChanged();
-//                            notifyItemChanged(position);
                             likes.setText(x.getLikes() + "");
                             if (x.getUnlikeStatus() == 1) {
                                 x.setDislike(x.getDislike() - 1);
                                 x.setUnlikeStatus(0);
-//                            notifyItemChanged(position);
                                 dilikes.setText(x.getDislike() + "");
                             }
                             if (avi != null)
@@ -238,12 +236,10 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                         if (i == 2) {
                             x.setDislike(x.getDislike() + 1);
                             x.setUnlikeStatus(1);
-//                            notifyItemChanged(position);
                             dilikes.setText(x.getDislike() + "");
                             if (x.getLikeStatus() == 1) {
                                 x.setLikes(x.getLikes() - 1);
                                 x.setLikeStatus(0);
-//                            notifyItemChanged(position);
                                 likes.setText(x.getDislike() + "");
                             }
                             if (avi != null)
@@ -293,9 +289,9 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView descIv,avtarIv;
-        TextView likesCountTv,likeBtnTv,dislikeBtnTv,commentBtnTv,shareCountTv,shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv,descTv;
-
+        ImageView descIv, avtarIv;
+        TextView likesCountTv, commentBtnTv, shareCountTv, shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv, descTv;
+        LinearLayout dislike, like;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -305,13 +301,13 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             likesCountTv = itemView.findViewById(R.id.textView_like_count);
             dislikesCountTv = itemView.findViewById(R.id.textView_disike_count);
             commentCountTv = itemView.findViewById(R.id.textView_count_comment);
-            dislikeBtnTv = itemView.findViewById(R.id.textView_btn_dislike_commu_talk);
-            likeBtnTv = itemView.findViewById(R.id.textView_btn_like_commu_talk);
             commentBtnTv = itemView.findViewById(R.id.textView_btn_comment_commu_talk);
             shareBtnTextView = itemView.findViewById(R.id.tv_btn_share);
             shareCountTv = itemView.findViewById(R.id.textView_count_share);
             usernameTv = itemView.findViewById(R.id.tv_name_commu_talk);
             descTv = itemView.findViewById(R.id.tv_des_commu_talk);
+            dislike = itemView.findViewById(R.id.dislike);
+            like = itemView.findViewById(R.id.like);
 
 
         }
