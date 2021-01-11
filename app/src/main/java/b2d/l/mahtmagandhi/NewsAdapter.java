@@ -33,7 +33,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -138,12 +137,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
 
         Object finalImg = img;
-        holder.shareBtnTextView.setOnClickListener(new View.OnClickListener() {
+        holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
                     Uri uri = null;
-                    if (finalImg !=null && finalImg.toString().length()>0)
+                    if (finalImg != null && finalImg.toString().length() > 0)
                         uri = Utility.INSTANCE.saveBitmap(
                                 view.getContext(),
                                 holder.descIv,
