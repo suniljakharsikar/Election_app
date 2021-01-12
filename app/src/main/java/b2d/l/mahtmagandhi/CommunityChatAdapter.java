@@ -79,9 +79,13 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final ChatDataResponseModel.Data x = chatData.get(position);
-        ChatDataResponseModel.Data.UserData userData = x.getUserData().get(0);
-        holder.usernameTv.setText(userData.getUser_name());
-        Glide.with(holder.itemView).load(userData.getUser_image()).into(holder.avtarIv);
+        try {
+            ChatDataResponseModel.Data.UserData userData = x.getUserData().get(0);
+            holder.usernameTv.setText(userData.getUser_name());
+            Glide.with(holder.itemView).load(userData.getUser_image()).into(holder.avtarIv);
+        } catch (Exception e) {
+
+        }
 
 //        holder.imageView.setImageResource(x.getImage());
         holder.likesCountTv.setText(x.getLikes() + "");

@@ -28,6 +28,8 @@ class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<Problem
             intent.putExtra("pos", model.id)
             intent.putExtra("url", s1)
             intent.putExtra("newposturl", s2)
+            if (model.isResolved==1)intent.putExtra("isResolved",true)
+            else if (model.isResolved==0)intent.putExtra("isResolved",false)
             var x = model.imageArr
 
             intent.putExtra("imgs",x)

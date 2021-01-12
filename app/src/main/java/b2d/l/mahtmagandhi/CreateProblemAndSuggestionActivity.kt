@@ -46,6 +46,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     private  var imageAdapter: ImagesRecyclerViewAdapter? = null
     val images = arrayListOf<String>()
     private var avi: AVLoadingIndicatorView? = null
+    val list = mutableListOf<Uri>()
 
     fun startAnim() {
         avi!!.show()
@@ -63,6 +64,9 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_problem_and_suggestion)
         avi = avi5
         stopAnim()
+        imageAdapter = ImagesRecyclerViewAdapter(list)
+        // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
+        recyclerView_imgs_problem.adapter = imageAdapter
 
         val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -290,14 +294,13 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                 if(data?.getClipData() != null) {
                     var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                     Toast.makeText(this, ""+count+"", Toast.LENGTH_SHORT).show()
-                    val list = mutableListOf<Uri>()
+
                     for(i in 0..count-1) {
                         val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();
                         list.add(imageUri)
                     }
-                    imageAdapter = ImagesRecyclerViewAdapter(list)
-                    // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
-                    recyclerView_imgs_problem.adapter = imageAdapter
+                    imageAdapter?.notifyDataSetChanged()
+
                     //do something with the image (save it to some directory or whatever you need to do with it here)
                 }
             } else if(data?.getData() != null) {
@@ -305,6 +308,8 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                 //do something with the image (save it to some directory or whatever you need to do with it here)
             }
         }else if (resultCode.equals(Activity.RESULT_OK) && requestCode == REQUEST_TAKE_PHOTO) {
+            list.add(Uri.fromFile( File(currentPhotoPath)))
+            imageAdapter?.notifyDataSetChanged()
             val uri:Uri? = data?.data
 
             /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){

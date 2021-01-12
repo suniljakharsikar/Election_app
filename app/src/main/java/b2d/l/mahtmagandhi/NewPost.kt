@@ -41,6 +41,7 @@ class NewPost : AppCompatActivity() {
     private  var imageAdapter: ImagesRecyclerViewAdapter? =null
     var editText: EditText? = null
     private var avi: AVLoadingIndicatorView? = null
+    val list = mutableListOf<Uri>()
 
     fun startAnim() {
         avi!!.show()
@@ -60,6 +61,8 @@ class NewPost : AppCompatActivity() {
         avi = avi4
         stopAnim()
         editText = findViewById(R.id.et_prob_sugg)
+        imageAdapter = ImagesRecyclerViewAdapter(list)
+        rv_imgs_new_post.adapter =imageAdapter
 
         tv_image_btn_prob_sug.setOnClickListener {
             callm();
@@ -238,20 +241,24 @@ class NewPost : AppCompatActivity() {
                 if(data?.getClipData() != null) {
                     var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
                     Toast.makeText(this, ""+count+"", Toast.LENGTH_SHORT).show()
-                    val list = mutableListOf<Uri>()
+
                     for(i in 0..count-1) {
                         val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();
                             list.add(imageUri)
                     }
                    // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
-                    imageAdapter = ImagesRecyclerViewAdapter(list)
-                    rv_imgs_new_post.adapter =imageAdapter
+                   imageAdapter?.notifyDataSetChanged()
                     //do something with the image (save it to some directory or whatever you need to do with it here)
                 }
             } else if(data?.getData() != null) {
                 val imagePath = data.getData()!!.getPath();
                 //do something with the image (save it to some directory or whatever you need to do with it here)
             }
+        }else if(requestCode== 50){
+
+            list.add(Uri.fromFile( File(currentPhotoPath)))
+        // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
+        imageAdapter?.notifyDataSetChanged()
         }
 
 

@@ -22,7 +22,9 @@ data class ProblemsResponseModel(
             @SerializedName("imageArr")
             val imageArr: ArrayList<ImageArr>,
             @SerializedName("title")
-            val title: String // What is Lorem Ipsum?
+            val title: String ,// What is Lorem Ipsum?
+            @SerializedName("resolved_status")
+            val isResolved:Int
     ) {
         @Parcelize
         data class ImageArr(

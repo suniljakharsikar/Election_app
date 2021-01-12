@@ -21,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -67,6 +68,19 @@ public class Comment extends AppCompatActivity {
         final SliderAdapterExample adapter = new SliderAdapterExample(this);
 //        StatusBarUtil.setTransparent(this);
         avi = findViewById(R.id.avi);
+        MaterialCardView materialCardViewResolved = findViewById(R.id.mcv_comment_resolved);
+
+        if (getIntent()!=null && getIntent().hasExtra("isResolved")){
+            Boolean isResolved = getIntent().getBooleanExtra("isResolved",false);
+            if (isResolved){
+                materialCardViewResolved.setVisibility(View.VISIBLE);
+
+            }else {
+                materialCardViewResolved.setVisibility(View.GONE);
+
+
+            }
+        }
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
