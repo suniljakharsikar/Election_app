@@ -77,27 +77,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         NewsUpdateResponseModel.Data x = chatData.get(position);
         // holder.username.setText(x.getTitle());
 
-        holder.share.setOnClickListener(view -> {
-            try {
-                Uri uri = null;
-                if (x.getImage_name() != null && Patterns.WEB_URL.matcher(x.getImage_name().toString()).matches())
-                    uri = Utility.INSTANCE.saveBitmap(
-                            view.getContext(),
-                            holder.descIv,
-                            Bitmap.CompressFormat.JPEG,
-                            "image/jpeg",
-                            "",
-                            "statement"
-                    );
-
-                Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
-
-            } catch (IOException e) {
-
-            }
-//                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
-
-        });
 
 //        holder.imageView.setImageResource(x.getImage());
         holder.likesCountTv.setText(x.getLikes() + "");

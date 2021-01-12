@@ -102,6 +102,8 @@ public class Register extends AppCompatActivity {
         if (preferences.getString(Datas.user_postal_code, "").length()==6)
           fetchLoc(preferences.getString(Datas.user_postal_code, ""));
         state.setText(preferences.getString(Datas.user_state, ""));
+        state.setEnabled(false);
+        distirct.setEnabled(false);
         distirct.setText(preferences.getString(Datas.user_district, ""));
         city.setText(preferences.getString(Datas.user_village,""),false);
 
