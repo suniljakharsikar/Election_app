@@ -99,6 +99,8 @@ public class Register extends AppCompatActivity {
         number.setText(preferences.getString(Datas.user_mobile, ""));
         age.setText(preferences.getString(Datas.user_age, ""));
         pincode.setText(preferences.getString(Datas.user_postal_code, ""));
+        if (preferences.getString(Datas.user_postal_code, "").length()==6)
+          fetchLoc(preferences.getString(Datas.user_postal_code, ""));
         state.setText(preferences.getString(Datas.user_state, ""));
         distirct.setText(preferences.getString(Datas.user_district, ""));
         city.setText(preferences.getString(Datas.user_village,""),false);
