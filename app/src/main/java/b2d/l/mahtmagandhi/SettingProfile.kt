@@ -126,8 +126,8 @@ class SettingProfile : AppCompatActivity() {
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .start(this);
 
-           // val dialog = ImagePickerBottomSheetDialogFragment()
-         //   dialog.show(supportFragmentManager, "pic")
+            // val dialog = ImagePickerBottomSheetDialogFragment()
+            //   dialog.show(supportFragmentManager, "pic")
         }
 
         FirebaseMessaging.getInstance().getToken()
@@ -241,6 +241,7 @@ class SettingProfile : AppCompatActivity() {
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         editText_dob_setting_profile.setText(sdf.format(myCalendar.time))
     }
+
     private fun fetchData(token: String) {
         startAnim()
         // [START_EXCLUDE]
@@ -543,15 +544,14 @@ class SettingProfile : AppCompatActivity() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                 resultUri = result!!.getUri ();
+                resultUri = result!!.getUri();
                 Glide.with(this).load(resultUri).into(profile_image)
                 newposting()
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result!!. getError ();
+                val error = result!!.getError();
             }
-        }
-        else  if (resultCode.equals(Activity.RESULT_OK)) {
+        } else if (resultCode.equals(Activity.RESULT_OK)) {
 
             var uri = data?.data
 
@@ -693,14 +693,9 @@ class SettingProfile : AppCompatActivity() {
     fun newposting() {
 
 
-
-
-
-
-
         startAnim()
         val vollley = object : VolleyMultipartRequest(Request.Method.POST, "https://election.suniljakhar.in/api/profile_image", Response.Listener {
-        //    Toast.makeText(this, it.statusCode, Toast.LENGTH_LONG).show()
+            //    Toast.makeText(this, it.statusCode, Toast.LENGTH_LONG).show()
             stopAnim()
 
         }, object : Response.ErrorListener {
@@ -711,7 +706,7 @@ class SettingProfile : AppCompatActivity() {
                 stopAnim()
             }
 
-        }){
+        }) {
 
             override fun getByteData(): MutableMap<String, DataPart> {
                 val params: MutableMap<String, DataPart> = mutableMapOf()
@@ -737,51 +732,50 @@ class SettingProfile : AppCompatActivity() {
             }
 
 
-
         }
         MySingleton.getInstance(this).addToRequestQueue(vollley)
         return
         val client = OkHttpClient().newBuilder()
-                    .build()
-            val mediaType = MediaType.parse("text/plain")
-            val bodyp = MultipartBody.Builder().setType(MultipartBody.MIXED)
+                .build()
+        val mediaType = MediaType.parse("text/plain")
+        val bodyp = MultipartBody.Builder().setType(MultipartBody.MIXED)
 
-            if (resultUri !=null) {
-                bodyp.addFormDataPart("'profileImage", "profilej.jpg",
-                        RequestBody.create(MediaType.parse("application/octet-stream"),
-                                resultUri!!.toFile()))
+        if (resultUri != null) {
+            bodyp.addFormDataPart("'profileImage", "profilej.jpg",
+                    RequestBody.create(MediaType.parse("application/octet-stream"),
+                            resultUri!!.toFile()))
 
-
-            }
-
-            val body = bodyp.build()
-            val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-
-            val request: okhttp3.Request = okhttp3.Request.Builder()
-                    .url("https://election.suniljakhar.in/api/profile_image")
-                    .method("POST", body)
-                    .addHeader("token", preferences.getString(Datas.token, "")!!)
-                    .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
-                    .addHeader("Content-Type", "application/json")
-
-                    .build()
-            val job = GlobalScope.async {
-                val response = client.newCall(request).execute()
-                Log.d("NewPost", "newposting: " + response.isSuccessful)
-                if (response.isSuccessful) {
-                    GlobalScope.launch(Dispatchers.Main) {
-                       // profile_image.setImageDrawable(null)
-
-                        Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
-                        stopAnim()
-
-                    }
-                }
-                stopAnim()
-            }
 
         }
 
+        val body = bodyp.build()
+        val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+        val request: okhttp3.Request = okhttp3.Request.Builder()
+                .url("https://election.suniljakhar.in/api/profile_image")
+                .method("POST", body)
+                .addHeader("token", preferences.getString(Datas.token, "")!!)
+                .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                .addHeader("Content-Type", "application/json")
+
+                .build()
+        val job = GlobalScope.async {
+            val response = client.newCall(request).execute()
+            Log.d("NewPost", "newposting: " + response.isSuccessful)
+            if (response.isSuccessful) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    // profile_image.setImageDrawable(null)
+
+                    Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                    stopAnim()
+
+                }
+            }
+            stopAnim()
+        }
 
     }
+
+
+}
 

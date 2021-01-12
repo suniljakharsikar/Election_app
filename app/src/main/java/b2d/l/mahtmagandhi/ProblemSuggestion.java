@@ -1,9 +1,5 @@
 package b2d.l.mahtmagandhi;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,12 +8,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,11 +29,25 @@ import java.util.Map;
 public class ProblemSuggestion extends AppCompatActivity {
 
     private RecyclerView rvProblems;
+    private AVLoadingIndicatorView avi;
+
+    void startAnim() {
+        avi.show();
+        avi.setVisibility(View.VISIBLE);
+        // or avi.smoothToShow();
+    }
+
+    void stopAnim() {
+        avi.setVisibility(View.INVISIBLE);
+//        avi.hide();
+        // or avi.smoothToHide();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem_suggestion2);
+        avi = findViewById(R.id.avi);
 
         initView();
     }
@@ -63,7 +78,7 @@ public class ProblemSuggestion extends AppCompatActivity {
 
         String url = Url.baseurl + "/psuggestion_data";
         JSONObject jsonRequest = new JSONObject();
-        //startAnim();
+        startAnim();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -85,14 +100,14 @@ public class ProblemSuggestion extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //stopAnim();
+                stopAnim();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                //stopAnim();
+                stopAnim();
                 Toast.makeText(ProblemSuggestion.this, "" + error, Toast.LENGTH_SHORT).show();
             }
         }) {

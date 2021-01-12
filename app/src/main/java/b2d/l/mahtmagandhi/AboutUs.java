@@ -1,8 +1,5 @@
 package b2d.l.mahtmagandhi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,22 +9,20 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.JsonObject;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.wang.avi.AVLoadingIndicatorView;
-import com.wang.avi.indicators.BallClipRotatePulseIndicator;
-import com.wang.avi.indicators.BallPulseIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +30,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class AboutUs extends AppCompatActivity {
 
@@ -56,7 +50,6 @@ public class AboutUs extends AppCompatActivity {
 
         final SliderAdapterExample adapter = new SliderAdapterExample(this);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         /*adapter.addItem(new SliderItem());
         adapter.addItem(new SliderItem());
@@ -65,7 +58,7 @@ public class AboutUs extends AppCompatActivity {
 
         textView = findViewById(R.id.textView16);
 
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String url = Url.baseurl + "/about_us";
         JSONObject jsonRequest = new JSONObject();
         startAnim();

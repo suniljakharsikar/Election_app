@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +19,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private Context context;
     private ArrayList<CommentData> data;
     private int userid;
+    private boolean resol;
 
 
-    public CommentAdapter(Context context, ArrayList<CommentData> data, int userid) {
+    public CommentAdapter(Context context, ArrayList<CommentData> data, int userid, boolean resol) {
         this.context = context;
         this.data = data;
         this.userid = userid;
+        this.resol = resol;
     }
 
     @NonNull
@@ -55,6 +58,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.mcvOther.setVisibility(View.VISIBLE);
         holder.comment.setText(commentData.getComment());
         holder.name.setText(commentData.getUsername());
+        if (resol && position == data.size() - 1) {
+            holder.resold.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -62,10 +68,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return data.size();
     }
 
+    public void reol(boolean b) {
+        resol = b;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView comment, name/*,commentMe*//*,nameMe*/;
         ConstraintLayout constraintLayout, clMe;
         MaterialCardView mcvOther/*,mcvMe*/;
+        LinearLayout resold;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +88,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 //            clMe = itemView.findViewById(R.id.clay_me);
 //            mcvMe = itemView.findViewById(R.id.mdc_me);
             mcvOther = itemView.findViewById(R.id.mdc_other);
+            resold = itemView.findViewById(R.id.resol);
 
         }
     }

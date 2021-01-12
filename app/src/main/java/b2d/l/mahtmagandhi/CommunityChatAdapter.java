@@ -114,17 +114,17 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
         List<ChatDataResponseModel.Data.ImageData> imgs = x.getImageData();
         String img = null;
-        if (imgs != null && imgs.size()>0){
-            img = Url.burl+imgs.get(0).getImage_name();
+        if (imgs != null && imgs.size() > 0) {
+            img = Url.burl + imgs.get(0).getImage_name();
         }
 
-        if (img == null && x.getImage_name()!=null) {
+        if (img == null && x.getImage_name() != null) {
             if (x.getImage_name() != null)
                 img = x.getImage_name().toString();
         }
         if (img != null && img.contains("election"))
             if (!img.contains("https")) img = Url.http + img;
-        else if (!img.contains("election"))img = Url.burl+img;
+            else if (!img.contains("election")) img = Url.burl + img;
 
         if (img == null) holder.descIv.setVisibility(View.GONE);
         else holder.descIv.setVisibility(View.VISIBLE);
@@ -137,7 +137,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             public void onClick(View view) {
                 try {
                     Uri uri = null;
-                    if (finalImg !=null && finalImg.length()>0)
+                    if (finalImg != null && finalImg.length() > 0)
                         uri = Utility.INSTANCE.saveBitmap(
                                 view.getContext(),
                                 holder.descIv,
@@ -183,8 +183,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
         String cmtCount = String.valueOf(x.getCommentCount());
         if (cmtCount != null) {
-            holder.commentCountTv.setText(cmtCount+" Comment");
-        }else
+            holder.commentCountTv.setText(cmtCount + " Comment");
+        } else
             holder.commentCountTv.setText("0 Comment");
 
     }
@@ -234,7 +234,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                                 dilikes.setText(x.getDislike() + "");
                             }
                             if (avi != null)
-                                avi.setVisibility(View.INVISIBLE);
+                                stopanim();
                         }
                         if (i == 2) {
                             x.setDislike(x.getDislike() + 1);
@@ -270,6 +270,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                stopanim();
+
                 Toast.makeText(context, "" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -284,6 +286,11 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             }
         };
         MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
+    }
+
+    private void stopanim() {
+        avi.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
