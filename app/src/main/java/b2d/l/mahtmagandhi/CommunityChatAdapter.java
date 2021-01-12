@@ -114,9 +114,10 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             img = Url.burl+imgs.get(0).getImage_name();
         }
 
-        if (img==null && x.getImage_name()!=null)
-            img = x.getImage_name().toString();
-
+        if (img == null && x.getImage_name()!=null) {
+            if (x.getImage_name() != null)
+                img = x.getImage_name().toString();
+        }
         if (img != null && img.contains("election"))
             if (!img.contains("https")) img = Url.http + img;
         else if (!img.contains("election"))img = Url.burl+img;

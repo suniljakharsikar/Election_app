@@ -5,29 +5,42 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //import com.google.firebase.quickstart.fcm.R;
 
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple
  * are declared in the Manifest then the first one will be chosen.
- *
+ * <p>
  * In order to make this Java sample functional, you must remove the following from the Kotlin messaging
  * service in the AndroidManifest.xml:
- *
+ * <p>
  * <intent-filter>
- *   <action android:name="com.google.firebase.MESSAGING_EVENT" />
+ * <action android:name="com.google.firebase.MESSAGING_EVENT" />
  * </intent-filter>
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -89,6 +102,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     // [START on_new_token]
+
     /**
      * Called if FCM registration token is updated. This may occur if the security of
      * the previous token had been compromised. Note that this is called when the
@@ -126,14 +140,93 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     /**
      * Persist token to third-party servers.
-     *
+     * <p>
      * Modify this method to associate the user's FCM registration token with any
      * server-side account maintained by your application.
      *
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
+        Context context = this;
         // TODO: Implement this method to send token to your app server.
+        String url = Url.baseurl + "/about_us";
+        JSONObject jsonRequest = new JSONObject();
+        try {
+            jsonRequest.put("fcm_token", token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        startAnim();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {/*
+                Log.d("ashok", response.toString());
+                try {
+                    if (response.getBoolean("success")) {
+                        JSONObject data = response.getJSONArray("data").getJSONObject(0);
+                        String title = data.getString("title");
+                        String description = data.getString("description");
+
+                        textView.setText(description);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            textView.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            textView.setText(Html.fromHtml(description));
+                        }
+                        JSONArray data_images = response.getJSONArray("data_images");
+                        for (int i = 0; i < data_images.length(); i++) {
+                            adapter.addItem(new SliderItem(Url.burl + data_images.getJSONObject(i).getString("image_url")));
+
+                        }
+                        sliderView.setSliderAdapter(adapter);
+
+                        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+                        sliderView.setIndicatorSelectedColor(Color.WHITE);
+                        sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                        sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
+                        sliderView.startAutoCycle();
+//                        Log.d("ashok", data.toString());
+
+                    } else {
+                        Toast.makeText(AboutUs.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        //login page
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AboutUs.this);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.apply();
+                        startActivity(new Intent(AboutUs.this, LoginActivity.class));
+                    }
+                    Log.d("ashok", response.getString("message"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                stopAnim();*/
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(AboutUs.this, "" + error, Toast.LENGTH_SHORT).show();
+//                Log.d("ashok", error.toString());
+//                stopAnim();
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+                headers.put("token", preferences.getString(Datas.token, ""));
+                headers.put("lid", preferences.getString(Datas.lagnuage_id, "1"));
+                Log.d("ashok", preferences.getString(Datas.lagnuage_id, "1"));
+                return headers;
+            }
+        };
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     /**
@@ -151,7 +244,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.noti)
+                        .setSmallIcon(R.drawable.ic_status_icon)
                         .setContentTitle(getString(R.string.fcm_message))
                         .setContentText(messageBody)
                         .setAutoCancel(true)
