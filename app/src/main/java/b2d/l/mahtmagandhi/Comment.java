@@ -23,8 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
-import com.smarteist.autoimageslider.SliderAnimations;
+import com.lopei.collageview.CollageView;
 import com.smarteist.autoimageslider.SliderView;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -101,11 +100,46 @@ public class Comment extends AppCompatActivity {
         materialCardView = findViewById(R.id.mcv_comment_resolved);
 
         if (passToken) {//from problem page
-            sliderView.setVisibility(View.VISIBLE);
+//            sliderView.setVisibility(View.VISIBLE);//// TODO: 13/1/21
             textView.setVisibility(View.VISIBLE);
 
 //            Toast.makeText(this, "comming from problem", Toast.LENGTH_SHORT).show();
-            try {
+            CollageView collageView = (CollageView) findViewById(R.id.collageView);
+
+            ArrayList<String> urls = new ArrayList<>();
+//            urls.add("https://homepages.cae.wisc.edu/~ece533/images/airplane.png");
+//            urls.add("https://homepages.cae.wisc.edu/~ece533/images/arctichare.png");
+//            urls.add("https://homepages.cae.wisc.edu/~ece533/images/baboon.png");
+//            urls.add("https://homepages.cae.wisc.edu/~ece533/images/barbara.png");
+//            urls.add("https://homepages.cae.wisc.edu/~ece533/images/boat.png");
+//            urls.add("https://homepages.cae.wisc.edu/~ece533/images/boy.bmp");
+
+            ArrayList<ProblemsResponseModel.Data.ImageArr> imgs = getIntent().getParcelableArrayListExtra("imgs");
+            if (imgs.size() > 0) {
+                textView.setText(getIntent().getStringExtra("dis"));
+                for (int i = 0; i < imgs.size(); i++) {
+                    urls.add(Url.http + imgs.get(i).getImageName());
+                }
+                Log.d("ashok_urls", urls.toString());
+
+            } else {
+                //vies disable
+            }
+            collageView
+                    .photoMargin(1)
+                    .photoPadding(3)
+                    .backgroundColor(Color.WHITE)
+//                    .photoFrameColor(Color.BLUE)
+                    .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
+//                    .defaultPhotosForLine(5) // sets default photos number for line of photos (can be changed by program at runtime)
+//                    .iconSelector(this, getResources().getDimensionPixelSize(R.dimen.icon_size))
+                    .useCards(true) // adds cardview backgrounds to all photos
+//                    .maxWidth(100) // will resize images if their side is bigger than 100
+//                    .placeHolder(R.drawable.placeholder_photo) //adds placeholder resource
+//                    .headerForm(CollageView.ImageForm.IMAGE_FORM_SQUARE) // sets form of image for header (if useFirstAsHeader == true)
+//                    .photosForm(CollageView.ImageForm.IMAGE_FORM_HALF_HEIGHT) //sets form of image for other photos
+                    .loadPhotos(urls); // here you can use Array/List of photo urls or array of resource ids
+           /* try {
                 ArrayList<ProblemsResponseModel.Data.ImageArr> imgs = getIntent().getParcelableArrayListExtra("imgs");
                 if (imgs.size() > 0) {
                     textView.setText(getIntent().getStringExtra("dis"));
@@ -127,7 +161,7 @@ public class Comment extends AppCompatActivity {
                 }
             } catch (Exception e) {
 
-            }
+            }*/
         } else {
             sliderView.setVisibility(View.GONE);
             textView.setVisibility(View.GONE);

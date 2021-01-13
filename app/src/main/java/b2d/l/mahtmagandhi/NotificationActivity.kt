@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
@@ -12,29 +13,45 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_notification.*
 import org.json.JSONObject
-import java.util.HashMap
+import java.util.*
 
 class NotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification)
+        avi = findViewById(R.id.avi)
 
         rv_noti.layoutManager = LinearLayoutManager(this)
         fetchData()
 
 
+    }
 
+    private var avi: AVLoadingIndicatorView? = null
+
+    fun startAnim() {
+        avi!!.show()
+        avi!!.visibility = View.VISIBLE
+        // or avi.smoothToShow();
+    }
+
+    fun stopAnim() {
+        avi!!.visibility = View.INVISIBLE
+//        avi.hide();
+        // or avi.smoothToHide();
     }
 
     private fun fetchData() {
 
-        val url = Url.baseurl+"/notification_list"
+        val url = Url.baseurl + "/notification_list"
 
-        val jor = object :JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
+        startAnim()
+        val jor = object : JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
             override fun onResponse(response: JSONObject?) {
-                Log.d("TAG", "onResponse: "+response)
+                Log.d("TAG", "onResponse: " + response)
                 val gson = Gson()
                 val r = gson.fromJson<NotificationResponseModel>(response.toString(), NotificationResponseModel::class.java)
 
@@ -42,14 +59,17 @@ class NotificationActivity : AppCompatActivity() {
                     rv_noti.adapter = NotificationAdapter(r.data)
                 }
 
+                stopAnim()
             }
 
         }, object : Response.ErrorListener {
             override fun onErrorResponse(error: VolleyError?) {
-                Log.d("TAG", "onResponse error: "+error)
+                stopAnim()
+                Toast.makeText(this@NotificationActivity, "" + error.toString(), Toast.LENGTH_SHORT).show()
+                Log.d("TAG", "onResponse error: " + error)
 
             }
-        }){
+        }) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Content-Type"] = "application/json"
@@ -61,7 +81,7 @@ class NotificationActivity : AppCompatActivity() {
             }
         }
 
-                MySingleton.getInstance(this).addToRequestQueue(jor)
+        MySingleton.getInstance(this).addToRequestQueue(jor)
 
     }
 
