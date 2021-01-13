@@ -107,6 +107,14 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             }
         });
 
+        holder.commentCountTv.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                holder.commentBtnTv.performClick();
+            }
+        });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             holder.descTv.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
         } else {
@@ -191,14 +199,16 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         Date date = null;
         try {
+            if (x.getCreated_at()!=null)
             date = sdf.parse(x.getCreated_at());
-        } catch (ParseException e) {
+            SimpleDateFormat tdf = new SimpleDateFormat("hh:mm a MMMM dd, yyyy");
+            String datetim =tdf.format(date);
+
+            holder.datetime.setText(datetim);
+        } catch (Exception e) {
 
         }
-        SimpleDateFormat tdf = new SimpleDateFormat("hh:mm a MMMM dd, yyyy");
-        String datetim =tdf.format(date);
 
-        holder.datetime.setText(datetim);
 
 
     }

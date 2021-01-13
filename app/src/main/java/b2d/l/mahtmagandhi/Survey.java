@@ -59,9 +59,16 @@ public class Survey extends AppCompatActivity {
 // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         fetchData();
-
-
     }
 
     private void fetchData() {

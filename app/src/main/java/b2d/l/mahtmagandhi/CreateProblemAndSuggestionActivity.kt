@@ -290,24 +290,34 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQUEST_TAKE_GPHOTO) {
-            if(resultCode == Activity.RESULT_OK) {
-                if(data?.getClipData() != null) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data?.getClipData() != null) {
                     var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-                    Toast.makeText(this, ""+count+"", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "" + count + "", Toast.LENGTH_SHORT).show()
 
-                    for(i in 0..count-1) {
+                    for (i in 0..count - 1) {
                         val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();
                         list.add(imageUri)
                     }
                     imageAdapter?.notifyDataSetChanged()
 
                     //do something with the image (save it to some directory or whatever you need to do with it here)
+                } else if (data?.getData() != null) {
+                    val imagePath = data.getData()!!.getPath();
+
+
+                    try {
+                        list.add(data.data!!)
+                    } catch (e: Exception) {
+                    }
+                    imageAdapter?.notifyDataSetChanged()
+
+                    //do something with the image (save it to some directory or whatever you need to do with it here)
                 }
-            } else if(data?.getData() != null) {
-                val imagePath = data.getData()!!.getPath();
-                //do something with the image (save it to some directory or whatever you need to do with it here)
+
             }
-        }else if (resultCode.equals(Activity.RESULT_OK) && requestCode == REQUEST_TAKE_PHOTO) {
+        }
+        else if (resultCode.equals(Activity.RESULT_OK) && requestCode == REQUEST_TAKE_PHOTO) {
             list.add(Uri.fromFile( File(currentPhotoPath)))
             imageAdapter?.notifyDataSetChanged()
             val uri:Uri? = data?.data

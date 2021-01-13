@@ -89,6 +89,7 @@ class SurveyDetailActivity : AppCompatActivity() {
                 override fun onResponse(response: JSONObject?) {
                     stopAnim()
                     Toast.makeText(this@SurveyDetailActivity, "Success", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
             }, object : Response.ErrorListener {
                 override fun onErrorResponse(error: VolleyError?) {

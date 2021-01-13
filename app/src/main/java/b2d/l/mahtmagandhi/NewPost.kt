@@ -237,23 +237,30 @@ class NewPost : AppCompatActivity() {
 
 
         if(requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK) {
-                if(data?.getClipData() != null) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data?.getClipData() != null) {
                     var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-                    Toast.makeText(this, ""+count+"", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "" + count + "", Toast.LENGTH_SHORT).show()
 
-                    for(i in 0..count-1) {
+                    for (i in 0..count - 1) {
                         val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();
-                            list.add(imageUri)
+                        list.add(imageUri)
                     }
-                   // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
-                   imageAdapter?.notifyDataSetChanged()
+                    // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
+                    imageAdapter?.notifyDataSetChanged()
                     //do something with the image (save it to some directory or whatever you need to do with it here)
-                }
-            } else if(data?.getData() != null) {
+
+            } else if (data?.getData() != null) {
                 val imagePath = data.getData()!!.getPath();
-                //do something with the image (save it to some directory or whatever you need to do with it here)
+                    try {
+                        list.add(data.data!!)
+                    } catch (e: Exception) {
+                    }
+                    imageAdapter?.notifyDataSetChanged()
+
+                    //do something with the image (save it to some directory or whatever you need to do with it here)
             }
+        }
         }else if(requestCode== 50){
 
             list.add(Uri.fromFile( File(currentPhotoPath)))

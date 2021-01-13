@@ -37,7 +37,7 @@ return ImagesRecyclerViewHolder(v)
 
     override fun getItemCount(): Int {
 
-        return imagesEncodedList!!.size
+         return imagesEncodedList!!.size
 
     }
 }
