@@ -15,8 +15,11 @@ data class NewsUpdateResponseModel(
         var likeStatus: Int, // 0
         var likes: Int, // 0
         val title: String, // Testing
-        val userData: List<UserData>
+        val userData: List<UserData>,
+        val created_at: String
     ) {
+
+
         data class UserData(
             val id: Int, // 15
             val user_image: String,

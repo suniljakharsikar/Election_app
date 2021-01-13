@@ -18,7 +18,8 @@ data class ChatDataResponseModel(
         var likes: Int, // 0
         val title: Any?, // null
         val userData: List<UserData>,
-        val user_id: Int // 15
+        val user_id: Int, // 15
+        val created_at: String
     ) {
         data class ImageData(
             val id: Int, // 3

@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -147,6 +148,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
            Glide.with(context).load(x.getUserData().get(0).getUser_image()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
            holder.usernameTv.setText(x.getUserData().get(0).getUser_name());
        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        Date date = null;
+        try {
+            date = sdf.parse(x.getCreated_at());
+        } catch (ParseException e) {
+
+        }
+        SimpleDateFormat tdf = new SimpleDateFormat("hh:mm a MMMM dd, yyyy");
+        String datetim =tdf.format(date);
+
+        holder.timeTv.setText(datetim);
 /*
         holder.dislikeBtnTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,6 +303,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             descTv = itemView.findViewById(R.id.tv_des_news);
             like = itemView.findViewById(R.id.like_news);
             share = itemView.findViewById(R.id.dislike_news);
+            timeTv = itemView.findViewById(R.id.tv_time_news);
 
 
         }

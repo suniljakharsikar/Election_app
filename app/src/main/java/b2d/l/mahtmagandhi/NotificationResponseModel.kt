@@ -11,6 +11,7 @@ data class NotificationResponseModel(
         val id: Int, // 5
         val image_name: String, // 81609507113.jpg
         val image_url: String, // /public/upload/81609507113.jpg
-        val notification: String // लॉरेम इप्सम म्हणजे काय?
+        val notification: String ,// लॉरेम इप्सम म्हणजे काय?,
+            val created_at: String //"2021-01-07 13:02:02"
     )
 }

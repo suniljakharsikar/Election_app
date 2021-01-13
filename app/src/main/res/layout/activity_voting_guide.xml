@@ -23,25 +23,10 @@
         android:text="Voting Guide"
         android:textColor="@color/black"
         android:textSize="@dimen/headingtextsize"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView36"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView36" />
-
-    <ImageView
-        android:id="@+id/imageView36"
-        android:layout_width="@dimen/back_dim"
-        android:layout_height="@dimen/back_dim"
-        android:padding="@dimen/backpad"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="back"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar14"
-        app:layout_constraintStart_toStartOf="@+id/toolbar14"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backicon"
-        app:tint="@color/black" />
+        app:layout_constraintTop_toTopOf="@+id/imageView_back" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -95,4 +80,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView_back"
+        android:layout_width="@dimen/back_dim"
+        android:layout_height="@dimen/back_dim"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="back"
+        android:padding="@dimen/backpad"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar14"
+        app:layout_constraintStart_toStartOf="@+id/toolbar14"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backicon"
+        app:tint="@color/black" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

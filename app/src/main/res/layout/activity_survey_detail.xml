@@ -18,18 +18,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_submit2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/btn_bg"
         android:enabled="true"
         android:onClick="submit"
         android:paddingLeft="72dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="72dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="12dp"
+        app:cornerRadius="32dp"
         android:text="Submit"
         android:textAllCaps="false"
         android:textColor="@color/white_text_color"

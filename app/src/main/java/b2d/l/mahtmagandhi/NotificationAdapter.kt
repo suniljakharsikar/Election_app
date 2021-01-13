@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.raw_noti.view.*
+import java.text.SimpleDateFormat
 
 class NotificationAdapter(val data: List<NotificationResponseModel.Data>) : RecyclerView.Adapter<NotificationAdapter.MyNotificationViewHolder>() {
     class MyNotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,6 +35,16 @@ class NotificationAdapter(val data: List<NotificationResponseModel.Data>) : Recy
             holder.descTv.text = Html.fromHtml(model.description)
         }
         Glide.with(holder.itemView).load(Url.burl + model.image_url).into(holder.iv)
+
+
+        //10:20 AM January 22,  2020
+        //2021-01-07 13:02:02
+        val sdf = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
+        val date = sdf.parse(model.created_at)
+        val tdf = SimpleDateFormat("hh:mm a MMMM dd, yyyy")
+        val datetim =tdf.format(date)
+
+        holder.dateTimeTv.setText(datetim)
 
     }
 

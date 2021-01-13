@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -187,6 +188,19 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         } else
             holder.commentCountTv.setText("0 Comment");
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        Date date = null;
+        try {
+            date = sdf.parse(x.getCreated_at());
+        } catch (ParseException e) {
+
+        }
+        SimpleDateFormat tdf = new SimpleDateFormat("hh:mm a MMMM dd, yyyy");
+        String datetim =tdf.format(date);
+
+        holder.datetime.setText(datetim);
+
+
     }
 
     private File createImageFile() throws IOException {
@@ -300,7 +314,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView descIv, avtarIv;
-        TextView likesCountTv, commentBtnTv, shareCountTv, shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv, descTv;
+        TextView likesCountTv, commentBtnTv, shareCountTv, shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv, descTv,datetime;
         LinearLayout dislike, like;
 
 
@@ -318,6 +332,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             descTv = itemView.findViewById(R.id.tv_des_commu_talk);
             dislike = itemView.findViewById(R.id.dislike);
             like = itemView.findViewById(R.id.like);
+            datetime = itemView.findViewById(R.id.tv_time_commu_talk);
 
 
         }

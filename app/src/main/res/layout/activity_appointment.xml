@@ -82,17 +82,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar16" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_verify_otp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:background="@drawable/btn_bg"
         android:onClick="new_appointment"
         android:paddingLeft="32dp"
-        android:paddingTop="8dp"
+        android:paddingTop="12dp"
         android:paddingRight="32dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="12dp"
+
+        app:cornerRadius="32dp"
         android:text="Request for Appointment"
         android:textAllCaps="false"
         android:textColor="@color/white_text_color"

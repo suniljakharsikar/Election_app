@@ -124,15 +124,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button1"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
-                android:background="@drawable/btn_bg"
                 android:onClick="submit"
-                android:padding="10dp"
+                android:padding="12dp"
+                app:cornerRadius="32dp"
                 android:text="Continue"
                 android:textColor="#ffffff"
                 app:layout_constraintBottom_toBottomOf="parent"
