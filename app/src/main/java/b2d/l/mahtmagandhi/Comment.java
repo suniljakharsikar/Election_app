@@ -163,7 +163,7 @@ public class Comment extends AppCompatActivity {
 
             }*/
         } else {
-            sliderView.setVisibility(View.GONE);
+//            sliderView.setVisibility(View.GONE);
             textView.setVisibility(View.GONE);
 //            materialCardView.setVisibility(View.GONE);
 
