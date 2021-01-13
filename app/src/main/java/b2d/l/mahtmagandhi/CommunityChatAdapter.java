@@ -95,7 +95,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, Comment.class);
-                intent.putExtra("pos", x.getId());
+                intent.putExtra("pos", x.getId() + "");
                 intent.putExtra("url", s1);
                 intent.putExtra("newposturl", s2);
                 intent.putExtra("passToken", passToken);
