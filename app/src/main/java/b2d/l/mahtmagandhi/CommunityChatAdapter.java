@@ -83,7 +83,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         try {
             ChatDataResponseModel.Data.UserData userData = x.getUserData().get(0);
             holder.usernameTv.setText(userData.getUser_name());
-            Glide.with(holder.itemView).load(userData.getUser_image()).into(holder.avtarIv);
+            Glide.with(holder.itemView).load(Url.baseurl+userData.getUser_image()).into(holder.avtarIv);
         } catch (Exception e) {
 
         }
@@ -139,6 +139,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         else holder.descIv.setVisibility(View.VISIBLE);
 
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
+
 
         String finalImg = img;
         holder.share.setOnClickListener(new View.OnClickListener() {

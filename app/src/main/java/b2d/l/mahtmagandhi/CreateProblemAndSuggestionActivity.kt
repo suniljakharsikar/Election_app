@@ -161,62 +161,6 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
 
 
-    /*        val multipartRequest: VolleyMultipartRequest = object : VolleyMultipartRequest(Request.Method.POST, url, object : Response.Listener<NetworkResponse> {
-
-
-                override fun onResponse(response: NetworkResponse?) {
-                    Log.d("Response", "onResponse: " + response!!.data)
-                    images.clear()
-                    textView_tag_img_select.text = "Image Selected : 0"
-                    et_prob_sugg_title.setText("")
-                    et_prob_sugg.setText("")
-                }
-            }, object : Response.ErrorListener {
-
-
-                override fun onErrorResponse(error: VolleyError?) {
-                    Log.d("Response", "erroronResponse: " + error!!.networkResponse.data)
-                    Toast.makeText(baseContext, error.localizedMessage, Toast.LENGTH_SHORT).show()
-
-                }
-            }) {
-                override fun getHeaders(): MutableMap<String, String> {
-
-                    val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-                    val header: MutableMap<String, String> = java.util.HashMap()
-                    header["Content-Type"] = "application/json"
-                    header["token"] = preferences.getString(Datas.token, "")!!
-                    header["lid"] = preferences.getString(Datas.lagnuage_id, "1")!!
-
-                    return header
-
-
-                }
-
-                override fun getParams(): MutableMap<String, String> {
-                    val params: MutableMap<String, String> = mutableMapOf()
-
-                    params.put("title", et_prob_sugg_title.text.toString())
-                    params.put("descritpion", et_prob_sugg.text.toString())
-                return params
-                }
-
-                override fun getByteData(): Map<String, VolleyMultipartRequest.DataPart> {
-                    val params = HashMap<String, VolleyMultipartRequest.DataPart>();
-                    // file name could found file base or direct access from real path
-                    // for now just get bitmap data from ImageView
-                    var forcounter = 0
-                    for (i in images){
-                        params.put("postImage[" + forcounter + "]", DataPart("p.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), i.getDrawable()), "image/jpeg"));
-                        forcounter = forcounter+1
-                    }
-
-                    return params;
-                }
-            };
-
-            MySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
-*/
 
         }
     }

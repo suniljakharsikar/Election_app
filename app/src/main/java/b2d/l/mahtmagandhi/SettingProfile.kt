@@ -195,23 +195,7 @@ class SettingProfile : AppCompatActivity() {
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH))
                 datepickerdialog.show()
-                /*  DatePickerFragment d =new   DatePickerFragment(age);
-                d.setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);
 
-               d.show(getSupportFragmentManager(),"date");*/
-                /*MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
-
-                dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-                    @Override
-                    public void onPositiveButtonClick(Long it) {
-                        Date date = new Date(it);
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-                        //formatter.setTimeZone(TimeZone.getTimeZone(""))
-                        String dateFormatted = formatter.format(date);
-                        age.setText(dateFormatted);
-                    }
-                });
-                dp.show(getSupportFragmentManager(), "date");*/
             })
         }
 
@@ -694,7 +678,7 @@ class SettingProfile : AppCompatActivity() {
 
 
         startAnim()
-        val vollley = object : VolleyMultipartRequest(Request.Method.POST, "https://election.suniljakhar.in/api/profile_image", Response.Listener {
+      /*  val vollley = object : VolleyMultipartRequest(Request.Method.POST, Url.baseurl+"/profile_image", Response.Listener {
             //    Toast.makeText(this, it.statusCode, Toast.LENGTH_LONG).show()
             stopAnim()
 
@@ -733,15 +717,15 @@ class SettingProfile : AppCompatActivity() {
 
 
         }
-        MySingleton.getInstance(this).addToRequestQueue(vollley)
-        return
+        MySingleton.getInstance(this).addToRequestQueue(vollley)*/
+
         val client = OkHttpClient().newBuilder()
                 .build()
         val mediaType = MediaType.parse("text/plain")
-        val bodyp = MultipartBody.Builder().setType(MultipartBody.MIXED)
+        val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
 
         if (resultUri != null) {
-            bodyp.addFormDataPart("'profileImage", "profilej.jpg",
+            bodyp.addFormDataPart("profileImage", "profilej.jpg",
                     RequestBody.create(MediaType.parse("application/octet-stream"),
                             resultUri!!.toFile()))
 
@@ -752,7 +736,7 @@ class SettingProfile : AppCompatActivity() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
         val request: okhttp3.Request = okhttp3.Request.Builder()
-                .url("https://election.suniljakhar.in/api/profile_image")
+                .url(Url.baseurl+"/profile_image")
                 .method("POST", body)
                 .addHeader("token", preferences.getString(Datas.token, "")!!)
                 .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)

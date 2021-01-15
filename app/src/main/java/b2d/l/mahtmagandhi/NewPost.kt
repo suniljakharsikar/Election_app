@@ -116,7 +116,7 @@ class NewPost : AppCompatActivity() {
                     .addFormDataPart("postData", s)
             var counter = 0
             for (i in imageAdapter!!.imagesEncodedList){
-                bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(i,this)!!)))
+                bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this,i)!!)))
                 counter = counter +1 ;
             }
 
@@ -125,7 +125,7 @@ class NewPost : AppCompatActivity() {
             val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
             val request: Request = Request.Builder()
-                    .url("https://election.suniljakhar.in/api/ctalk_post")
+                    .url(Url.baseurl+"/ctalk_post")
                     .method("POST", body)
                     .addHeader("token", preferences.getString(Datas.token, "")!!)
                     .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
