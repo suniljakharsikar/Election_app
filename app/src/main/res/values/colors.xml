@@ -14,4 +14,6 @@
     <color name="pending">#F8A603</color>
     <color name="expired">#BEBEBE</color>
     <color name="white">#FFFFFF</color>
+    <color name="thumb_down">#ff2d58 </color>
+    <color name="thumb_up">#1846b1</color>
 </resources>

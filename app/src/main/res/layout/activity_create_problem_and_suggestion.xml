@@ -159,7 +159,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_image_btn_prob_sug"
         app:layout_constraintStart_toStartOf="@+id/imageView_pic_create_new_prob_sug"
         app:layout_constraintTop_toTopOf="@+id/tv_image_btn_prob_sug"
-        app:srcCompat="@drawable/solid_rectangle_shape" />
+        android:src="@drawable/solid_rectangle_shape" />
 
     <ImageView
         android:id="@+id/imageView_pic_create_new_prob_sug"

@@ -154,6 +154,7 @@
                 app:srcCompat="@drawable/ic_icon_awesome_thumbs_up" />
 
             <TextView
+                android:id="@+id/like_thumb_news"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Like"

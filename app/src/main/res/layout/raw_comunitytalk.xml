@@ -155,11 +155,11 @@
                 android:id="@+id/imageView53"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tint="@color/dividercolor"
                 app:layout_constraintBottom_toBottomOf="@+id/textView_btn_like_commu_talk"
                 app:layout_constraintEnd_toStartOf="@+id/textView_btn_like_commu_talk"
                 app:layout_constraintTop_toTopOf="@+id/textView_btn_like_commu_talk"
-                app:srcCompat="@drawable/ic_icon_awesome_thumbs_up" />
+                app:srcCompat="@drawable/ic_icon_awesome_thumbs_up"
+                app:tint="@color/dividercolor" />
 
             <TextView
                 android:id="@+id/textView_btn_like_commu_talk"
@@ -187,11 +187,11 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
             android:padding="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout_comment"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout_comment"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/like"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+            app:layout_constraintTop_toTopOf="@+id/linearLayout_comment">
 
             <ImageView
                 android:id="@+id/imageView49"
@@ -199,11 +199,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:tint="@color/dividercolor"
                 app:layout_constraintBottom_toBottomOf="@+id/textView_btn_dislike_commu_talk"
                 app:layout_constraintEnd_toStartOf="@+id/textView_btn_dislike_commu_talk"
                 app:layout_constraintTop_toTopOf="@+id/textView_btn_dislike_commu_talk"
-                app:srcCompat="@drawable/ic_icon_awesome_thumbs_down" />
+                app:srcCompat="@drawable/ic_icon_awesome_thumbs_down"
+                app:tint="@color/dividercolor" />
 
             <TextView
                 android:id="@+id/textView_btn_dislike_commu_talk"
@@ -216,20 +216,22 @@
                 android:textColor="@color/dividercolor"
                 android:textSize="12sp"
                 android:textStyle="bold"
+                app:drawableTint="#FFFFFF"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView_btn_like_commu_talk"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearLayout_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+            android:padding="4dp" 
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout_share"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout_share"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/dislike"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout2">
+            app:layout_constraintTop_toTopOf="@+id/linearLayout_share">
 
             <ImageView
                 android:id="@+id/imageView56"
@@ -237,11 +239,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:tint="@color/dividercolor"
                 app:layout_constraintBottom_toBottomOf="@+id/textView_btn_comment_commu_talk"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toTopOf="@+id/textView_btn_comment_commu_talk"
-                app:srcCompat="@drawable/ic_icon_awesome_comment_alt" />
+                app:srcCompat="@drawable/ic_icon_awesome_comment_alt"
+                app:tint="@color/dividercolor" />
 
             <TextView
                 android:id="@+id/textView_btn_comment_commu_talk"
@@ -262,17 +264,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/linearLayout_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:background="?android:attr/selectableItemBackground"
-
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout_comment"
             app:layout_constraintTop_toBottomOf="@+id/imageView51">
 
             <ImageView
@@ -281,19 +283,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:tint="@color/dividercolor"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_btn_share"
                 app:layout_constraintEnd_toStartOf="@+id/tv_btn_share"
                 app:layout_constraintTop_toTopOf="@+id/tv_btn_share"
-                app:srcCompat="@drawable/ic_icon_awesome_share_alt" />
+                app:srcCompat="@drawable/ic_icon_awesome_share_alt"
+                app:tint="@color/dividercolor" />
 
             <TextView
                 android:id="@+id/tv_btn_share"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="Share"
+                android:gravity="center"
                 android:textColor="@color/dividercolor"
                 android:textSize="12sp"
                 android:textStyle="bold"

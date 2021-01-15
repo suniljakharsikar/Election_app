@@ -45,6 +45,8 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
+import kotlinx.coroutines.GlobalScope;
+
 public class OTPVerify extends AppCompatActivity {
 
     private EditText editText1, editText2, editText3, editText4, editText5, editText6;
@@ -206,6 +208,7 @@ public class OTPVerify extends AppCompatActivity {
                                             stopAnim();
                                             Toast.makeText(OTPVerify.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                                             startActivity(new Intent(OTPVerify.this, Register.class));
+
                                             finish();
 
                                         } else {

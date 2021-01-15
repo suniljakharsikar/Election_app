@@ -95,26 +95,28 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_appointment_date_book_app"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        app:endIconDrawable="@drawable/ic_icon_awesome_calendar_alt"
-        app:endIconMode="custom"
+        android:hint="Date of Appointment"
+        app:boxBackgroundColor="@android:color/white"
+        app:boxBackgroundMode="outline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_noti2">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tie_appointment_date_book_app"
+
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_choose_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:hint="Date of Appointment"
+            android:gravity="center_vertical"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 

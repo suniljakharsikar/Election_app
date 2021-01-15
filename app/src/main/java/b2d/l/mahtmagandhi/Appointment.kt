@@ -48,6 +48,11 @@ class Appointment : AppCompatActivity() {
 
         empty_message = findViewById(R.id.textView7)
         empty_message!!.setVisibility(View.INVISIBLE)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         fetchData()
     }
 

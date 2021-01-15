@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -34,7 +35,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -92,7 +92,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         holder.likesCountTv.setText(x.getLikes() + "");
         holder.dislikesCountTv.setText(x.getDislike() + "");
         holder.commentCountTv.setText(x.getCommentCount() + " Comment");
-        holder.commentBtnTv.setOnClickListener(new View.OnClickListener() {
+        holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, Comment.class);
@@ -107,11 +107,11 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             }
         });
 
-        holder.commentCountTv.setOnClickListener(new View.OnClickListener(){
+        holder.commentCountTv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                holder.commentBtnTv.performClick();
+                holder.comment.performClick();
             }
         });
 
@@ -141,7 +141,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
 
         String finalImg = img;
-        holder.shareBtnTextView.setOnClickListener(new View.OnClickListener() {
+        holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -173,7 +173,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                     Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(2, x, holder.likesCountTv, holder.dislikesCountTv);
+                like_dislike(2, x, holder.likesCountTv, holder.dislikesCountTv, position);
 
             }
         });
@@ -185,7 +185,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                     Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(1, x, holder.likesCountTv, holder.dislikesCountTv);
+                like_dislike(1, x, holder.likesCountTv, holder.dislikesCountTv, position);
 
             }
         });
@@ -199,16 +199,33 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         Date date = null;
         try {
-            if (x.getCreated_at()!=null)
-            date = sdf.parse(x.getCreated_at());
+            if (x.getCreated_at() != null)
+                date = sdf.parse(x.getCreated_at());
             SimpleDateFormat tdf = new SimpleDateFormat("hh:mm a MMMM dd, yyyy");
-            String datetim =tdf.format(date);
+            String datetim = tdf.format(date);
 
             holder.datetime.setText(datetim);
         } catch (Exception e) {
 
         }
 
+        if (x.getLikeStatus() == 1) {
+            holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
+            holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
+
+        } else {
+            holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
+            holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
+
+        }
+
+        if (x.getUnlikeStatus() == 1) {
+            holder.disLikeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_down));
+            holder.dislikeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_down));
+        } else {
+            holder.disLikeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
+            holder.dislikeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
+        }
 
 
     }
@@ -230,7 +247,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         return image;
     }
 
-    private void like_dislike(int i, ChatDataResponseModel.Data x, TextView likes, TextView dilikes) {
+    private void like_dislike(int i, ChatDataResponseModel.Data x, TextView likes, TextView dilikes, int position) {
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();
         try {
@@ -274,7 +291,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
                         }
 //                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-
+                        notifyItemChanged(position);
                         //// TODO: 19/12/20 refresh number of likes
                     } else {
                         Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -323,9 +340,9 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView descIv, avtarIv;
-        TextView likesCountTv, commentBtnTv, shareCountTv, shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv, descTv,datetime;
-        LinearLayout dislike, like;
+        ImageView descIv, avtarIv, likeThumbIv, disLikeThumbIv;
+        TextView likesCountTv, likeThumbTv, dislikeThumbTv, commentBtnTv, shareCountTv, shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv, descTv, datetime;
+        LinearLayout dislike, like, comment, share;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -335,6 +352,9 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             likesCountTv = itemView.findViewById(R.id.textView_like_count);
             dislikesCountTv = itemView.findViewById(R.id.textView_disike_count);
             commentCountTv = itemView.findViewById(R.id.textView_count_comment);
+            comment = itemView.findViewById(R.id.linearLayout_comment);
+            share = itemView.findViewById(R.id.linearLayout_share);
+
             commentBtnTv = itemView.findViewById(R.id.textView_btn_comment_commu_talk);
             shareBtnTextView = itemView.findViewById(R.id.tv_btn_share);
             shareCountTv = itemView.findViewById(R.id.textView_count_share);
@@ -343,6 +363,10 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             dislike = itemView.findViewById(R.id.dislike);
             like = itemView.findViewById(R.id.like);
             datetime = itemView.findViewById(R.id.tv_time_commu_talk);
+            likeThumbIv = itemView.findViewById(R.id.imageView53);
+            disLikeThumbIv = itemView.findViewById(R.id.imageView49);
+            likeThumbTv = itemView.findViewById(R.id.textView_btn_like_commu_talk);
+            dislikeThumbTv = itemView.findViewById(R.id.textView_btn_dislike_commu_talk);
 
 
         }

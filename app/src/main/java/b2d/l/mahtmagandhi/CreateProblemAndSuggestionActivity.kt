@@ -121,7 +121,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
             var counter = 0
             for (i in imageAdapter!!.imagesEncodedList){
-                        bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(i,this)!!)))
+                        bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this,i)!!)))
                         counter = counter +1 ;
             }
 

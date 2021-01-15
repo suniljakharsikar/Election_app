@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -179,9 +180,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
                 return;
             }
-            like_dislike(1, x, holder.likesCountTv, holder.likesCountTv);
+            like_dislike(1, x, holder.likesCountTv, holder.likesCountTv,position);
 
         });
+
+
+        if (x.getLikeStatus() == 1) {
+            holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
+            holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
+
+        } else {
+            holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
+            holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
+
+        }
 
     }
 
@@ -202,7 +214,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return image;
     }
 
-    private void like_dislike(int i, NewsUpdateResponseModel.Data x, TextView likes, TextView dilikes) {
+    private void like_dislike(int i, NewsUpdateResponseModel.Data x, TextView likes, TextView dilikes, int position) {
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();
         try {
@@ -249,7 +261,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
                     }
 //                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-
+                    notifyItemChanged(position);
                     //// TODO: 19/12/20 refresh number of likes
                 } else {
                     Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -284,8 +296,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView descIv, avtarIv;
-        TextView likesCountTv, usernameTv, descTv, timeTv;
+        ImageView descIv, avtarIv,likeThumbIv;
+        TextView likesCountTv, usernameTv, descTv, timeTv,likeThumbTv;
         LinearLayout like, share;
 
 
@@ -304,6 +316,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             like = itemView.findViewById(R.id.like_news);
             share = itemView.findViewById(R.id.dislike_news);
             timeTv = itemView.findViewById(R.id.tv_time_news);
+            timeTv = itemView.findViewById(R.id.tv_time_news);
+            likeThumbIv = itemView.findViewById(R.id.imageView53);
+            likeThumbTv = itemView.findViewById(R.id.like_thumb_news);
+
 
 
         }
