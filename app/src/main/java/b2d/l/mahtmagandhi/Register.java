@@ -405,6 +405,7 @@ public class Register extends AppCompatActivity {
 
                             if (cities.size()>0){
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                    if (city.getText().toString().length()==0)
                                     city.setText(cities.get(0),false);
                                 }
                             }

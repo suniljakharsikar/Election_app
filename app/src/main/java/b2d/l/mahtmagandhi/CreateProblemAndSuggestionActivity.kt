@@ -86,7 +86,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
             ), PERMISSION_REQUEST_CODE)
 
         }
-        tv_image_btn_prob_sug.setOnClickListener {
+        button_add_img_create_prob.setOnClickListener {
             val dialog = ImagePickerBottomSheetDialogFragment()
             dialog.show(supportFragmentManager, "pic")
         }

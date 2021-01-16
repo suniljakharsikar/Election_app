@@ -22,9 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.wang.avi.AVLoadingIndicatorView
-import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.tv_image_btn_prob_sug
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -64,8 +62,8 @@ class NewPost : AppCompatActivity() {
         imageAdapter = ImagesRecyclerViewAdapter(list)
         rv_imgs_new_post.adapter =imageAdapter
 
-        tv_image_btn_prob_sug.setOnClickListener {
-            callm();
+        button_add_img_new_post.setOnClickListener {
+            addImage();
         }
         val write = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val read = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -91,7 +89,7 @@ class NewPost : AppCompatActivity() {
 
     }
 
-    private fun callm() {
+    private fun addImage() {
         val dialog = ImagePickerBottomSheetDialogFragment()
         dialog.show(supportFragmentManager, "pic")
     }

@@ -113,7 +113,7 @@ class SettingProfile : AppCompatActivity() {
         editText_postal_code.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
+                //if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -275,6 +275,7 @@ class SettingProfile : AppCompatActivity() {
                     editText_postal_code.setText(preferences.getString(Datas.user_postal_code, ""))
                     editText_state.setText(preferences.getString(Datas.user_state, ""))
                     editText_district.setText(preferences.getString(Datas.user_district, ""))
+                    actv_city_locality.setText(preferences.getString(Datas.user_village,""))
                     // Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     //finish()
                 } else {
@@ -320,7 +321,9 @@ class SettingProfile : AppCompatActivity() {
                             actv_city_locality.setAdapter(ArrayAdapter(baseContext, android.R.layout.simple_dropdown_item_1line, cities))
                             if (cities.size > 0)
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                    actv_city_locality.setText(cities.get(0), false)
+                                    if (actv_city_locality.text.length==0)
+                                        actv_city_locality.setText(cities.get(0), false)
+
                                 }
                         }
                     } catch (e: Exception) {
