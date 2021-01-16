@@ -208,15 +208,16 @@ public class LoginActivity extends AppCompatActivity {
                 super.onCodeSent(s, forceResendingToken);
 //                stopAnim();
                 mVerificationId = s;
-                Toast.makeText(LoginActivity.this, "code sent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, OTPVerify.class);
                 intent.putExtra("mobile", countryCodePicker.getSelectedCountryCodeWithPlus() + mobile);
+                intent.putExtra("token", tokenid);
                 token = forceResendingToken;
                 intent.putExtra("forceResendingToken", forceResendingToken);
-//                intent.putExtra("mCallbacks", mCallbacks);
+                intent.putExtra("mVerificationId", s);
                 stopAnim();
-                startActivityForResult(intent, getcode);
-//                startActivity(intent);
+//                startActivityForResult(intent, getcode);
+                startActivity(intent);
             }
         };
         PhoneAuthOptions options =

@@ -33,7 +33,6 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.bumptech.glide.Glide
@@ -676,48 +675,48 @@ class SettingProfile : AppCompatActivity() {
 
     fun newposting() {
 
-
+//        Toast.makeText(this, "new posting", Toast.LENGTH_SHORT).show()
         startAnim()
-      /*  val vollley = object : VolleyMultipartRequest(Request.Method.POST, Url.baseurl+"/profile_image", Response.Listener {
-            //    Toast.makeText(this, it.statusCode, Toast.LENGTH_LONG).show()
-            stopAnim()
+        /*  val vollley = object : VolleyMultipartRequest(Request.Method.POST, Url.baseurl+"/profile_image", Response.Listener {
+  //            Toast.makeText(this, it.statusCode, Toast.LENGTH_LONG).show()
+              stopAnim()
 
-        }, object : Response.ErrorListener {
-            override fun onErrorResponse(error: VolleyError?) {
-                Toast.makeText(this@SettingProfile, error!!.localizedMessage, Toast.LENGTH_LONG).show()
-
-
-                stopAnim()
-            }
-
-        }) {
-
-            override fun getByteData(): MutableMap<String, DataPart> {
-                val params: MutableMap<String, DataPart> = mutableMapOf()
-                // file name could found file base or direct access from real path
-                // for now just get bitmap data from ImageView
-                // file name could found file base or direct access from real path
-                // for now just get bitmap data from ImageView
-                params.put("profileImage", DataPart("file_avatar.jpg", resultUri!!.toFile().readBytes(), "image/jpeg"))
-
-                return params
-            }
-
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                //headers["Content-Type"] = "application/json"
-                var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-
-                //headers["Token"] = preferences.getString(Datas.token, "").toString()
-                headers.put("token", preferences.getString(Datas.token, "")!!)
-                headers.put("Content-Type", "application/json")
-                headers.put("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
-                return headers
-            }
+          }, object : Response.ErrorListener {
+              override fun onErrorResponse(error: VolleyError?) {
+                  Toast.makeText(this@SettingProfile, error!!.localizedMessage, Toast.LENGTH_LONG).show()
 
 
-        }
-        MySingleton.getInstance(this).addToRequestQueue(vollley)*/
+                  stopAnim()
+              }
+
+          }) {
+
+              override fun getByteData(): MutableMap<String, DataPart> {
+                  val params: MutableMap<String, DataPart> = mutableMapOf()
+                  // file name could found file base or direct access from real path
+                  // for now just get bitmap data from ImageView
+                  // file name could found file base or direct access from real path
+                  // for now just get bitmap data from ImageView
+                  params.put("profileImage", DataPart("file_avatar.jpg", resultUri!!.toFile().readBytes(), "image/jpeg"))
+
+                  return params
+              }
+
+              override fun getHeaders(): Map<String, String> {
+                  val headers = HashMap<String, String>()
+                  //headers["Content-Type"] = "application/json"
+                  var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+                  //headers["Token"] = preferences.getString(Datas.token, "").toString()
+                  headers.put("token", preferences.getString(Datas.token, "")!!)
+                  headers.put("Content-Type", "application/json")
+                  headers.put("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                  return headers
+              }
+
+
+          }
+          MySingleton.getInstance(this).addToRequestQueue(vollley)*/
 
         val client = OkHttpClient().newBuilder()
                 .build()

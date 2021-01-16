@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
@@ -44,8 +44,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
-
-import kotlinx.coroutines.GlobalScope;
 
 public class OTPVerify extends AppCompatActivity {
 
@@ -57,6 +55,10 @@ public class OTPVerify extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String TAG = "Ashok";
     private FirebaseAuth mAuth;
+    private String verificationId;
+    private String mobile;
+    private String tokenid = null;
+    private boolean called = false;
 
     void startAnim() {
         avi.show();
@@ -80,17 +82,20 @@ public class OTPVerify extends AppCompatActivity {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_o_t_p);
+        tokenid = getIntent().getStringExtra("token");
         avi = findViewById(R.id.avi);
-
-        ConstraintLayout constraintLayout  = findViewById(R.id.cl_otp);
+        verificationId = getIntent().getStringExtra("mVerificationId");
+        mobile = getIntent().getStringExtra("mobile");
+        ConstraintLayout constraintLayout = findViewById(R.id.cl_otp);
         InputMethodManager inputMethodManager =
-                (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInputFromWindow(constraintLayout
-                .getApplicationWindowToken(),
+                        .getApplicationWindowToken(),
                 InputMethodManager.SHOW_FORCED, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -120,10 +125,19 @@ public class OTPVerify extends AppCompatActivity {
         editText6.setOnKeyListener(new PinOnKeyListener(5));
         stopAnim();
         mAuth = FirebaseAuth.getInstance();
+
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null) {
+                    serverlogin();
+                }
+            }
+        });
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                Toast.makeText(OTPVerify.this, "verified", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(OTPVerify.this, "verified", Toast.LENGTH_SHORT).show();
                 signInWithPhoneAuthCredential(credential);
 
             }
@@ -140,7 +154,7 @@ public class OTPVerify extends AppCompatActivity {
                 super.onCodeSent(s, forceResendingToken);
                 stopAnim();
 //                mVerificationId = s;
-                Toast.makeText(OTPVerify.this, "PTO sent successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OTPVerify.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(OTPVerify.this, OTPVerify.class);
 //                intent.putExtra("mobile", mobile);
 //                intent.putExtra("forceResendingToken", forceResendingToken);
@@ -166,78 +180,7 @@ public class OTPVerify extends AppCompatActivity {
                             // [START_EXCLUDE]
 //                            updateUI(STATE_SIGNIN_SUCCESS, user);
 //                            Toast.makeText(LoginActivity.this, "login success", Toast.LENGTH_SHORT).show();
-
-                            String url = Url.baseurl + "/users";
-                            JSONObject jsonrequest = new JSONObject();
-                            try {
-                                jsonrequest.put("userMobile", getIntent().getStringExtra("mobile"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonrequest, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        boolean success = response.getBoolean("success");
-                                        if (success) {
-                                            String token = response.getString("token");
-                                            JSONArray data1 = response.getJSONArray("data");
-                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OTPVerify.this);
-                                            SharedPreferences.Editor editor = preferences.edit();
-                                            editor.putBoolean(Datas.loginstatus, true);
-                                            JSONObject jsonObject = data1.getJSONObject(0);
-                                            editor.putInt(Datas.id, jsonObject.getInt(Datas.id));
-                                            if (!jsonObject.getString(Datas.user_name).equals("null")) {
-                                                editor.putString(Datas.user_name, jsonObject.getString(Datas.user_name));
-                                            }
-                                            editor.putString(Datas.user_mobile, jsonObject.getString(Datas.user_mobile));
-                                            if (!jsonObject.getString(Datas.user_age).equals("null"))
-                                                editor.putString(Datas.user_age, jsonObject.getString(Datas.user_age));
-                                            if (!jsonObject.getString(Datas.user_postal_code).equals("null"))
-                                                editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code));
-                                            if (!jsonObject.getString(Datas.user_state).equals("null"))
-                                                editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state));
-                                            if (!jsonObject.getString(Datas.user_district).equals("null"))
-                                                editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district));
-                                            if (!jsonObject.getString(Datas.user_village).equals("null"))
-                                                editor.putString(Datas.user_village, jsonObject.getString(Datas.user_village));
-                                            if (!jsonObject.getString(Datas.lagnuage_id).equals("null"))
-                                                editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id));
-                                            editor.putString(Datas.token, token);
-                                            editor.apply();
-                                            stopAnim();
-                                            Toast.makeText(OTPVerify.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(OTPVerify.this, Register.class));
-
-                                            finish();
-
-                                        } else {
-                                            Toast.makeText(OTPVerify.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-                                            //login page
-                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OTPVerify.this);
-                                            SharedPreferences.Editor editor = preferences.edit();
-                                            editor.clear();
-                                            editor.apply();
-                                            startActivity(new Intent(OTPVerify.this, LoginActivity.class));
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-//                                        sendbtn.setEnabled(true);
-
-                                    }
-
-                                    stopAnim();
-
-
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-
-                                    Log.d("ashok", error.toString());
-                                }
-                            });
-                            MySingleton.getInstance(OTPVerify.this).addToRequestQueue(jsonObjectRequest);
+                            serverlogin();
                             // [END_EXCLUDE]
                         } else {
                             // Sign in failed, display a message and update the UI
@@ -258,6 +201,84 @@ public class OTPVerify extends AppCompatActivity {
                 });
     }
 
+    private void serverlogin() {
+        if (called)
+            return;
+        called = true;
+        Toast.makeText(OTPVerify.this, "OTP verified", Toast.LENGTH_SHORT).show();
+
+        String url = Url.baseurl + "/users";
+        JSONObject jsonrequest = new JSONObject();
+        try {
+            jsonrequest.put("userMobile", mobile);
+            jsonrequest.put("fcm_token", tokenid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonrequest, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    boolean success = response.getBoolean("success");
+                    if (success) {
+                        String token = response.getString("token");
+                        JSONArray data1 = response.getJSONArray("data");
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OTPVerify.this);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean(Datas.loginstatus, true);
+                        JSONObject jsonObject = data1.getJSONObject(0);
+                        editor.putInt(Datas.id, jsonObject.getInt(Datas.id));
+                        if (!jsonObject.getString(Datas.user_name).equals("null")) {
+                            editor.putString(Datas.user_name, jsonObject.getString(Datas.user_name));
+                        }
+                        editor.putString(Datas.user_mobile, jsonObject.getString(Datas.user_mobile));
+                        if (!jsonObject.getString(Datas.user_age).equals("null"))
+                            editor.putString(Datas.user_age, jsonObject.getString(Datas.user_age));
+                        if (!jsonObject.getString(Datas.user_postal_code).equals("null"))
+                            editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code));
+                        if (!jsonObject.getString(Datas.user_state).equals("null"))
+                            editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state));
+                        if (!jsonObject.getString(Datas.user_district).equals("null"))
+                            editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district));
+                        if (!jsonObject.getString(Datas.user_village).equals("null"))
+                            editor.putString(Datas.user_village, jsonObject.getString(Datas.user_village));
+                        if (!jsonObject.getString(Datas.lagnuage_id).equals("null"))
+                            editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id));
+                        editor.putString(Datas.token, token);
+                        editor.apply();
+                        startActivity(new Intent(OTPVerify.this, Register.class));
+                        Toast.makeText(OTPVerify.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        finish();
+
+                    } else {
+                        Toast.makeText(OTPVerify.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        //login page
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(OTPVerify.this);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.apply();
+                        startActivity(new Intent(OTPVerify.this, LoginActivity.class));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+//                                        sendbtn.setEnabled(true);
+
+                }
+
+                stopAnim();
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.d("ashok", error.toString());
+            }
+        });
+        MySingleton.getInstance(OTPVerify.this).addToRequestQueue(jsonObjectRequest);
+    }
+
     public void sumit(View view) {
 
         String otp =
@@ -269,6 +290,7 @@ public class OTPVerify extends AppCompatActivity {
                         editText6.getText().toString();
         if (otp.length() == 6) {
 //            verifyotp(otp);
+            startAnim();
             verifyfirebse(otp);
         } else {
             Toast.makeText(this, "please type 6 digit otp", Toast.LENGTH_SHORT).show();
@@ -276,10 +298,18 @@ public class OTPVerify extends AppCompatActivity {
     }
 
     private void verifyfirebse(String otp) {
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         intent.putExtra("code", otp);
         setResult(1111, intent);
-        finish();
+        finish();*/
+        verifyPhoneNumberWithCode(verificationId, otp);
+    }
+
+    private void verifyPhoneNumberWithCode(String verificationId, String code) {
+        // [START verify_with_code]
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        // [END verify_with_code]
+        signInWithPhoneAuthCredential(credential);
     }
 
     private void verifyotp(String otp) {
@@ -362,6 +392,29 @@ public class OTPVerify extends AppCompatActivity {
 //        requestQueue.add(jsonObjectRequest);
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         sendbtn.setEnabled(false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        tokenid = task.getResult();
+
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void resend(View view) {
