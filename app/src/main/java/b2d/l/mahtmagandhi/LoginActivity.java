@@ -5,15 +5,20 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -26,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -60,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
     CountryCodePicker countryCodePicker;
     static PhoneAuthProvider.ForceResendingToken token;
     private String tokenid;
+    ConstraintLayout mobile_c, otp_c;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
+    private EditText[] editTexts;
 
     void startAnim() {
         avi.show();
@@ -113,10 +122,29 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private EditText editText1, editText2, editText3, editText4, editText5, editText6;
+
+    public void back(View view) {
+        finish();
+    }
+
+    public void submit(View view) {
+//        Toast.makeText(this, "testing", Toast.LENGTH_SHORT).show();
+        mobile = editText.getText().toString();
+        /*if (mobile.length() != 10) {
+            Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
+            return;
+        }*/
+//        sendotp(mobile);//api
+        sendotpusingfirebase(mobile);//firebase otp
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mobile_c = findViewById(R.id.mobile);
+        otp_c = findViewById(R.id.otp);
         avi = findViewById(R.id.avi);
         mAuth = FirebaseAuth.getInstance();
         countryCodePicker = findViewById(R.id.ccp);
@@ -127,6 +155,29 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         editText = findViewById(R.id.editTextPhone3);
+
+        editText1 = (EditText) findViewById(R.id.otpEdit1);
+        editText2 = (EditText) findViewById(R.id.otpEdit2);
+        editText3 = (EditText) findViewById(R.id.otpEdit3);
+        editText4 = (EditText) findViewById(R.id.otpEdit4);
+        editText5 = (EditText) findViewById(R.id.otpEdit5);
+        editText6 = (EditText) findViewById(R.id.otpEdit6);
+        editTexts = new EditText[]{editText1, editText2, editText3, editText4, editText5, editText6};
+//        sendbtn = findViewById(R.id.button_verify_otp);
+
+        editText1.addTextChangedListener(new LoginActivity.PinTextWatcher(0));
+        editText2.addTextChangedListener(new LoginActivity.PinTextWatcher(1));
+        editText3.addTextChangedListener(new LoginActivity.PinTextWatcher(2));
+        editText4.addTextChangedListener(new LoginActivity.PinTextWatcher(3));
+        editText5.addTextChangedListener(new LoginActivity.PinTextWatcher(4));
+        editText6.addTextChangedListener(new LoginActivity.PinTextWatcher(5));
+
+        editText1.setOnKeyListener(new LoginActivity.PinOnKeyListener(0));
+        editText2.setOnKeyListener(new LoginActivity.PinOnKeyListener(1));
+        editText3.setOnKeyListener(new LoginActivity.PinOnKeyListener(2));
+        editText4.setOnKeyListener(new LoginActivity.PinOnKeyListener(3));
+        editText5.setOnKeyListener(new LoginActivity.PinOnKeyListener(4));
+        editText6.setOnKeyListener(new LoginActivity.PinOnKeyListener(5));
 //        imageView = findViewById(R.id.subbtn);
        /* Rect rectangle = new Rect();
         Window window = getWindow();
@@ -171,21 +222,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void back(View view) {
-        finish();
-    }
-
-    public void submit(View view) {
-//        Toast.makeText(this, "testing", Toast.LENGTH_SHORT).show();
-        mobile = editText.getText().toString();
-        /*if (mobile.length() != 10) {
-            Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
-            return;
-        }*/
-//        sendotp(mobile);//api
-        sendotpusingfirebase(mobile);//firebase otp
-    }
-
     private void sendotpusingfirebase(String phoneNumber) {
         startAnim();
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -198,18 +234,52 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
+                // This callback is invoked in an invalid request for verification is made,
+                // for instance if the the phone number format is not valid.
+                Log.w(TAG, "onVerificationFailed", e);
+
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    Toast.makeText(LoginActivity.this, "Invalid request", Toast.LENGTH_SHORT).show();
+                    // Invalid request
+                    // ...
+                } else if (e instanceof FirebaseTooManyRequestsException) {
+                    // The SMS quota for the project has been exceeded
+                    Toast.makeText(LoginActivity.this, "The SMS quota for the project has been exceeded", Toast.LENGTH_SHORT).show();
+                    // ...
+                } else {
+                    Toast.makeText(LoginActivity.this, "failed =" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+
+                // Show a message and update the UI
+                // ...
                 stopAnim();
-                Toast.makeText(LoginActivity.this, "failed =" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 editText.setFocusable(true);
+                mobile_c.setVisibility(View.VISIBLE);
+                otp_c.setVisibility(View.GONE);
             }
 
             @Override
-            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                super.onCodeSent(s, forceResendingToken);
-//                stopAnim();
-                mVerificationId = s;
+            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(verificationId, forceResendingToken);
+
+                // The SMS verification code has been sent to the provided phone number, we
+                // now need to ask the user to enter the code and then construct a credential
+                // by combining the code with a verification ID.
+                Log.d(TAG, "onCodeSent:" + verificationId);
+
+                // Save verification ID and resending token so we can use them later
+                mVerificationId = verificationId;
+                mResendToken = token;
+
+                // ...
                 Toast.makeText(LoginActivity.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, OTPVerify.class);
+
+                stopAnim();
+//                mVerificationId = s;
+                mobile_c.setVisibility(View.GONE);
+                otp_c.setVisibility(View.VISIBLE);
+               /* Intent intent = new Intent(LoginActivity.this, OTPVerify.class);
                 intent.putExtra("mobile", countryCodePicker.getSelectedCountryCodeWithPlus() + mobile);
                 intent.putExtra("token", tokenid);
                 token = forceResendingToken;
@@ -217,7 +287,8 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("mVerificationId", s);
                 stopAnim();
 //                startActivityForResult(intent, getcode);
-                startActivity(intent);
+                startActivity(intent);*/
+
             }
         };
         PhoneAuthOptions options =
@@ -231,13 +302,6 @@ public class LoginActivity extends AppCompatActivity {
         PhoneAuthProvider.verifyPhoneNumber(options);
         editText.setFocusable(false);
 
-    }
-
-    private void verifyPhoneNumberWithCode(String verificationId, String code) {
-        // [START verify_with_code]
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        // [END verify_with_code]
-        signInWithPhoneAuthCredential(credential);
     }
 
     // [START sign_in_with_phone]
@@ -448,6 +512,28 @@ public class LoginActivity extends AppCompatActivity {
         editText.setText("");
     }
 
+    private void verifyPhoneNumberWithCode(String verificationId, String code) {
+        startAnim();
+        // [START verify_with_code]
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        // [END verify_with_code]
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    public void resend(View view) {
+    }
+
+    public void sumit(View view) {
+        String code = editText1.getText().toString() +
+                editText2.getText().toString() +
+                editText3.getText().toString() +
+                editText4.getText().toString() +
+                editText5.getText().toString() +
+                editText6.getText().toString();
+        ;
+        verifyPhoneNumberWithCode(mVerificationId, code);
+    }
+
     /*private void sendotp(final String mobile) {
         if (issubmit) {
             Toast.makeText(this, "already clicked ", Toast.LENGTH_SHORT).show();
@@ -495,4 +581,102 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }*/
+    public class PinTextWatcher implements TextWatcher {
+
+        private int currentIndex;
+        private boolean isFirst = false, isLast = false;
+        private String newTypedString = "";
+
+        PinTextWatcher(int currentIndex) {
+            this.currentIndex = currentIndex;
+
+            if (currentIndex == 0)
+                this.isFirst = true;
+            else if (currentIndex == editTexts.length - 1) {
+
+                this.isLast = true;
+                hideKeyboard();
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            newTypedString = s.subSequence(start, start + count).toString().trim();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+            String text = newTypedString;
+
+            /* Detect paste event and set first char */
+            if (text.length() > 1)
+                text = String.valueOf(text.charAt(0)); // TODO: We can fill out other EditTexts
+
+            editTexts[currentIndex].removeTextChangedListener(this);
+            editTexts[currentIndex].setText(text);
+            editTexts[currentIndex].setSelection(text.length());
+            editTexts[currentIndex].addTextChangedListener(this);
+
+            if (text.length() == 1)
+                moveToNext();
+            else if (text.length() == 0)
+                moveToPrevious();
+        }
+
+        private void moveToNext() {
+            if (!isLast)
+                editTexts[currentIndex + 1].requestFocus();
+
+            if (isAllEditTextsFilled() && isLast) { // isLast is optional
+                editTexts[currentIndex].clearFocus();
+                hideKeyboard();
+
+            }
+        }
+
+        private void moveToPrevious() {
+            if (!isFirst)
+                editTexts[currentIndex - 1].requestFocus();
+        }
+
+        private boolean isAllEditTextsFilled() {
+            for (EditText editText : editTexts)
+                if (editText.getText().toString().trim().length() == 0)
+                    return false;
+            return true;
+        }
+
+        private void hideKeyboard() {
+            if (getCurrentFocus() != null) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        }
+
+    }
+
+    public class PinOnKeyListener implements View.OnKeyListener {
+
+        private int currentIndex;
+
+        PinOnKeyListener(int currentIndex) {
+            this.currentIndex = currentIndex;
+        }
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (editTexts[currentIndex].getText().toString().isEmpty() && currentIndex != 0)
+                    editTexts[currentIndex - 1].requestFocus();
+            }
+            return false;
+        }
+
+    }
 }

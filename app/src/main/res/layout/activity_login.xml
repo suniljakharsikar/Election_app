@@ -35,6 +35,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mobile"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -132,25 +133,192 @@
                 android:layout_marginBottom="32dp"
                 android:onClick="submit"
                 android:padding="12dp"
-                app:cornerRadius="32dp"
                 android:text="Continue"
                 android:textColor="#ffffff"
+                app:cornerRadius="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView211"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Enter OTP"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/otpEdit1"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:ems="2"
+                android:gravity="center"
+                android:inputType="phone"
+                app:backgroundTint="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/otpEdit2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+            <EditText
+                android:id="@+id/otpEdit2"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:ems="2"
+                android:gravity="center"
+                android:inputType="phone"
+                app:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/otpEdit1"
+                app:layout_constraintEnd_toStartOf="@+id/otpEdit3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/otpEdit1"
+                app:layout_constraintTop_toTopOf="@+id/otpEdit1" />
+
+            <EditText
+                android:id="@+id/otpEdit3"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:ems="2"
+                android:gravity="center"
+                android:inputType="phone"
+                app:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/otpEdit2"
+                app:layout_constraintEnd_toStartOf="@+id/otpEdit4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/otpEdit2"
+                app:layout_constraintTop_toTopOf="@+id/otpEdit2" />
+
+            <EditText
+                android:id="@+id/otpEdit4"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:ems="2"
+                android:gravity="center"
+                android:inputType="phone"
+                app:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/otpEdit3"
+                app:layout_constraintEnd_toStartOf="@+id/otpEdit5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/otpEdit3"
+                app:layout_constraintTop_toTopOf="@+id/otpEdit3" />
+
+            <EditText
+                android:id="@+id/otpEdit5"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:ems="2"
+                android:gravity="center"
+                android:inputType="phone"
+                app:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/otpEdit4"
+                app:layout_constraintEnd_toStartOf="@+id/otpEdit6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/otpEdit4"
+                app:layout_constraintTop_toTopOf="@+id/otpEdit4" />
+
+            <EditText
+                android:id="@+id/otpEdit6"
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:ems="2"
+                android:gravity="center"
+                android:inputType="phone"
+                app:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/otpEdit5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/otpEdit5"
+                app:layout_constraintTop_toTopOf="@+id/otpEdit5" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:onClick="resend"
+                android:text="Didn't Receive ? Resend OTP"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_verify_otp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_verify_otp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:onClick="sumit"
+                android:paddingLeft="72dp"
+                android:paddingTop="12dp"
+                android:paddingRight="72dp"
+                android:paddingBottom="12dp"
+                android:text="Verify"
+                android:textAllCaps="false"
+                android:textColor="@color/white_text_color"
+                app:cornerRadius="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/otpEdit3" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="72dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:indicatorColor="#000000"
+            app:indicatorName="BallClipRotatePulse"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.cardview.widget.CardView>
 
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:indicatorColor="#000000"
-        app:indicatorName="BallClipRotatePulse"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+    <!-- <com.wang.avi.AVLoadingIndicatorView
+         android:id="@+id/avi"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:indicatorColor="#000000"
+         app:indicatorName="BallClipRotatePulse"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/cardView4" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
