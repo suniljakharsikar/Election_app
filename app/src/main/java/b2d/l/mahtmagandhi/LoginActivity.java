@@ -135,8 +135,12 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
             return;
         }*/
-//        sendotp(mobile);//api
-        sendotpusingfirebase(mobile);//firebase otp
+        if (Url.firebaseOTP) {
+            sendotpusingfirebase(mobile);//firebase otp
+        } else {
+            sendotp(mobile);//api
+
+        }
     }
 
     @Override

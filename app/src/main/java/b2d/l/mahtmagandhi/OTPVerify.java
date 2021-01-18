@@ -289,9 +289,12 @@ public class OTPVerify extends AppCompatActivity {
                         editText5.getText().toString() +
                         editText6.getText().toString();
         if (otp.length() == 6) {
-//            verifyotp(otp);
+            if (Url.firebaseOTP) {
+                verifyfirebse(otp);
+            } else {
+                verifyotp(otp);
+            }
             startAnim();
-            verifyfirebse(otp);
         } else {
             Toast.makeText(this, "please type 6 digit otp", Toast.LENGTH_SHORT).show();
         }
@@ -419,7 +422,11 @@ public class OTPVerify extends AppCompatActivity {
 
     public void resend(View view) {
         startAnim();
-        resendVerificationCode(getIntent().getStringExtra("mobile"), LoginActivity.token);
+        if (Url.firebaseOTP) {
+            resendVerificationCode(getIntent().getStringExtra("mobile"), LoginActivity.token);
+        } else {
+            //// TODO: 18/1/21  
+        }
     }
 
     /*private void resendVerificationCode(String phoneNumber) {
