@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,7 +119,7 @@ public class Comment extends AppCompatActivity {
             if (imgs.size() > 0) {
                 textView.setText(getIntent().getStringExtra("dis"));
                 for (int i = 0; i < imgs.size(); i++) {
-                    urls.add(Url.http + imgs.get(i).getImageName());
+                    urls.add(Url.burl + imgs.get(i).getImageName());
                 }
                 Log.d("ashok_urls", urls.toString());
 
@@ -190,6 +191,7 @@ public class Comment extends AppCompatActivity {
                             CommentData comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData.class);
                             commentData.add(comment);
                         }
+                        Collections.reverse(commentData);
                         RecyclerView.Adapter commentAdapter = new CommentAdapter(Comment.this, commentData, preferences.getInt(Datas.id, 1), resol);
                         recyclerView.setAdapter(commentAdapter);
 
@@ -278,6 +280,7 @@ public class Comment extends AppCompatActivity {
                             CommentData comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData.class);
                             commentData.add(comment);
                         }
+                        Collections.reverse(commentData);
                         RecyclerView.Adapter adapter = new CommentAdapter(Comment.this, commentData, preferences.getInt(Datas.id, 1), resol);
                         recyclerView.setAdapter(adapter);
                         comment.setText("");
