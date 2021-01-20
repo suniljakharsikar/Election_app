@@ -2,6 +2,7 @@ package b2d.l.mahtmagandhi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private View.OnClickListener i = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            view.setSelected(true);
+            new Handler().postDelayed(() -> view.setSelected(false), 100);
             int itemPosition = mRecyclerView.getChildLayoutPosition(view);
             Intent intent = new Intent();
             switch (itemPosition) {

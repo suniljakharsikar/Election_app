@@ -19,7 +19,8 @@ data class ChatDataResponseModel(
         val title: Any?, // null
         val userData: List<UserData>,
         val user_id: Int, // 15
-        val created_at: String
+        val created_at: String,
+        var imgAdapter:ImagePagerAdapter?
     ) {
         data class ImageData(
             val id: Int, // 3

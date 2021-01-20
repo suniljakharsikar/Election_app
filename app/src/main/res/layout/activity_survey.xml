@@ -48,13 +48,13 @@
         android:layout_marginStart="16dp"
         android:padding="@dimen/backpad"
         android:layout_marginLeft="16dp"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="@drawable/btn_ripple_bg"
         android:onClick="back"
-        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backicon" />
+        app:srcCompat="@drawable/backicon"
+        app:tint="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv4"

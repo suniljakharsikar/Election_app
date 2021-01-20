@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.*
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -15,14 +16,19 @@ import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.core.view.drawToBitmap
+import com.squareup.picasso.Picasso
+import okhttp3.internal.platform.Platform.get
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
+import java.lang.reflect.Array.get
 
 
 object Utility {
 
-    fun hideKeyboard(activity: Activity) {
+    fun fullScreenImage(){
+
+    }    fun hideKeyboard(activity: Activity) {
         val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         //Find the currently focused view, so we can grab the correct window token from it.
         var view = activity.currentFocus

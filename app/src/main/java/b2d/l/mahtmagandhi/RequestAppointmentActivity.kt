@@ -1,9 +1,6 @@
 package b2d.l.mahtmagandhi
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
@@ -12,17 +9,13 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.snackbar.Snackbar
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_request_appointment.*
-import kotlinx.android.synthetic.main.activity_setting_profile.*
-import org.json.JSONArray
 import org.json.JSONObject
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -62,7 +55,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
 
         validDateCheck()
-        actv_choose_date.addTextChangedListener(object:TextWatcher{
+        actv_choose_date.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -72,8 +65,9 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 if (ts.containsKey(s.toString()))
-                    actv_choose_time.setAdapter(ArrayAdapter<AppointmentTime>(this@RequestAppointmentActivity,android.R.layout.simple_spinner_dropdown_item,ts.get(s.toString())!!.toList()))
 
+
+                    actv_choose_time.setAdapter(ArrayAdapter<AppointmentTime>(this@RequestAppointmentActivity, android.R.layout.simple_spinner_dropdown_item, ts.get(s.toString())!!.toList()))
 
 
             }
@@ -112,35 +106,36 @@ class RequestAppointmentActivity : AppCompatActivity() {
                     var hasDate = false
 
 
-                    for(i in 0..names.length()-1){
+                    for (i in 0..names.length() - 1) {
                         val ds = mutableListOf<AppointmentTime>()
-                            val times = data.optJSONArray(names.get(i).toString())
-                            for (j in 0..times.length()-1){
-                                val aptObj = times.getJSONObject(j)
-                                val aptId = aptObj.optInt("appt_id")
-                                val apptTime = aptObj.optString("appt_time")
-                                ds.add(AppointmentTime(aptId,apptTime))
+                        val times = data.optJSONArray(names.get(i).toString())
+                        for (j in 0..times.length() - 1) {
+                            val aptObj = times.getJSONObject(j)
+                            val aptId = aptObj.optInt("appt_id")
+                            val apptTime = aptObj.optString("appt_time")
+                            ds.add(AppointmentTime(aptId, apptTime))
 
-                            }
+                        }
 
                         val sdf = SimpleDateFormat("yyyy-mm-dd")
                         val tdf = SimpleDateFormat("dd MMM yyyy")
                         val d = sdf.parse(names.get(i).toString())
-                        ts.put(tdf.format(d),ds)
+                        ts.put(tdf.format(d), ds)
 
 
-                        }
+                    }
+                    val adapter1 = StringAdapter(this@RequestAppointmentActivity, ArrayList<String>(ts.keys))
 
-                   // actv_choose_time.setAdapter(ArrayAdapter<AppointmentTime>(baseContext,android.R.layout.simple_spinner_dropdown_item,ts))
-                    actv_choose_date.setAdapter(ArrayAdapter<String>(baseContext,android.R.layout.simple_spinner_dropdown_item,ts.keys.toList()))
+                    // actv_choose_time.setAdapter(ArrayAdapter<AppointmentTime>(baseContext,android.R.layout.simple_spinner_dropdown_item,ts))
+                    actv_choose_date.setAdapter(adapter1)
 
 
                     stopAnim()
 
-                   /* if (!hasDate){
+                    /* if (!hasDate){
                         Snackbar.make(sv_req_app,"Sorry for not available your choice date for appointment. ",Snackbar.LENGTH_LONG).show()
                     }*/
-                   // Log.d("Request", "onResponse: " + key)
+                    // Log.d("Request", "onResponse: " + key)
 
                 }
             }
@@ -148,7 +143,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
         }, object : Response.ErrorListener {
             override fun onErrorResponse(error: VolleyError?) {
                 stopAnim()
-                Log.d("RequestAppointment", "onErrorResponse: "+error)
+                Log.d("RequestAppointment", "onErrorResponse: " + error)
             }
 
         })
@@ -194,10 +189,10 @@ class RequestAppointmentActivity : AppCompatActivity() {
              val message = purpose
 
              val jo = JSONObject()
-             jo.put("appt_id",appt_id)
-             jo.put("appt_date",appt_date)
-             jo.put("appt_time",appt_time)
-             jo.put("message",message)
+             jo.put("appt_id", appt_id)
+             jo.put("appt_date", appt_date)
+             jo.put("appt_time", appt_time)
+             jo.put("message", message)
 
              startAnim()
              val url = Url.baseurl + "/appt_booking"
@@ -210,8 +205,8 @@ class RequestAppointmentActivity : AppCompatActivity() {
                  finish()
              }, object : Response.ErrorListener {
                  override fun onErrorResponse(error: VolleyError?) {
-                    stopAnim()
-                     Log.d("Response", "onErrorResponse: "+error)
+                     stopAnim()
+                     Log.d("Response", "onErrorResponse: " + error)
                  }
              })
              {
@@ -235,7 +230,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
     }
 }
 
-data class AppointmentTime(val id:Int,val time:String){
+data class AppointmentTime(val id: Int, val time: String){
     override fun toString(): String {
         return time
     }

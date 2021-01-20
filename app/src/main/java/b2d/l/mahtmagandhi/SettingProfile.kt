@@ -123,6 +123,8 @@ class SettingProfile : AppCompatActivity() {
         iv_edit_avtar_setting.setOnClickListener {
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
+                    .setFixAspectRatio(true)
+
                     .start(this);
 
             // val dialog = ImagePickerBottomSheetDialogFragment()
@@ -136,8 +138,12 @@ class SettingProfile : AppCompatActivity() {
                     }
 
                     // Get new FCM registration token
+                    try {
+                        fetchData(task.result)
+                    }catch (e:Exception){
 
-                    fetchData(task.result)
+                    }
+
 
 
                     // Log and toast
@@ -275,7 +281,7 @@ class SettingProfile : AppCompatActivity() {
                     editText_postal_code.setText(preferences.getString(Datas.user_postal_code, ""))
                     editText_state.setText(preferences.getString(Datas.user_state, ""))
                     editText_district.setText(preferences.getString(Datas.user_district, ""))
-                    actv_city_locality.setText(preferences.getString(Datas.user_village,""))
+                    actv_city_locality.setText(preferences.getString(Datas.user_village, ""))
                     // Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     //finish()
                 } else {
@@ -318,10 +324,12 @@ class SettingProfile : AppCompatActivity() {
                             for (i in postOffice) {
                                 cities.add(i.name)
                             }
-                            actv_city_locality.setAdapter(ArrayAdapter(baseContext, android.R.layout.simple_dropdown_item_1line, cities))
+                            val adapter1 = StringAdapter(this@SettingProfile, ArrayList(cities))
+
+                            actv_city_locality.setAdapter(adapter1)
                             if (cities.size > 0)
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                    if (actv_city_locality.text.length==0)
+                                    if (actv_city_locality.text.length == 0)
                                         actv_city_locality.setText(cities.get(0), false)
 
                                 }
@@ -738,7 +746,7 @@ class SettingProfile : AppCompatActivity() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
         val request: okhttp3.Request = okhttp3.Request.Builder()
-                .url(Url.baseurl+"/profile_image")
+                .url(Url.baseurl + "/profile_image")
                 .method("POST", body)
                 .addHeader("token", preferences.getString(Datas.token, "")!!)
                 .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)

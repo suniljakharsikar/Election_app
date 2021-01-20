@@ -3,6 +3,7 @@ package b2d.l.mahtmagandhi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -28,8 +30,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,6 +85,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         final ChatDataResponseModel.Data x = chatData.get(position);
+
         try {
             ChatDataResponseModel.Data.UserData userData = x.getUserData().get(0);
             holder.usernameTv.setText(userData.getUser_name());
@@ -107,6 +113,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             }
         });
 
+
         holder.commentCountTv.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -116,12 +123,39 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.descTv.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+            holder.descTv.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT).toString());
         } else {
-            holder.descTv.setText(Html.fromHtml(x.getDescription()));
+            holder.descTv.setText(Html.fromHtml(x.getDescription()).toString());
+
         }
 
         List<ChatDataResponseModel.Data.ImageData> imgs = x.getImageData();
+
+        int width  = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        ImagePagerAdapter adapter ;
+        if (x.getImgAdapter()==null){
+            adapter = new ImagePagerAdapter(imgs);
+            holder.viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+
+            holder.viewPager2.setMinimumHeight(width);
+            x.setImgAdapter(adapter);
+        }else{
+            adapter = x.getImgAdapter();
+            holder.viewPager2.setMinimumHeight(width);
+        }
+
+        holder.viewPager2.setAdapter(adapter);
+
+
+
+        if (imgs.size()==0) {
+            holder.viewPager2.setVisibility(View.GONE);
+            holder.tabLayout.setVisibility(View.GONE);
+        }
+
+        if (imgs.size()==1)holder.tabLayout.setVisibility(View.GONE);
+
         String img = null;
         if (imgs != null && imgs.size() > 0) {
             img = Url.burl + imgs.get(0).getImage_name();
@@ -135,8 +169,20 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             if (!img.contains("https")) img = Url.http + img;
             else if (!img.contains("election")) img = Url.burl + img;
 
-        if (img == null) holder.descIv.setVisibility(View.GONE);
-        else holder.descIv.setVisibility(View.VISIBLE);
+       holder.descIv.setVisibility(View.GONE);
+
+
+
+
+
+        new TabLayoutMediator(holder.tabLayout, holder.viewPager2, new  TabLayoutMediator.TabConfigurationStrategy(){
+
+            @Override
+            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
+
+            }
+        }).attach();
+
 
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
 
@@ -344,6 +390,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         ImageView descIv, avtarIv, likeThumbIv, disLikeThumbIv;
         TextView likesCountTv, likeThumbTv, dislikeThumbTv, commentBtnTv, shareCountTv, shareBtnTextView, dislikesCountTv, commentCountTv, usernameTv, descTv, datetime;
         LinearLayout dislike, like, comment, share;
+        ViewPager2 viewPager2;
+        TabLayout tabLayout;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -369,7 +417,13 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             likeThumbTv = itemView.findViewById(R.id.textView_btn_like_commu_talk);
             dislikeThumbTv = itemView.findViewById(R.id.textView_btn_dislike_commu_talk);
 
-
+            viewPager2 = itemView.findViewById(R.id.photos_viewpager);
+            tabLayout = itemView.findViewById(R.id.tab_layout);
         }
+
+
+
     }
+
+
 }

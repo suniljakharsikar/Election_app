@@ -38,7 +38,7 @@
         android:padding="@dimen/backpad"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="@drawable/btn_ripple_bg"
         android:onClick="back"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar12"
         app:layout_constraintStart_toStartOf="@+id/toolbar12"

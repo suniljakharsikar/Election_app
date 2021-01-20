@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -400,8 +401,9 @@ public class Register extends AppCompatActivity {
                             for (PinCodeResponseModelItem.PostOffice postOff : postOffice) {
                                 cities.add(postOff.getName());
                             }
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_dropdown_item_1line, cities);
-                            city.setAdapter(adapter);
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, cities);
+                            StringAdapter adapter1 = new StringAdapter(Register.this, new ArrayList<>(cities));
+                            city.setAdapter(adapter1);
 
                             if (cities.size()>0){
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {

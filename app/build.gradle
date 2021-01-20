@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "b2d.l.mahtmagandhi"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -88,7 +88,7 @@ dependencies {
 
     implementation 'com.github.lopei:collageview:0.1.3'
 
-
+    implementation 'com.github.tntkhang:full-screen-image-view-library:1.1.0'
 
 }
 repositories {

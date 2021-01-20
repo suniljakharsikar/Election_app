@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="headingtextsize">18sp</dimen>
-    <dimen name="back_dim">32dp</dimen>
+    <dimen name="back_dim">40dp</dimen>
     <dimen name="topbar_hight">72dp</dimen>
-    <dimen name="backpad">4dp</dimen>
+    <dimen name="backpad">8dp</dimen>
 </resources>

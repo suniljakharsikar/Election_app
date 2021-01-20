@@ -3,6 +3,7 @@ package b2d.l.mahtmagandhi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,10 +22,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.lopei.collageview.CollageView;
 import com.smarteist.autoimageslider.SliderView;
+import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
@@ -107,6 +110,7 @@ public class Comment extends AppCompatActivity {
 //            Toast.makeText(this, "comming from problem", Toast.LENGTH_SHORT).show();
             CollageView collageView = (CollageView) findViewById(R.id.collageView);
 
+
             ArrayList<String> urls = new ArrayList<>();
 //            urls.add("https://homepages.cae.wisc.edu/~ece533/images/airplane.png");
 //            urls.add("https://homepages.cae.wisc.edu/~ece533/images/arctichare.png");
@@ -140,6 +144,20 @@ public class Comment extends AppCompatActivity {
 //                    .headerForm(CollageView.ImageForm.IMAGE_FORM_SQUARE) // sets form of image for header (if useFirstAsHeader == true)
 //                    .photosForm(CollageView.ImageForm.IMAGE_FORM_HALF_HEIGHT) //sets form of image for other photos
                     .loadPhotos(urls); // here you can use Array/List of photo urls or array of resource ids
+
+
+            collageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
+                @Override
+                public void onPhotoClick(int position) {
+                    String url = urls.get(position);
+                    Intent fullImageIntent = new Intent(Comment.this, FullScreenImageViewActivity.class);
+// uriString is an ArrayList<String> of URI of all images
+                    fullImageIntent.putExtra(FullScreenImageViewActivity.URI_LIST_DATA, urls);
+// pos is the position of image will be showned when open
+                    fullImageIntent.putExtra(FullScreenImageViewActivity.IMAGE_FULL_SCREEN_CURRENT_POS, position);
+                    startActivity(fullImageIntent);
+                }
+            });
            /* try {
                 ArrayList<ProblemsResponseModel.Data.ImageArr> imgs = getIntent().getParcelableArrayListExtra("imgs");
                 if (imgs.size() > 0) {
