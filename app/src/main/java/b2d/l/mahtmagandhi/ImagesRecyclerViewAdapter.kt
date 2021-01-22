@@ -24,7 +24,7 @@ return ImagesRecyclerViewHolder(v)
     override fun onBindViewHolder(holder: ImagesRecyclerViewHolder, position: Int) {
 
 
-        Glide.with(holder.itemView.context).load(imagesEncodedList?.get(position)).into(holder.iv)
+        Glide.with(holder.itemView.context).load(imagesEncodedList?.get(position)).thumbnail(0.1f).into(holder.iv)
 
         holder.removeIv.setOnClickListener {
             try {

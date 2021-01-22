@@ -146,8 +146,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         else holder.descIv.setVisibility(View.VISIBLE);
         Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
        if (x.getUserData()!=null && x.getUserData().size()>0) {
-           Glide.with(context).load(Url.burl+x.getUserData().get(0).getUser_image()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.avtarIv);
-           holder.usernameTv.setText(x.getUserData().get(0).getUser_name());
+           if (x.getUserData().get(0).getUser_image()!=null) {
+               Glide.with(context).load(Url.burl + x.getUserData().get(0).getUser_image()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.avtarIv);
+           }else{
+               Glide.with(context).load(R.drawable.ic_user_place_holder).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.avtarIv);
+
+
+           }           holder.usernameTv.setText(x.getUserData().get(0).getUser_name());
        }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");

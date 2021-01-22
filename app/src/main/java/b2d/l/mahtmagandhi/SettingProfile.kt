@@ -199,6 +199,14 @@ class SettingProfile : AppCompatActivity() {
                         AlertDialog.THEME_HOLO_DARK, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH))
+
+                val calendar = Calendar.getInstance()
+                calendar.add(Calendar.YEAR, -14)
+                datepickerdialog.datePicker.maxDate = calendar.timeInMillis
+
+
+
+
                 datepickerdialog.show()
 
             })
@@ -272,7 +280,8 @@ class SettingProfile : AppCompatActivity() {
                     editor.apply()
                     val img = jsonObject.getString(Datas.user_image)
                     if (img.contains("http")) Glide.with(this).load(img).into(profile_image)
-                    else if (img.length > 0) Glide.with(this).load(Url.burl + img).into(profile_image)
+                    else if (img!=null &&img.length > 0) Glide.with(this).load(Url.burl + img).into(profile_image)
+                    else if (img==null) Glide.with(this).load(R.drawable.ic_user_place_holder).into(profile_image)
 
 
                     editTextPersonName2.setText(preferences.getString(Datas.user_name, ""))
@@ -603,49 +612,6 @@ class SettingProfile : AppCompatActivity() {
 
     }
 
-    private fun setPic(requestCode: Int) {
-
-        // Get the dimensions of the View
-        var imageView: ImageView = profile_image
-
-        val targetW: Int = imageView.width
-        val targetH: Int = imageView.height
-
-        val bmOptions = BitmapFactory.Options().apply {
-            // Get the dimensions of the bitmap
-            inJustDecodeBounds = true
-
-            BitmapFactory.decodeFile(currentPhotoPath, this)
-
-            val photoW: Int = outWidth
-            val photoH: Int = outHeight
-
-            // Determine how much to scale down the image
-            val scaleFactor: Int = Math.max(1, Math.min(photoW / targetW, photoH / targetH))
-
-            // Decode the image file into a Bitmap sized to fill the View
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
-            inPurgeable = true
-        }
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
-
-            imageView.setImageBitmap(bitmap)
-            when (requestCode) {
-
-                REQUEST_TAKE_GPHOTO -> {
-
-
-                    currentPath = currentPhotoPath
-                }
-
-            }
-
-            galleryAddPic()
-
-
-        }
-    }
 
     fun getPic(tag: String?, s: String) {
         if (s.equals("c")) {

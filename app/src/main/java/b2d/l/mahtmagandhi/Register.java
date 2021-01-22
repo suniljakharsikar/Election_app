@@ -135,6 +135,9 @@ public class Register extends AppCompatActivity {
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH));
 
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.YEAR, -14);
+                datepickerdialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 datepickerdialog.show();
               /*  DatePickerFragment d =new   DatePickerFragment(age);
                 d.setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);

@@ -89,7 +89,12 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         try {
             ChatDataResponseModel.Data.UserData userData = x.getUserData().get(0);
             holder.usernameTv.setText(userData.getUser_name());
+            if (userData.getUser_image() !=null && userData.getUser_image().length()>0)
             Glide.with(holder.itemView).load(Url.burl+userData.getUser_image()).into(holder.avtarIv);
+            else{
+                Glide.with(holder.itemView).load(R.drawable.ic_user_place_holder).into(holder.avtarIv);
+
+            }
         } catch (Exception e) {
 
         }
@@ -424,6 +429,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
 
     }
+
+
 
 
 }

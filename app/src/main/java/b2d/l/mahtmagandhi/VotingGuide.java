@@ -82,10 +82,16 @@ public class VotingGuide extends YouTubeBaseActivity {
                             @Override
                             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
-                                String[] ms = media.split("=");
-                                youTubePlayer.loadVideo(ms[1]);
+                                try {
+                                    String[] ms = media.split("=");
+                                    if (ms.length>0) {
+                                        youTubePlayer.loadVideo(ms[1]);
 
-                                youTubePlayer.play();
+                                        youTubePlayer.play();
+                                    }
+                                } catch (Exception e) {
+
+                                }
 
                             }
 

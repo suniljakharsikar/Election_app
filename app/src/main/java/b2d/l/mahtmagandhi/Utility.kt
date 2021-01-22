@@ -26,6 +26,12 @@ import java.lang.reflect.Array.get
 
 object Utility {
 
+    // Generate palette synchronously and return it
+
+    // Generate palette asynchronously and use it on a different
+// thread using onGenerated()
+
+
     fun fullScreenImage(){
 
     }    fun hideKeyboard(activity: Activity) {
