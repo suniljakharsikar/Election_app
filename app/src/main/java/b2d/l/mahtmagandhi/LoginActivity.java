@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -117,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
         if (loginstatus) {
-            startActivity(new Intent(LoginActivity.this, Register.class));
+            startActivity(new Intent(LoginActivity.this, Home.class));
             finish();
         }
     }
@@ -483,13 +484,15 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.getBoolean("success")) {
                             Intent intent = new Intent(LoginActivity.this, OTPVerifyModify.class);
                             intent.putExtra("mobile", mobile);
-                            Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                             startActivity(intent);
                             finish();
                         } else {
                             issubmit = false;
-                            Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-                            /*//login page
+                           // Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+
+                            Utility.INSTANCE.customSnackBar(mobile_c,LoginActivity.this,response.getString("message").toString(),
+                                    ContextCompat.getColor(LoginActivity.this,R.color.error),R.drawable.ic_error);/*//login page
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.clear();
@@ -508,7 +511,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     issubmit = false;
                     stopAnim();
-                    Toast.makeText(LoginActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+                    Utility.INSTANCE.customSnackBar(mobile_c,LoginActivity.this,error.toString(),
+                            ContextCompat.getColor(LoginActivity.this,R.color.error),R.drawable.ic_error);
+                    //Toast.makeText(LoginActivity.this, "" + error, Toast.LENGTH_SHORT).show();
                 }
             });
 //            MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);

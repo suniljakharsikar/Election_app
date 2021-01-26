@@ -10,9 +10,9 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -68,6 +68,7 @@ public class AboutUs extends AppCompatActivity {
                 Log.d("ashok", response.toString());
                 try {
                     if (response.getBoolean("success")) {
+                        sliderView.setVisibility(View.VISIBLE);
                         JSONObject data = response.getJSONArray("data").getJSONObject(0);
                         String title = data.getString("title");
                         String description = data.getString("description");
@@ -95,7 +96,7 @@ public class AboutUs extends AppCompatActivity {
 //                        Log.d("ashok", data.toString());
 
                     } else {
-                        Toast.makeText(AboutUs.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(AboutUs.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AboutUs.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -113,8 +114,9 @@ public class AboutUs extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AboutUs.this, "" + error, Toast.LENGTH_SHORT).show();
-                Log.d("ashok", error.toString());
+                Utility.INSTANCE.customSnackBar(sliderView,AboutUs.this,error.toString(), ContextCompat.getColor(AboutUs.this,R.color.error),R.drawable.ic_error);
+                // // Toast.makeText(AboutUs.this, "" + error, // Toast.LENGTH_SHORT).show();
+               // Log.d("ashok", error.toString());
                 stopAnim();
 
             }

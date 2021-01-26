@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/tools"
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -68,8 +68,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/visinimage"
-                card_view:cardCornerRadius="8dp"
-                card_view:cardUseCompatPadding="true">
+                tools:cardCornerRadius="8dp"
+                tools:cardUseCompatPadding="true">
 
                 <ImageView
                     android:id="@+id/imageView40"
@@ -80,8 +80,7 @@
                     android:scaleType="fitCenter"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/visinimage" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </com.google.android.material.card.MaterialCardView>
 
 

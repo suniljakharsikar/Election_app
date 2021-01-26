@@ -2,26 +2,30 @@ package b2d.l.mahtmagandhi
 
 import android.app.Activity
 import android.content.*
+import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.core.view.drawToBitmap
-import com.squareup.picasso.Picasso
-import okhttp3.internal.platform.Platform.get
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.lang.reflect.Array.get
 
 
 object Utility {
@@ -44,6 +48,7 @@ object Utility {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     fun getPath(uri: Uri?, context: Context): String? {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor: Cursor = context.getContentResolver().query(uri!!, projection, null, null, null)
@@ -54,6 +59,7 @@ object Utility {
         cursor.close()
         return s
     }
+
     fun getPath(context: Context, uri: Uri): String? {
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 
@@ -217,15 +223,95 @@ object Utility {
 
             )
 
+
             // (Optional) Here we're setting the title of the content
             // putExtra(Intent.EXTRA_SUBJECT, "eGram pay : $mobile account information.")
-            if (uri != null)
+            if (uri != null) {
+                this.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 putExtra(Intent.EXTRA_STREAM, uri)
+            }
             type = "text/html"
             // (Optional) Here we're passing a content URI to an image to be displayed
             // data = uri
             //flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         }, null)
+
         context.startActivity(share)
 
-    }}
+    }
+
+    fun getLocalBitmapUri(bmp: Bitmap, context: Context): Uri? {
+        var bmpUri: Uri? = null
+        try {
+            val file: File = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png")
+            val out = FileOutputStream(file)
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out)
+            out.close()
+            bmpUri = Uri.fromFile(file)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return bmpUri
+    }
+
+
+    fun customSnackBar(view: View, context: Context, text: String, color: Int, res: Int){
+        // Create the Snackbar
+
+        // Create the Snackbar
+        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
+// Get the Snackbar's layout view
+// Get the Snackbar's layout view
+        val layoutv = snackbar.view as FrameLayout
+        val params = layoutv.layoutParams as FrameLayout.LayoutParams
+
+        params.setMargins(0, dpIntoPx(72f,context).toInt(), 0, 0)
+        params.gravity = Gravity.TOP
+        layoutv.layoutParams = params
+// Hide the text
+// Hide the text
+        val textView = layoutv.findViewById<View>(R.id.snackbar_text) as TextView
+        textView.visibility = View.INVISIBLE
+
+// Inflate our custom view
+
+// Inflate our custom view
+        val snackView: View = LayoutInflater.from(context).inflate(R.layout.my_snackbar, null)
+// Configure the view
+// Configure the view
+
+        val imageView = snackView.findViewById<View>(R.id.imageView_status_snackbar) as ImageView
+        imageView.setImageResource(res)
+        val textViewTop = snackView.findViewById<View>(R.id.textView_status_snackbar) as TextView
+        textViewTop.setText(text)
+        textViewTop.setTextColor(color)
+
+//If the view is not covering the whole snackbar layout, add this line
+
+//If the view is not covering the whole snackbar layout, add this line
+        layoutv.setPadding(0, 0, 0, 0)
+
+
+// Add the view to the Snackbar's layout
+
+// Add the view to the Snackbar's layout
+        layoutv.addView(snackView, 0)
+// Show the Snackbar
+// Show the Snackbar
+        snackbar.show()
+    }
+
+
+    fun dpIntoPx(float:Float,context: Context):Float {
+        val dip = float
+        val r: Resources = context.getResources()
+        val px: Float = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip,
+                r.getDisplayMetrics()
+        )
+        return px
+
+    }
+
+}

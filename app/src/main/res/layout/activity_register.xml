@@ -216,7 +216,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/editText_district" />
 
                     <TextView
-                        android:id="@+id/textView49"
+                        android:id="@+id/textView_gender_tag_setting_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -233,8 +233,8 @@
                         android:layout_marginTop="8dp"
                         android:checkedButton="@id/rb_male_regi"
                         android:orientation="horizontal"
-                        app:layout_constraintStart_toStartOf="@+id/textView49"
-                        app:layout_constraintTop_toBottomOf="@+id/textView49">
+                        app:layout_constraintStart_toStartOf="@+id/textView_gender_tag_setting_profile"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_gender_tag_setting_profile">
 
                         <RadioButton
                             android:id="@+id/rb_male_regi"

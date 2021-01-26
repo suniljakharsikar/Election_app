@@ -2,6 +2,7 @@ package b2d.l.mahtmagandhi
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.renderscript.Allocation
@@ -11,10 +12,12 @@ import android.renderscript.ScriptIntrinsicBlur
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivity
 import kotlinx.android.synthetic.main.item_of_img_pager.view.*
 
 
@@ -30,6 +33,24 @@ class ImagePagerAdapter(private val imgs: MutableList<ChatDataResponseModel.Data
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
+
+        holder.itemView.setOnClickListener {
+            // val url: String =Url.burl +  imgs.get(position).image_name
+            if (imgs.size > 0) {
+                val fullImageIntent = Intent(holder.itemView.context, FullScreenImageViewActivity::class.java)
+// uriString is an ArrayList<String> of URI of all images
+                // uriString is an ArrayList<String> of URI of all images
+                val list = arrayListOf<String>()
+                for (i in imgs) {
+                    list.add(Url.burl + i.image_name)
+                }
+                fullImageIntent.putExtra(FullScreenImageViewActivity.URI_LIST_DATA, list)
+// pos is the position of image will be showned when openr
+                // pos is the position of image will be showned when open
+                fullImageIntent.putExtra(FullScreenImageViewActivity.IMAGE_FULL_SCREEN_CURRENT_POS, position)
+                holder.itemView.context.startActivity(fullImageIntent)
+            }
+        }
         val iv = holder.itemView.item_image_view_pager
         val bgIv = holder.itemView.item_image_bg
 

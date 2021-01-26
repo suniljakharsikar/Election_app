@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -77,7 +77,7 @@ public class VisionMission extends AppCompatActivity {
                 Log.d("ashok_vison", response.toString());
                 try {
                     if (response.getBoolean("success")) {
-//                        Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+//                        // Toast.makeText(getBaseContext(), "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
 
                         JSONArray data = response.getJSONArray("data");
                         JSONObject jsonObject = data.getJSONObject(0);
@@ -96,7 +96,7 @@ public class VisionMission extends AppCompatActivity {
 
                         Glide.with(VisionMission.this).load(Url.burl + s).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
                     } else {
-                        Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getBaseContext(), "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                         SharedPreferences.Editor editor = preferences.edit();
@@ -115,7 +115,8 @@ public class VisionMission extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(VisionMission.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
+                Utility.INSTANCE.customSnackBar(textView,VisionMission.this,error.toString(),
+                        ContextCompat.getColor(VisionMission.this,R.color.error),R.drawable.ic_error);
             }
         }) {
             @Override

@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -120,7 +120,7 @@ public class Meetings extends AppCompatActivity {
                         }
                         recyclerView.setAdapter(concatAdapter);
                     } else {
-                        Toast.makeText(Meetings.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Meetings.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Meetings.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -139,8 +139,8 @@ public class Meetings extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(Meetings.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
+                Utility.INSTANCE.customSnackBar(recyclerView,Meetings.this,error.toString(),
+                        ContextCompat.getColor(Meetings.this,R.color.error),R.drawable.ic_error);            }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

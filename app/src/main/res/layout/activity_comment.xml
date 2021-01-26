@@ -193,7 +193,7 @@
             android:layout_height="wrap_content"
             android:padding="12dp">
 
-            <EditText
+            <androidx.emoji.widget.EmojiAppCompatEditText
                 android:id="@+id/editTextTextMultiLine2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

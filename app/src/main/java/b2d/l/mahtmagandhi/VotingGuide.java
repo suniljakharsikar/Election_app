@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -104,7 +105,7 @@ public class VotingGuide extends YouTubeBaseActivity {
                         //textView.setText(description);
 //                        Toast.makeText(VotingGuide.this, "" + response.toString(), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(VotingGuide.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(VotingGuide.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VotingGuide.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -114,7 +115,7 @@ public class VotingGuide extends YouTubeBaseActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(VotingGuide.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(VotingGuide.this, "" + e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 stopAnim();
             }
@@ -122,7 +123,8 @@ public class VotingGuide extends YouTubeBaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 stopAnim();
-                Toast.makeText(VotingGuide.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
+                Utility.INSTANCE.customSnackBar(textView,VotingGuide.this,error.toString(),
+                        ContextCompat.getColor(VotingGuide.this,R.color.error),R.drawable.ic_error);
             }
         }) {
             @Override

@@ -6,12 +6,12 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000">
+        motion:duration="1000"
+       >
        <KeyFrameSet>
        </KeyFrameSet>
-        <OnSwipe
-            motion:touchAnchorId="@+id/cardView3"
-            motion:dragDirection="dragDown" />
+
+
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -100,7 +100,7 @@
             app:contentPaddingBottom="0dp"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginRight="16dp"
             motion:transitionEasing="standard" />
         <Constraint
@@ -112,35 +112,6 @@
             motion:layout_constraintBottom_toTopOf="@+id/cardView3"
             motion:layout_constraintTop_toTopOf="@+id/cardView3"
             motion:layout_constraintStart_toStartOf="parent" />
-        <Constraint
-            android:id="@+id/textView10"
-            android:elevation="2dp"
-            motion:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@+id/textView32" />
-        <Constraint
-            android:id="@+id/textView4"
-            android:elevation="2dp"
-            motion:layout_constraintEnd_toEndOf="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            motion:layout_constraintTop_toBottomOf="@+id/textView10"
-            motion:layout_constraintStart_toStartOf="@+id/textView10" />
-        <Constraint
-            android:id="@+id/textView32"
-            android:elevation="2dp"
-            motion:layout_constraintEnd_toEndOf="@+id/profile_image"
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="@+id/profile_image"
-            android:layout_marginTop="4dp"
-            motion:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     </ConstraintSet>
 </MotionScene>

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -340,8 +341,9 @@ public class Register extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 stopAnim();
-                Toast.makeText(Register.this, "e= " + error.toString(), Toast.LENGTH_SHORT).show();
-            }
+                Utility.INSTANCE.customSnackBar(city
+                        ,Register.this,error.toString(),
+                        ContextCompat.getColor(Register.this,R.color.error),R.drawable.ic_error);                   }
         }) {
             @Override
             public Map<String, String> getHeaders() {

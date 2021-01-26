@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -65,9 +66,9 @@ class NotificationActivity : AppCompatActivity() {
         }, object : Response.ErrorListener {
             override fun onErrorResponse(error: VolleyError?) {
                 stopAnim()
-                Toast.makeText(this@NotificationActivity, "" + error.toString(), Toast.LENGTH_SHORT).show()
-                Log.d("TAG", "onResponse error: " + error)
-
+                // // // Toast.makeText(LoginActivity.this, "" + response.getString("message"), // // Toast.LENGTH_SHORT).show();
+                customSnackBar(rv_noti, this@NotificationActivity, error.toString(),
+                        ContextCompat.getColor(this@NotificationActivity, R.color.error), R.drawable.ic_error) 
             }
         }) {
             override fun getHeaders(): Map<String, String> {

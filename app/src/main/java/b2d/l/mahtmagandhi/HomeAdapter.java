@@ -2,7 +2,9 @@ package b2d.l.mahtmagandhi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +43,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     intent.setClass(context, AboutUs.class);
                     break;
                 case 1:
-                    intent.setClass(context, Meetings.class);
+                    intent.setClass(context, Appointment.class);
                     break;
                 case 2:
                     intent.setClass(context, CommunityChat.class);
@@ -113,12 +115,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
       if (holder instanceof VHHeader) {
             //cast holder to VHHeader and set data for header.
-            ((VHHeader) holder).appointmentButton.setOnClickListener(new View.OnClickListener() {
+            ((VHHeader) holder).logoutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    context.startActivity(new Intent(context,Appointment.class));
-                }
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.apply();
+                    context.startActivity(new Intent(context, LoginActivity.class));                }
             });
         }else if (holder instanceof VHItem){
           HomelistData homelistData = getItem(position);
@@ -163,11 +168,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     class VHHeader extends RecyclerView.ViewHolder {
-        Button appointmentButton;
+        Button logoutButton;
 
         public VHHeader(View itemView) {
             super(itemView);
-            appointmentButton = itemView.findViewById(R.id.button_appointment);
+            logoutButton = itemView.findViewById(R.id.button_logout);
         }
     }
 }

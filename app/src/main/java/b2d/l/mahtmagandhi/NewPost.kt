@@ -22,12 +22,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_new_post.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -83,7 +81,7 @@ class NewPost : AppCompatActivity() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
             ), 120)
         }
-        rv_imgs_new_post.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        rv_imgs_new_post.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
 
 
@@ -114,7 +112,7 @@ class NewPost : AppCompatActivity() {
                     .addFormDataPart("postData", s)
             var counter = 0
             for (i in imageAdapter!!.imagesEncodedList){
-                bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this,i)!!)))
+                bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this, i)!!)))
                 counter = counter +1 ;
             }
 
@@ -123,7 +121,7 @@ class NewPost : AppCompatActivity() {
             val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
             val request: Request = Request.Builder()
-                    .url(Url.baseurl+"/ctalk_post")
+                    .url(Url.baseurl + "/ctalk_post")
                     .method("POST", body)
                     .addHeader("token", preferences.getString(Datas.token, "")!!)
                     .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
@@ -137,9 +135,12 @@ class NewPost : AppCompatActivity() {
                     GlobalScope.launch(Dispatchers.Main) {
                        // imageView_new_post.setImageDrawable(null)
                         et_prob_sugg.setText("")
-
-                        Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                        customSnackBar(et_prob_sugg, this@NewPost,"Successfully Submitted" , ContextCompat.getColor(this@NewPost, R.color.success), R.drawable.ic_success)
+                        imageAdapter!!.imagesEncodedList.clear()
+                        imageAdapter!!.notifyDataSetChanged()
+                      //  Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
                         stopAnim()
+                        delay(2000)
                         val intent = intent
                         setResult(1010, intent)
                         intent.putExtra("reload", true)
@@ -261,7 +262,7 @@ class NewPost : AppCompatActivity() {
         }
         }else if(requestCode== 50){
 
-            list.add(Uri.fromFile( File(currentPhotoPath)))
+            list.add(Uri.fromFile(File(currentPhotoPath)))
         // Glide.with(this).load(data!!.getClipData()!!.getItemAt(0).getUri()).into(imageView_new_post)
         imageAdapter?.notifyDataSetChanged()
         }

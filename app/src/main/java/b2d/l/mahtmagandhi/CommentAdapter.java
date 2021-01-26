@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
@@ -56,7 +59,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         }
         holder.mcvOther.setVisibility(View.VISIBLE);
-        holder.comment.setText(commentData.getComment());
+        try {
+            holder.comment.setText(URLDecoder.decode(commentData.comment, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         holder.name.setText(commentData.getUsername());
         if (resol && position == data.size() - 1) {
             holder.resold.setVisibility(View.VISIBLE);

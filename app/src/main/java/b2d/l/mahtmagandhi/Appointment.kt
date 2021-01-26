@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -81,7 +83,9 @@ class Appointment : AppCompatActivity() {
 
         }, object : Response.ErrorListener {
             override fun onErrorResponse(error: VolleyError?) {
-stopAnim()
+                customSnackBar(recyclerView!!, this@Appointment, error.toString(), ContextCompat.getColor(this@Appointment, R.color.error), R.drawable.ic_error)
+
+                stopAnim()
             }
         })
         {

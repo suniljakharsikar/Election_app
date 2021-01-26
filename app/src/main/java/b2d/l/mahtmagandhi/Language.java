@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -80,7 +80,7 @@ public class Language extends AppCompatActivity {
         /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(Language.this, "test", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Language.this, "test", // Toast.LENGTH_SHORT).show();
             }
         });*/
 
@@ -105,7 +105,7 @@ public class Language extends AppCompatActivity {
                         listadapter = new MyLangAdapter(Language.this, strings);
                         listView.setAdapter(listadapter);
                     } else {
-                        Toast.makeText(Language.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Language.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -123,7 +123,8 @@ public class Language extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(Language.this, "" + error, Toast.LENGTH_SHORT).show();
+                Utility.INSTANCE.customSnackBar(listView,Language.this,error.toString(),
+                        ContextCompat.getColor(Language.this,R.color.error),R.drawable.ic_error);
                 stopAnim();
             }
         }) {
@@ -172,7 +173,7 @@ public class Language extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     boolean success = response.getBoolean("success");
-                    Toast.makeText(Language.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                     if (success) {
                         startActivity(new Intent(Language.this, Home.class));
                     }
@@ -185,7 +186,7 @@ public class Language extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(Language.this, "" + error, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Language.this, "" + error, // Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -223,7 +224,7 @@ public class Language extends AppCompatActivity {
                         finish();
 
                     } else {
-                        Toast.makeText(Language.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Language.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -242,7 +243,7 @@ public class Language extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(Language.this, "" + error, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Language.this, "" + error, // Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

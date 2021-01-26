@@ -46,15 +46,52 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar17">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar17"
+        app:layout_constraintVertical_bias="0.0">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_lang_profile"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+
+                android:layout_marginEnd="16dp"
+
+                app:boxBackgroundColor="@android:color/white"
+
+                app:boxBackgroundMode="filled"
+                app:layout_constraintEnd_toEndOf="@+id/editText_dob_setting_profile"
+                app:layout_constraintStart_toStartOf="@+id/textView48"
+                app:layout_constraintTop_toBottomOf="@+id/tv_tag_lang">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actv_lang_locality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_tag_lang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Language"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/til_city_setting_profile" />
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/avi2"
@@ -205,7 +242,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Select Your City/Village"
+                android:text="City/Village"
                 app:layout_constraintStart_toStartOf="@+id/editText_district"
                 app:layout_constraintTop_toBottomOf="@+id/editText_district" />
 
@@ -216,11 +253,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+
                 app:boxBackgroundColor="@android:color/white"
+
                 app:boxBackgroundMode="filled"
+
                 app:layout_constraintEnd_toEndOf="@+id/editText_dob_setting_profile"
                 app:layout_constraintStart_toStartOf="@+id/textView48"
                 app:layout_constraintTop_toBottomOf="@+id/textView48">
@@ -234,13 +272,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/textView49"
+                android:id="@+id/textView_gender_tag_setting_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Select Gender"
+                android:text="Gender"
                 app:layout_constraintStart_toStartOf="@+id/til_city_setting_profile"
-                app:layout_constraintTop_toBottomOf="@+id/til_city_setting_profile" />
+                app:layout_constraintTop_toBottomOf="@id/til_lang_profile" />
 
             <RadioGroup
                 android:id="@+id/radioGroup_gender"
@@ -249,9 +287,10 @@
                 android:layout_marginTop="8dp"
                 android:checkedButton="@id/rb_male_setting_profile"
                 android:orientation="horizontal"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="@+id/til_city_setting_profile"
-                app:layout_constraintStart_toStartOf="@+id/textView49"
-                app:layout_constraintTop_toBottomOf="@+id/textView49">
+                app:layout_constraintStart_toStartOf="@+id/textView_gender_tag_setting_profile"
+                app:layout_constraintTop_toBottomOf="@+id/textView_gender_tag_setting_profile">
 
                 <RadioButton
                     android:id="@+id/rb_male_setting_profile"
@@ -306,17 +345,27 @@
                 android:paddingTop="12dp"
                 android:paddingRight="72dp"
                 android:paddingBottom="12dp"
-                app:cornerRadius="32dp"
-
                 android:text="Submit"
+
                 android:textAllCaps="false"
                 android:textColor="@color/white_text_color"
                 android:visibility="gone"
+                app:cornerRadius="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup_gender" />
 
+
+            <TextView
+                android:id="@+id/textView_gender_setting_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_gender_tag_setting_profile" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/materialButton_edit_setting_profie"

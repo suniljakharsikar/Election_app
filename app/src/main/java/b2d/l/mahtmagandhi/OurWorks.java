@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,8 +95,8 @@ public class OurWorks extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(OurWorks.this, "" + error, Toast.LENGTH_SHORT).show();
-            }
+                Utility.INSTANCE.customSnackBar(recyclerView,OurWorks.this,error.toString(),
+                        ContextCompat.getColor(OurWorks.this,R.color.error),R.drawable.ic_error);                   }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

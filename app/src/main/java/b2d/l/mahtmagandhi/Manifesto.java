@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -85,7 +85,7 @@ public class Manifesto extends AppCompatActivity {
                         RecyclerView.Adapter adapter = new ManifestoAdapter(m.getData());
                         recyclerView.setAdapter(adapter);
                     } else {
-                        Toast.makeText(Manifesto.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Manifesto.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Manifesto.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -93,7 +93,7 @@ public class Manifesto extends AppCompatActivity {
                         editor.apply();
                         startActivity(new Intent(Manifesto.this, LoginActivity.class));
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 stopAnim();
@@ -104,8 +104,8 @@ public class Manifesto extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(Manifesto.this, "" + error, Toast.LENGTH_SHORT).show();
-            }
+                Utility.INSTANCE.customSnackBar(recyclerView,Manifesto.this,error.toString(),
+                        ContextCompat.getColor(Manifesto.this,R.color.error),R.drawable.ic_error);            }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,7 +92,7 @@ public class Survey extends AppCompatActivity {
                         RecyclerView.Adapter adapter = new Surveydapter( s.getData());
                         recyclerView.setAdapter(adapter);
                     } else {
-                        Toast.makeText(Survey.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(Survey.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Survey.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -99,7 +100,7 @@ public class Survey extends AppCompatActivity {
                         editor.apply();
                         startActivity(new Intent(Survey.this, LoginActivity.class));
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 //stopAnim();
@@ -110,8 +111,8 @@ public class Survey extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(Survey.this, "" + error, Toast.LENGTH_SHORT).show();
-            }
+                Utility.INSTANCE.customSnackBar(recyclerView,Survey.this,error.toString(),
+                        ContextCompat.getColor(Survey.this,R.color.error),R.drawable.ic_error);                   }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

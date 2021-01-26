@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,8 +11,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -105,7 +104,7 @@ public class NewsUpdate extends AppCompatActivity {
                         NewsAdapter communityChatAdapter = new NewsAdapter(getBaseContext(), nm.getData(), "/nevent_like_unlike_post", "/nevent_comments", "/nevent_comments_post", false, avi);
                         recyclerView.setAdapter(communityChatAdapter);
                     } else {
-                        Toast.makeText(getBaseContext(), "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                       // // Toast.makeText(getBaseContext(), "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                         SharedPreferences.Editor editor = preferences.edit();
@@ -113,7 +112,7 @@ public class NewsUpdate extends AppCompatActivity {
                         editor.apply();
                         startActivity(new Intent(getBaseContext(), LoginActivity.class));
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 stopAnim();
@@ -124,8 +123,8 @@ public class NewsUpdate extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(NewsUpdate.this, "" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
+                Utility.INSTANCE.customSnackBar(recyclerView,NewsUpdate.this,error.toString(),
+                        ContextCompat.getColor(NewsUpdate.this,R.color.error),R.drawable.ic_error);            }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {

@@ -25,12 +25,16 @@ import android.text.method.DigitsKeyListener
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
+import b2d.l.mahtmagandhi.Utility.customSnackBar
+import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -89,25 +93,7 @@ class SettingProfile : AppCompatActivity() {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
-        editTextPersonName2.inputType = InputType.TYPE_NULL
-        editTextPhone2.inputType = InputType.TYPE_NULL
-        editText_postal_code.inputType = InputType.TYPE_NULL
-        editText_dob_setting_profile.inputType = InputType.TYPE_NULL
-        editText_state.inputType = InputType.TYPE_NULL
-        editText_district.inputType = InputType.TYPE_NULL
-        button_submit.visibility = View.INVISIBLE
-
-        editTextPersonName2.isEnabled = false
-        editTextPhone2.isEnabled = false
-        editText_postal_code.isEnabled = false
-        editText_dob_setting_profile.isEnabled = false
-        editText_state.isEnabled = false
-        editText_district.isEnabled = false
-        actv_city_locality.isEnabled = false
-        radioGroup_gender.isEnabled = false
-        rb_male_setting_profile.isEnabled = false
-        rb_female_setting_profile.isEnabled = false
-        rb_other_setting_profile.isEnabled = false
+      disableEdit()
 
         //        city.setText(preferences.getString(Datas.user_district, ""));
         editText_postal_code.addTextChangedListener(object : TextWatcher {
@@ -140,10 +126,9 @@ class SettingProfile : AppCompatActivity() {
                     // Get new FCM registration token
                     try {
                         fetchData(task.result)
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
 
                     }
-
 
 
                     // Log and toast
@@ -155,61 +140,7 @@ class SettingProfile : AppCompatActivity() {
 
         var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup_gender)
         materialButton_edit_setting_profie.setOnClickListener {
-            materialButton_edit_setting_profie.visibility = View.GONE
-            imageView43.visibility = View.GONE
-            editTextPersonName2.isEnabled = true
-            editTextPhone2.isEnabled = false
-            editText_postal_code.isEnabled = true
-            editText_dob_setting_profile.isEnabled = true
-            editText_state.isEnabled = true
-            editText_district.isEnabled = true
-            actv_city_locality.isEnabled = true
-            radioGroup_gender.isEnabled = true
-            rb_male_setting_profile.isEnabled = true
-            rb_female_setting_profile.isEnabled = true
-            rb_other_setting_profile.isEnabled = true
-
-
-            button_submit.visibility = View.VISIBLE
-            // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-            //editTextPersonName2.setFilters(arrayOf(getEditTextFilter()))
-            //editTextPhone2.inputType = InputType.TYPE_CLASS_PHONE
-            val digits = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // or any characters you want to allow
-            editTextPersonName2.keyListener = DigitsKeyListener.getInstance(digits)
-            editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-
-            val blankDigit = ""
-            editTextPhone2.keyListener = DigitsKeyListener.getInstance(blankDigit)
-
-            editText_postal_code.inputType = InputType.TYPE_CLASS_NUMBER
-            //editText_dob_setting_profile.inputType = InputType.TYPE_CLASS_TEXT
-            editText_state.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
-            editText_district.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
-            myCalendar = Calendar.getInstance()
-            val date = OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateLabel()
-            }
-            editText_dob_setting_profile.setOnClickListener(View.OnClickListener { /*new DatePickerDialog(Register.this, date,myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH) ).show();*/
-                val datepickerdialog = DatePickerDialog(this@SettingProfile,
-                        AlertDialog.THEME_HOLO_DARK, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH))
-
-                val calendar = Calendar.getInstance()
-                calendar.add(Calendar.YEAR, -14)
-                datepickerdialog.datePicker.maxDate = calendar.timeInMillis
-
-
-
-
-                datepickerdialog.show()
-
-            })
+           enableEdit()
         }
 
 
@@ -231,6 +162,107 @@ class SettingProfile : AppCompatActivity() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
             ), 120)
         }
+    }
+
+    private fun enableEdit() {
+        materialButton_edit_setting_profie.visibility = View.GONE
+        imageView43.visibility = View.GONE
+        editTextPersonName2.isEnabled = true
+        editTextPhone2.isEnabled = false
+        editText_postal_code.isEnabled = true
+        editText_dob_setting_profile.isEnabled = true
+        editText_state.isEnabled = true
+        editText_district.isEnabled = true
+        actv_city_locality.isEnabled = true
+        actv_lang_locality.isEnabled = true
+        til_city_setting_profile.isEnabled = true
+        til_lang_profile.isEnabled = true
+        til_city_setting_profile.boxBackgroundColor = ContextCompat.getColor(this@SettingProfile, R.color.white)
+        til_lang_profile.boxBackgroundColor = ContextCompat.getColor(this@SettingProfile, R.color.white)
+        radioGroup_gender.isEnabled = true
+        radioGroup_gender.visibility = View.VISIBLE
+        textView_gender_setting_profile.visibility = View.GONE
+
+        rb_male_setting_profile.isEnabled = true
+        rb_female_setting_profile.isEnabled = true
+        rb_other_setting_profile.isEnabled = true
+
+
+        button_submit.visibility = View.VISIBLE
+        // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+        //editTextPersonName2.setFilters(arrayOf(getEditTextFilter()))
+        //editTextPhone2.inputType = InputType.TYPE_CLASS_PHONE
+        val digits = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // or any characters you want to allow
+        editTextPersonName2.keyListener = DigitsKeyListener.getInstance(digits)
+        editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+
+        val blankDigit = ""
+        editTextPhone2.keyListener = DigitsKeyListener.getInstance(blankDigit)
+
+        editText_postal_code.inputType = InputType.TYPE_CLASS_NUMBER
+        //editText_dob_setting_profile.inputType = InputType.TYPE_CLASS_TEXT
+        editText_state.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
+        editText_district.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
+        myCalendar = Calendar.getInstance()
+        val date = OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year)
+            myCalendar.set(Calendar.MONTH, monthOfYear)
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateLabel()
+        }
+        editText_dob_setting_profile.setOnClickListener(View.OnClickListener { /*new DatePickerDialog(Register.this, date,myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH) ).show();*/
+            val datepickerdialog = DatePickerDialog(this@SettingProfile,
+                    AlertDialog.THEME_HOLO_DARK, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH))
+
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.YEAR, -14)
+            datepickerdialog.datePicker.maxDate = calendar.timeInMillis
+
+
+
+
+            datepickerdialog.show()
+
+        })
+    }
+
+    private fun disableEdit() {
+        materialButton_edit_setting_profie.visibility = View.VISIBLE
+
+        editTextPersonName2.inputType = InputType.TYPE_NULL
+        editTextPhone2.inputType = InputType.TYPE_NULL
+        editText_postal_code.inputType = InputType.TYPE_NULL
+        editText_dob_setting_profile.inputType = InputType.TYPE_NULL
+        editText_state.inputType = InputType.TYPE_NULL
+        editText_district.inputType = InputType.TYPE_NULL
+        button_submit.visibility = View.INVISIBLE
+
+        editTextPersonName2.isEnabled = false
+        editTextPhone2.isEnabled = false
+        editText_postal_code.isEnabled = false
+        editText_dob_setting_profile.isEnabled = false
+        editText_state.isEnabled = false
+        editText_district.isEnabled = false
+        actv_city_locality.isEnabled = false
+        actv_lang_locality.isEnabled = false
+
+        til_city_setting_profile.isEnabled = false
+        til_lang_profile.isEnabled = false
+
+        radioGroup_gender.isEnabled = false
+        rb_male_setting_profile.isEnabled = false
+        rb_female_setting_profile.isEnabled = false
+        rb_other_setting_profile.isEnabled = false
+
+
+        radioGroup_gender.visibility = View.GONE
+        textView_gender_setting_profile.visibility = View.VISIBLE
+
+
     }
 
     private fun updateLabel() {
@@ -260,6 +292,7 @@ class SettingProfile : AppCompatActivity() {
                 Log.d("Info", "fetchData: " + response)
                 val success = response.getBoolean("success")
                 if (success) {
+                    stopAnim()
                     val token = response.getString("token")
                     val data1 = response.getJSONArray("data")
                     val editor = preferences.edit()
@@ -276,12 +309,14 @@ class SettingProfile : AppCompatActivity() {
                     if (jsonObject.getString(Datas.user_district) != "null") editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district))
                     if (jsonObject.getString(Datas.user_village) != "null") editor.putString(Datas.user_village, jsonObject.getString(Datas.user_village))
                     if (jsonObject.getString(Datas.lagnuage_id) != "null") editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id))
+                    if (jsonObject.getString(Datas.gender) != "null") editor.putString(Datas.gender, jsonObject.getString(Datas.gender))
+
                     editor.putString(Datas.token, token)
                     editor.apply()
                     val img = jsonObject.getString(Datas.user_image)
                     if (img.contains("http")) Glide.with(this).load(img).into(profile_image)
-                    else if (img!=null &&img.length > 0) Glide.with(this).load(Url.burl + img).into(profile_image)
-                    else if (img==null) Glide.with(this).load(R.drawable.ic_user_place_holder).into(profile_image)
+                    else if (img == "null") Glide.with(this).load(R.drawable.ic_user_place_holder).into(profile_image)
+                    else if (img.length > 0 && img != "null") Glide.with(this).load(Url.burl + img).into(profile_image)
 
 
                     editTextPersonName2.setText(preferences.getString(Datas.user_name, ""))
@@ -291,6 +326,9 @@ class SettingProfile : AppCompatActivity() {
                     editText_state.setText(preferences.getString(Datas.user_state, ""))
                     editText_district.setText(preferences.getString(Datas.user_district, ""))
                     actv_city_locality.setText(preferences.getString(Datas.user_village, ""))
+                    textView_gender_setting_profile.setText(preferences.getString(Datas.gender, ""))
+
+                    setLanguage(preferences.getString(Datas.lagnuage_id, "")!!)
                     // Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     //finish()
                 } else {
@@ -308,10 +346,68 @@ class SettingProfile : AppCompatActivity() {
             }
             stopAnim()
         }, { error ->
-            Log.d("ashok", error.toString())
+
             stopAnim()
+            customSnackBar(iv_edit_avtar_setting, this@SettingProfile, error.toString(),
+                    ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
+
         })
         MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
+    }
+
+    private fun setLanguage(languageId: String) {
+
+        val url = Url.baseurl + "/language_list"
+        val jsonRequest = JSONObject()
+        startAnim()
+        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
+            stopAnim()
+            try {
+                val success = response.getBoolean("success")
+                if (success) {
+
+                    val data = response.getJSONArray("data")
+                    val strings = arrayListOf<String>()
+                    for (i in 0 until data.length()) {
+                        val jsonObject = data.getJSONObject(i)
+                        //                            JsonObject jsonObject = (JsonObject) data.get(i);
+                        strings.add(jsonObject["name"].toString())
+                        if (jsonObject["id"].toString() == languageId)
+                            actv_lang_locality.setText(jsonObject["name"].toString(), false)
+                    }
+
+                    val adapter = StringAdapter(this, strings)
+
+                    actv_lang_locality.setAdapter(adapter)
+                } else {
+                    Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                    //login page
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                    val editor = preferences.edit()
+                    editor.clear()
+                    editor.apply()
+                    startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            stopAnim()
+        }, Response.ErrorListener { error ->
+            Toast.makeText(this@SettingProfile, "" + error, Toast.LENGTH_SHORT).show()
+            stopAnim()
+        }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                var preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Token"] = preferences.getString(Datas.token, "")!!
+                return headers
+            }
+        }
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+
     }
 
     private fun fetchLoc(s: String) {
@@ -432,9 +528,34 @@ class SettingProfile : AppCompatActivity() {
             stopAnim()
             try {
                 val success = response.getBoolean("success")
-                Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+
                 if (success) {
-                    //newposting()
+                    //newposting
+                    Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "Successfully Updated", ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
+                    disableEdit()
+                    FirebaseMessaging.getInstance().getToken()
+                            .addOnCompleteListener(OnCompleteListener<String> { task ->
+                                if (!task.isSuccessful) {
+                                    return@OnCompleteListener
+                                }
+
+                                // Get new FCM registration token
+                                try {
+                                    fetchData(task.result)
+                                } catch (e: Exception) {
+
+                                }
+
+
+                                // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            })
+
+                } else {
+                    Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "" + response.getString("message"), ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
+
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()

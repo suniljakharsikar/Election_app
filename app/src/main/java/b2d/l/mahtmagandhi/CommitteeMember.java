@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -96,7 +96,7 @@ public class CommitteeMember extends AppCompatActivity {
                         CommitteeMemberAdapter committeeMemberAdapter1 = new CommitteeMemberAdapter(CommitteeMember.this, c.getData(), c.getDomain_name());
                         recyclerView.setAdapter(committeeMemberAdapter1);
                     } else {
-                        Toast.makeText(CommitteeMember.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // // // Toast.makeText(CommitteeMember.this, "" + response.getString("message"), // // // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CommitteeMember.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -114,7 +114,8 @@ public class CommitteeMember extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 stopAnim();
-                Toast.makeText(CommitteeMember.this, "" + error, Toast.LENGTH_SHORT).show();
+                Utility.INSTANCE.customSnackBar(recyclerView,CommitteeMember.this,error.toString(),
+                        ContextCompat.getColor(CommitteeMember.this,R.color.error),R.drawable.ic_error);
             }
         }) {
             @Override

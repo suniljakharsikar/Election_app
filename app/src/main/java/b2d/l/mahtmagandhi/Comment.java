@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.emoji.widget.EmojiAppCompatEditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,7 +46,7 @@ public class Comment extends AppCompatActivity {
 
     RecyclerView recyclerView;
     private SharedPreferences preferences;
-    EditText comment;
+    EmojiAppCompatEditText comment;
     private AVLoadingIndicatorView avi;
     private Boolean passToken;
     TextView textView;
@@ -107,7 +110,7 @@ public class Comment extends AppCompatActivity {
 //            sliderView.setVisibility(View.VISIBLE);//// TODO: 13/1/21
             textView.setVisibility(View.VISIBLE);
 
-//            Toast.makeText(this, "comming from problem", Toast.LENGTH_SHORT).show();
+//            // Toast.makeText(this, "comming from problem", // Toast.LENGTH_SHORT).show();
             CollageView collageView = (CollageView) findViewById(R.id.collageView);
 
 
@@ -188,7 +191,7 @@ public class Comment extends AppCompatActivity {
 
         }
         String url = Url.baseurl + getIntent().getStringExtra("url");//"/ctalk_comments";
-//        Toast.makeText(this, "" + url, Toast.LENGTH_SHORT).show();
+//        // Toast.makeText(this, "" + url, // Toast.LENGTH_SHORT).show();
         JSONObject json = new JSONObject();
         try {
             json.put("parentId", getIntent().getStringExtra("pos"));
@@ -217,7 +220,7 @@ public class Comment extends AppCompatActivity {
 
 
                     } else {
-                        Toast.makeText(Comment.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Comment.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -233,7 +236,9 @@ public class Comment extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Comment.this, "" + error, Toast.LENGTH_SHORT).show();
+                Utility.INSTANCE.customSnackBar(sliderView,Comment.this,error.toString(), ContextCompat.getColor(Comment.this,R.color.error),R.drawable.ic_error);
+
+                // // Toast.makeText(Comment.this, "" + error, // Toast.LENGTH_SHORT).show();
                 stopAnim();
             }
         }) {
@@ -274,15 +279,15 @@ public class Comment extends AppCompatActivity {
     public void newcomment(View view) {
         String s = comment.getText().toString();
         if (isNullOrEmpty(s)) {
-            Toast.makeText(this, "Please type comment first", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Please type comment first", // Toast.LENGTH_SHORT).show();
             return;
         }
         String url = Url.baseurl + getIntent().getStringExtra("newposturl");
         JSONObject json = new JSONObject();
         try {
             json.put("parentId", getIntent().getStringExtra("pos"));
-            json.put("comment", s);
-        } catch (JSONException e) {
+            json.put("comment", URLEncoder.encode(s, "UTF-8"));
+        } catch (JSONException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         startAnim();
@@ -298,12 +303,13 @@ public class Comment extends AppCompatActivity {
                             CommentData comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData.class);
                             commentData.add(comment);
                         }
+                       // commentData.add(new CommentData("xyz",s));
                         Collections.reverse(commentData);
                         RecyclerView.Adapter adapter = new CommentAdapter(Comment.this, commentData, preferences.getInt(Datas.id, 1), resol);
                         recyclerView.setAdapter(adapter);
                         comment.setText("");
-                    } else
-                        Toast.makeText(Comment.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                        // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -312,7 +318,9 @@ public class Comment extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Comment.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Utility.INSTANCE.customSnackBar(recyclerView,Comment.this,error.toString(), ContextCompat.getColor(Comment.this,R.color.error),R.drawable.ic_error);
+
+                //// Toast.makeText(Comment.this, "" + error.getMessage(), // Toast.LENGTH_SHORT).show();
                 stopAnim();
             }
         }) {
@@ -343,7 +351,7 @@ public class Comment extends AppCompatActivity {
                 Log.d("ashok", response.toString());
                 try {
                     if (response.getBoolean("success")) {
-                        Toast.makeText(Comment.this, "success", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Comment.this, "success", // Toast.LENGTH_SHORT).show();
                         resol = true;
                         resolwork();
                         materialCardViewResolved.setVisibility(View.GONE);
@@ -377,7 +385,7 @@ public class Comment extends AppCompatActivity {
 //                        Log.d("ashok", data.toString());
 
                     } else {
-                        Toast.makeText(Comment.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         //login page
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Comment.this);
                         SharedPreferences.Editor editor = preferences.edit();
@@ -395,7 +403,7 @@ public class Comment extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Comment.this, "" + error, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Comment.this, "" + error, // Toast.LENGTH_SHORT).show();
                 Log.d("ashok", error.toString());
                 stopAnim();
 

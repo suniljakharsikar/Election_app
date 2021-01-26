@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -26,6 +27,8 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
@@ -122,20 +125,24 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 try {
-                    Uri uri = null;
+                    final Uri[] uri = {null};
                     if (finalImg != null && finalImg.toString().length() > 0)
-                        uri = Utility.INSTANCE.saveBitmap(
-                                view.getContext(),
-                                holder.descIv,
-                                Bitmap.CompressFormat.JPEG,
-                                "image/jpeg",
-                                "",
-                                "statement"
-                        );
+                        Picasso.with(context).load(finalImg.toString()).into(new Target() {
+                            @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
-                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
+                                //uri[0] = getLocalBitmapUri(bitmap);
+                                Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), Utility.INSTANCE.getLocalBitmapUri(bitmap,context), view.getContext());
 
-                } catch (IOException e) {
+                            }
+                            @Override public void onBitmapFailed(Drawable errorDrawable) { }
+                            @Override public void onPrepareLoad(Drawable placeHolderDrawable) { }
+                        });
+                    else
+                        Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), null, view.getContext());
+
+
+
+                } catch (Exception e) {
 
                 }
 //                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
@@ -154,6 +161,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
            }           holder.usernameTv.setText(x.getUserData().get(0).getUser_name());
        }
+
+        Glide.with(context).load(R.drawable.profile).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.avtarIv);
+        holder.usernameTv.setText(Datas.OWNER_NAME);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         Date date = null;

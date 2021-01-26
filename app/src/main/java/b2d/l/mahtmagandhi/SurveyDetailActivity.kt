@@ -8,12 +8,18 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_survey_detail.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.*
 
@@ -88,13 +94,18 @@ class SurveyDetailActivity : AppCompatActivity() {
             val jor = object :JsonObjectRequest(Request.Method.POST, url, jsr, object : Response.Listener<JSONObject> {
                 override fun onResponse(response: JSONObject?) {
                     stopAnim()
-                    Toast.makeText(this@SurveyDetailActivity, "Success", Toast.LENGTH_SHORT).show()
-                    finish()
+                    customSnackBar(rg_options_survey, this@SurveyDetailActivity, "Submit Successfully",
+                            ContextCompat.getColor(this@SurveyDetailActivity, R.color.success), R.drawable.ic_success)
+                   GlobalScope.launch(Dispatchers.Main) {
+                       delay(2000)
+                       finish()
+                   }
                 }
             }, object : Response.ErrorListener {
                 override fun onErrorResponse(error: VolleyError?) {
-                    Toast.makeText(this@SurveyDetailActivity, error!!.message, Toast.LENGTH_SHORT).show()
-                    stopAnim()
+                    customSnackBar(rg_options_survey, this@SurveyDetailActivity, error.toString(),
+                            ContextCompat.getColor(this@SurveyDetailActivity, R.color.error), R.drawable.ic_error)
+                    stopAnim ()
                 }
             })  {
                 override fun getHeaders(): Map<String, String> {

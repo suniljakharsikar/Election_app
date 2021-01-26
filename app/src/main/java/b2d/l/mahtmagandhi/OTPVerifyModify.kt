@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -16,7 +14,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.addTextChangedListener
+import androidx.core.content.ContextCompat
+import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.gms.tasks.OnCompleteListener
@@ -89,7 +88,8 @@ class OTPVerifyModify : AppCompatActivity() {
 
             override fun onVerificationFailed(e: FirebaseException) {
                 stopAnim()
-                Toast.makeText(this@OTPVerifyModify, "failed " + e.message, Toast.LENGTH_SHORT).show()
+                customSnackBar(sendbtn!!, this@OTPVerifyModify, "failed " + e.message,
+                        ContextCompat.getColor(this@OTPVerifyModify, R.color.error), R.drawable.ic_error)
                 //                editText.setFocusable(true);
             }
 
@@ -175,6 +175,7 @@ class OTPVerifyModify : AppCompatActivity() {
                     if (jsonObject.getString(Datas.lagnuage_id) != "null") editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id))
                     editor.putString(Datas.token, token)
                     editor.apply()
+
                     startActivity(Intent(this@OTPVerifyModify, Register::class.java))
                     Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     finish()
@@ -265,6 +266,10 @@ class OTPVerifyModify : AppCompatActivity() {
                     if (jsonObject.getString(Datas.user_age) != "null") editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id))
                     editor.putString(Datas.token, token)
                     editor.apply()
+                    if (jsonObject.getString(Datas.user_name) != "null") {
+                        startActivity(Intent(this@OTPVerifyModify, Home::class.java))
+
+                    }else
                     startActivity(Intent(this@OTPVerifyModify, Register::class.java))
                     Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     finish()

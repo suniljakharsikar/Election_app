@@ -16,4 +16,6 @@
     <color name="white">#FFFFFF</color>
     <color name="thumb_down">#ff2d58 </color>
     <color name="thumb_up">#1846b1</color>
+    <color name="success">#03CC75</color>
+    <color name="error">#F60808</color>
 </resources>

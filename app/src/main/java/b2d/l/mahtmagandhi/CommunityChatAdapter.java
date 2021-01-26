@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -32,6 +33,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +42,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -197,20 +202,24 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             @Override
             public void onClick(View view) {
                 try {
-                    Uri uri = null;
+                    final Uri[] uri = {null};
                     if (finalImg != null && finalImg.length() > 0)
-                        uri = Utility.INSTANCE.saveBitmap(
-                                view.getContext(),
-                                holder.descIv,
-                                Bitmap.CompressFormat.JPEG,
-                                "image/jpeg",
-                                "",
-                                "statement"
-                        );
+                        Picasso.with(context).load(finalImg).into(new Target() {
+                        @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
-                    Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), uri, view.getContext());
+                            //uri[0] = getLocalBitmapUri(bitmap);
+                            Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), Utility.INSTANCE.getLocalBitmapUri(bitmap,context), view.getContext());
 
-                } catch (IOException e) {
+                        }
+                        @Override public void onBitmapFailed(Drawable errorDrawable) { }
+                        @Override public void onPrepareLoad(Drawable placeHolderDrawable) { }
+                    });
+                    else
+                        Utility.INSTANCE.share(Html.fromHtml(x.getDescription()).toString(), null, view.getContext());
+
+
+
+                } catch (Exception e) {
 
                 }
 //                Toast.makeText(context, "Sharing", Toast.LENGTH_SHORT).show();
@@ -281,6 +290,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
 
     }
+
+
 
     private File createImageFile() throws IOException {
         // Create an image file name

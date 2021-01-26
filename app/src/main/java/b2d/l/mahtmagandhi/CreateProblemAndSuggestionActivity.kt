@@ -30,10 +30,7 @@ import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.et_
 import kotlinx.android.synthetic.main.activity_create_problem_and_suggestion.tv_image_btn_prob_sug
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.fragment_image_picker_bottom_sheet.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -141,14 +138,25 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
               if (response.isSuccessful){
                   GlobalScope.launch(Dispatchers.Main) {
-                      Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                     // Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
                       et_prob_sugg_title.setText("")
                       et_prob_sugg.setText("")
+                      Utility.customSnackBar(et_prob_sugg, this@CreateProblemAndSuggestionActivity, "Successfully Submitted", ContextCompat.getColor(this@CreateProblemAndSuggestionActivity, R.color.success), R.drawable.ic_success)
+
                       images.clear()
+                      imageAdapter!!.imagesEncodedList.clear()
+                      imageAdapter!!.notifyDataSetChanged()
                       imageView_pic_create_prob.setImageDrawable(null)
-                      textView_tag_img_select.text = "Image Selected : 0"
                       stopAnim()
+                      delay(2000)
+                      val intent = intent
+                      setResult(1010, intent)
+                      intent.putExtra("reload", true)
+
                       finish()
+                      //textView_tag_img_select.text = "Image Selected : 0"
+
+                      //finish()
 
                   }
               }
@@ -237,7 +245,7 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 if (data?.getClipData() != null) {
                     var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-                    Toast.makeText(this, "" + count + "", Toast.LENGTH_SHORT).show()
+                   // Toast.makeText(this, "" + count + "", Toast.LENGTH_SHORT).show()
 
                     for (i in 0..count - 1) {
                         val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();
