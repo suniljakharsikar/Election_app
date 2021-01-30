@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editText;
     boolean issubmit = false;
     //    ImageView imageView;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
     private String mobile;
     private int getcode = 1111;
     private String mVerificationId;
@@ -72,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText[] editTexts;
 
     void startAnim() {
-        avi.show();
+
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }
@@ -240,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                Toast.makeText(LoginActivity.this, "verified", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(LoginActivity.this, "verified", Toast.LENGTH_SHORT).show();
                 signInWithPhoneAuthCredential(credential);
 
             }
@@ -286,6 +287,7 @@ public class LoginActivity extends AppCompatActivity {
                 mResendToken = token;
 
                 // ...
+                if (Datas.DEBUG)
                 Toast.makeText(LoginActivity.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
 
                 stopAnim();
@@ -395,11 +397,11 @@ public class LoginActivity extends AppCompatActivity {
                                             editor.putString(Datas.token, token);
                                             editor.apply();
                                             startActivity(new Intent(LoginActivity.this, Register.class));
-                                            Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                           // Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                                             finish();
 
                                         } else {
-                                            Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                                           // Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
                                             //login page
                                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                                             SharedPreferences.Editor editor = preferences.edit();
@@ -467,7 +469,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "already in progress", Toast.LENGTH_SHORT).show();
         } else {
             issubmit = true;
-            Toast.makeText(this, "Please Wait", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Please Wait", Toast.LENGTH_SHORT).show();
             String url = Url.baseurl + "/user_onboard";
             JSONObject json = new JSONObject();
             try {

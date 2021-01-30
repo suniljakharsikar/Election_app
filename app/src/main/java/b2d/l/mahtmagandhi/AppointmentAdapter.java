@@ -17,6 +17,8 @@ import com.android.volley.Response;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,7 +66,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         holder.date.setText(dates);
         //holder.status.setText(appointment_data.getBookedStatus());
-        holder.detail.setText(appointment_data.getMessage());
+        String msg = null;
+        try {
+             msg = URLDecoder.decode(appointment_data.getMessage(),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            msg = appointment_data.getMessage();
+        }
+
+        holder.detail.setText(msg);
         int color;
 
         switch (appointment_data.getBookedStatus()) {

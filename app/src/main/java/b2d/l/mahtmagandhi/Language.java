@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 
 import com.android.volley.AuthFailureError;
@@ -36,10 +37,10 @@ public class Language extends AppCompatActivity {
     ListView listView;
     private SharedPreferences preferences;
     private MyLangAdapter listadapter;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
 
     void startAnim() {
-        avi.show();
+       // avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

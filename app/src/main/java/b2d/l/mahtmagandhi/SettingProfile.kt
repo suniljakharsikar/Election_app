@@ -25,6 +25,7 @@ import android.text.method.DigitsKeyListener
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -46,7 +47,9 @@ import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.wang.avi.AVLoadingIndicatorView
+import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
+import kotlinx.android.synthetic.main.activity_setting_profile.button_submit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -69,10 +72,10 @@ class SettingProfile : AppCompatActivity() {
 
     private var resultUri: Uri? = null
     private lateinit var myCalendar: Calendar
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
 
     fun startAnim() {
-        avi!!.show()
+        //avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }
@@ -630,17 +633,7 @@ class SettingProfile : AppCompatActivity() {
 
     }
 
-    private fun galleryAddPic() {
-        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-            val f = File(currentPhotoPath)
-            mediaScanIntent.data = Uri.fromFile(f)
-            sendBroadcast(mediaScanIntent)
-        }
 
-        val file = File(currentPhotoPath)
-        MediaScannerConnection.scanFile(this, arrayOf(file.toString()),
-                arrayOf(file.getName()), null)
-    }
 
     private var currentPath: String = ""
     private val REQUEST_TAKE_GPHOTO: Int = 51
@@ -751,14 +744,7 @@ class SettingProfile : AppCompatActivity() {
 
     val REQUEST_IMAGE_CAPTURE = 1
 
-    private fun sdispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            // display error state to the user
-        }
-    }
+
 
     private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
         startActivityForResult(
@@ -847,7 +833,7 @@ class SettingProfile : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.Main) {
                     // profile_image.setImageDrawable(null)
 
-                    Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                    customSnackBar(editText_postal_code, this@SettingProfile,"Successfully profile uploaded" , ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
                     stopAnim()
 
                 }

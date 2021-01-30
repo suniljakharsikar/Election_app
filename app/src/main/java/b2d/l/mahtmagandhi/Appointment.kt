@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -26,10 +27,10 @@ class Appointment : AppCompatActivity() {
     var recyclerView: RecyclerView? = null
     var empty_message: TextView? = null
 
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
 
     fun startAnim() {
-        avi!!.show()
+        //avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }
@@ -73,6 +74,7 @@ class Appointment : AppCompatActivity() {
                 if (am.success) {
                     val data = am.data
                     if (data.size == 0) empty_message!!.setVisibility(View.VISIBLE)
+                    else empty_message!!.setVisibility(View.GONE)
 
 
                     val adapter = AppointmentAdapter(data)

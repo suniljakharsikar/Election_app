@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,10 +32,10 @@ class NotificationActivity : AppCompatActivity() {
 
     }
 
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
 
     fun startAnim() {
-        avi!!.show()
+        //avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }

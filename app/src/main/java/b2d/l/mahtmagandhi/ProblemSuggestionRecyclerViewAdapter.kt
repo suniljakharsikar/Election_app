@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.net.URLDecoder
 
 class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<ProblemsResponseModel.Data>, val s1: String, val s2: String) : RecyclerView.Adapter<ProblemSuggestionRecyclerViewAdapter.ProblemSuggestionViewHolder>() {
     class ProblemSuggestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,8 +41,8 @@ class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<Problem
             holder.itemView.context.startActivity(intent)
 //                holder.itemView.context.startActivity(Intent(holder.itemView.context, ChatOnProblem::class.java))
         }
-        holder.titleTv.text = model.title
-        holder.desTv.text = model.description
+        holder.titleTv.text = URLDecoder.decode(model.title,"UTF-8")
+        holder.desTv.text = URLDecoder.decode(model.description,"UTF-8")
         //holder.upTv.text = model.
 
     }

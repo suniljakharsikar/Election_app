@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,10 +61,10 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     private String s1;
     private String s2;
     private Boolean passToken;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
 
 
-    public CommunityChatAdapter(Context context, List<ChatDataResponseModel.Data> chatData, String s, String s1, String s2, boolean pass, AVLoadingIndicatorView avi) {
+    public CommunityChatAdapter(Context context, List<ChatDataResponseModel.Data> chatData, String s, String s1, String s2, boolean pass, ProgressBar avi) {
 
         this.context = context;
         this.chatData = chatData;
@@ -131,11 +134,16 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 holder.comment.performClick();
             }
         });
-
+        String  desc = null;
+        try {
+            desc = URLDecoder.decode(x.getDescription(),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            desc = x.getDescription();
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.descTv.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT).toString());
+            holder.descTv.setText(Html.fromHtml(desc, Html.FROM_HTML_MODE_COMPACT).toString());
         } else {
-            holder.descTv.setText(Html.fromHtml(x.getDescription()).toString());
+            holder.descTv.setText(Html.fromHtml(desc).toString());
 
         }
 

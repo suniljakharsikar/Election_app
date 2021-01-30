@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +48,7 @@ public class Comment extends AppCompatActivity {
     RecyclerView recyclerView;
     private SharedPreferences preferences;
     EmojiAppCompatEditText comment;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
     private Boolean passToken;
     TextView textView;
     MaterialCardView materialCardView;
@@ -56,7 +57,7 @@ public class Comment extends AppCompatActivity {
     private MaterialCardView materialCardViewResolved;
 
     void startAnim() {
-        avi.show();
+       // avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }
@@ -355,8 +356,10 @@ public class Comment extends AppCompatActivity {
                         resol = true;
                         resolwork();
                         materialCardViewResolved.setVisibility(View.GONE);
-                        ((CommentAdapter) recyclerView.getAdapter()).reol(true);
-                        recyclerView.getAdapter().notifyDataSetChanged();
+                        if (recyclerView.getAdapter() instanceof CommentAdapter) {
+                            ((CommentAdapter) recyclerView.getAdapter()).reol(true);
+                            recyclerView.getAdapter().notifyDataSetChanged();
+                        }
 //                        Comment.this.recreate();
                         /*JSONObject data = response.getJSONArray("data").getJSONObject(0);
                         String title = data.getString("title");

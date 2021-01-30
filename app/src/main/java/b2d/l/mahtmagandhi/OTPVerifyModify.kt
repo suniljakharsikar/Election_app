@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
@@ -11,13 +12,17 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import b2d.l.mahtmagandhi.Utility.customSnackBar
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
+import com.android.volley.RetryPolicy
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
@@ -25,15 +30,17 @@ import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import com.google.firebase.messaging.FirebaseMessaging
 import com.wang.avi.AVLoadingIndicatorView
+import kotlinx.android.synthetic.main.activity_o_t_p_modify.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 class OTPVerifyModify : AppCompatActivity() {
+    private var timer: CountDownTimer? = null
     private var editText1: EditText? = null
     var sendbtn: Button? = null
     var isOtpSent = false
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
     private var mCallbacks: OnVerificationStateChangedCallbacks? = null
     private val TAG = "Ashok"
     private var mAuth: FirebaseAuth? = null
@@ -42,7 +49,7 @@ class OTPVerifyModify : AppCompatActivity() {
     private var tokenid: String? = null
     private var called = false
     fun startAnim() {
-        avi!!.show()
+       // avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }
@@ -71,6 +78,7 @@ class OTPVerifyModify : AppCompatActivity() {
         }
         editText1 = findViewById<View>(R.id.otpEdit1) as EditText
 
+        timerForResend()
 
         sendbtn = findViewById(R.id.button_verify_otp)
         stopAnim()
@@ -97,7 +105,7 @@ class OTPVerifyModify : AppCompatActivity() {
                 super.onCodeSent(s, forceResendingToken)
                 stopAnim()
                 //                mVerificationId = s;
-                Toast.makeText(this@OTPVerifyModify, "OTP sent successfully", Toast.LENGTH_SHORT).show()
+             //   Toast.makeText(this@OTPVerifyModify, "OTP sent successfully", Toast.LENGTH_SHORT).show()
                 //                Intent intent = new Intent(OTPVerify.this, OTPVerify.class);
 //                intent.putExtra("mobile", mobile);
 //                intent.putExtra("forceResendingToken", forceResendingToken);
@@ -106,6 +114,28 @@ class OTPVerifyModify : AppCompatActivity() {
 //                startActivity(intent);
             }
         }
+    }
+
+    private fun timerForResend() {
+        if (timer!=null)
+        timer!!.cancel()
+
+            textView_resend_otp_modify.isEnabled = false
+            textView_resend_otp_modify.setTextColor(ContextCompat.getColor(this, R.color.browser_actions_divider_color))
+
+            timer = object : CountDownTimer(30000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    textView_sec_otp_modify.setText("in " + millisUntilFinished / 1000 + "sec")
+                }
+
+                override fun onFinish() {
+                    textView_resend_otp_modify.isEnabled = true
+                    textView_resend_otp_modify.setTextColor(ContextCompat.getColor(this@OTPVerifyModify, R.color.black))
+                    textView_sec_otp_modify.setText("")
+                }
+            }.start()
+
+
     }
 
     // [START sign_in_with_phone]
@@ -143,7 +173,7 @@ class OTPVerifyModify : AppCompatActivity() {
     private fun serverlogin() {
         if (called) return
         called = true
-        Toast.makeText(this@OTPVerifyModify, "OTP verified", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this@OTPVerifyModify, "OTP verified", Toast.LENGTH_SHORT).show()
         val url = Url.baseurl + "/users"
         val jsonrequest = JSONObject()
         try {
@@ -177,10 +207,10 @@ class OTPVerifyModify : AppCompatActivity() {
                     editor.apply()
 
                     startActivity(Intent(this@OTPVerifyModify, Register::class.java))
-                    Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                    //  Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     //login page
                     val preferences = PreferenceManager.getDefaultSharedPreferences(this@OTPVerifyModify)
                     val editor = preferences.edit()
@@ -269,12 +299,12 @@ class OTPVerifyModify : AppCompatActivity() {
                     if (jsonObject.getString(Datas.user_name) != "null") {
                         startActivity(Intent(this@OTPVerifyModify, Home::class.java))
 
-                    }else
-                    startActivity(Intent(this@OTPVerifyModify, Register::class.java))
-                    Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                    } else
+                        startActivity(Intent(this@OTPVerifyModify, Register::class.java))
+                   // Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@OTPVerifyModify, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
                     //login page
                     val preferences = PreferenceManager.getDefaultSharedPreferences(this@OTPVerifyModify)
                     val editor = preferences.edit()
@@ -321,9 +351,54 @@ class OTPVerifyModify : AppCompatActivity() {
         if (Url.firebaseOTP) {
             resendVerificationCode(intent.getStringExtra("mobile"), LoginActivity.token)
         } else {
-            //// TODO: 18/1/21  
+            resendotp(intent.getStringExtra("mobile"))
         }
     }
+    private fun resendotp(mobile: String) {
+
+            // Toast.makeText(this, "Please Wait", Toast.LENGTH_SHORT).show();
+            val url = Url.baseurl + "/user_onboard"
+            val json = JSONObject()
+            try {
+                json.put("userMobile", mobile)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            startAnim()
+            val requestQueue = Volley.newRequestQueue(this)
+            val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json, { response ->
+                try {
+                    if (response.getBoolean("success")) {
+                        Toast.makeText(this, "Resend Otp Successfully", Toast.LENGTH_LONG).show()
+                        timerForResend()
+                    } else {
+                        // Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                        customSnackBar(editText1!!, this@OTPVerifyModify, response.getString("message").toString(),
+                                ContextCompat.getColor(this@OTPVerifyModify, R.color.error), R.drawable.ic_error) /*//login page
+                              SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                              SharedPreferences.Editor editor = preferences.edit();
+                              editor.clear();
+                              editor.apply();
+                              startActivity(new Intent(LoginActivity.this, LoginActivity.class));*/
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+                stopAnim()
+            }) { error ->
+                stopAnim()
+                customSnackBar(editText1!!, this@OTPVerifyModify, error.toString(),
+                        ContextCompat.getColor(this@OTPVerifyModify, R.color.error), R.drawable.ic_error)
+                //Toast.makeText(LoginActivity.this, "" + error, Toast.LENGTH_SHORT).show();
+            }
+            //            MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+            val socketTimeout = 10000 //10 seconds - change to what you want
+            val policy: RetryPolicy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+            jsonObjectRequest.retryPolicy = policy
+            requestQueue.add(jsonObjectRequest)
+        }
+
+
 
     /*private void resendVerificationCode(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(

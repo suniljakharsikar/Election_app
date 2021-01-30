@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -38,10 +39,10 @@ public class VisionMission extends AppCompatActivity {
 
     TextView textView;
     ImageView imageView;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
 
     void startAnim() {
-        avi.show();
+      //  avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

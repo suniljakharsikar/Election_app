@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -17,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_request_appointment.*
 import org.json.JSONObject
+import java.net.URLEncoder
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,10 +27,10 @@ class RequestAppointmentActivity : AppCompatActivity() {
     private  var ts: MutableMap<String, MutableList<AppointmentTime>> = mutableMapOf()
     private lateinit var myCalendar: Calendar
     private var aptId: Int = 0
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
 
     fun startAnim() {
-        avi!!.show()
+       // avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }
@@ -192,7 +194,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
              jo.put("appt_id", appt_id)
              jo.put("appt_date", appt_date)
              jo.put("appt_time", appt_time)
-             jo.put("message", message)
+             jo.put("message", URLEncoder.encode(message,"UTF-8"))
 
              startAnim()
              val url = Url.baseurl + "/appt_booking"

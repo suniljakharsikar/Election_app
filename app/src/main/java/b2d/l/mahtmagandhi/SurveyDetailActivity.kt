@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -27,10 +28,10 @@ import java.util.*
 class SurveyDetailActivity : AppCompatActivity() {
     private var data: SurveyResponseModel.Data? = null
 
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
 
     fun startAnim() {
-        avi!!.show()
+       // avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }

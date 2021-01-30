@@ -12,6 +12,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +35,11 @@ import java.util.Map;
 
 public class VotingGuide extends YouTubeBaseActivity {
     TextView textView;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
     private YouTubePlayerView youTubePlayerView;
 
     void startAnim() {
-        avi.show();
+       // avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -29,10 +30,10 @@ import java.util.Map;
 public class ProblemSuggestion extends AppCompatActivity {
 
     private RecyclerView rvProblems;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
 
     void startAnim() {
-        avi.show();
+        //avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

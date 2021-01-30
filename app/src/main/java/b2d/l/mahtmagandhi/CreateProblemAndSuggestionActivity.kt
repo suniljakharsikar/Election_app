@@ -17,6 +17,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,8 @@ import okhttp3.*
 import java.io.File
 import java.io.IOException
 import java.net.URI
+import java.net.URL
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,11 +45,11 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
     private  var imageAdapter: ImagesRecyclerViewAdapter? = null
     val images = arrayListOf<String>()
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
     val list = mutableListOf<Uri>()
 
     fun startAnim() {
-        avi!!.show()
+       // avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }
@@ -113,8 +116,8 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                     .build()
             val mediaType: MediaType = MediaType.parse("text/plain")!!
             val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("title", et_prob_sugg_title.text.toString())
-                    .addFormDataPart("descritpion", et_prob_sugg.text.toString());
+                    .addFormDataPart("title", URLEncoder.encode(et_prob_sugg_title.text.toString(),"UTF-8"))
+                    .addFormDataPart("descritpion", URLEncoder.encode(et_prob_sugg.text.toString(),"UTF-8"));
 
             var counter = 0
             for (i in imageAdapter!!.imagesEncodedList){

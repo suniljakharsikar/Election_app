@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +51,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private String s1;
     private String s2;
     private Boolean passToken;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
 
 
-    public NewsAdapter(Context context, List<NewsUpdateResponseModel.Data> chatData, String s, String s1, String s2, boolean pass, AVLoadingIndicatorView avi) {
+    public NewsAdapter(Context context, List<NewsUpdateResponseModel.Data> chatData, String s, String s1, String s2, boolean pass, ProgressBar avi) {
 
         this.context = context;
         this.chatData = chatData;

@@ -251,12 +251,11 @@
             app:layout_constraintStart_toStartOf="@+id/imageView_pic_create_new_prob_sug"
             app:layout_constraintTop_toBottomOf="@+id/tv_image_btn_prob_sug" />
 
-        <com.wang.avi.AVLoadingIndicatorView
+        <ProgressBar
             android:id="@+id/avi5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:indicatorColor="#000000"
-            app:indicatorName="BallClipRotatePulse"
+            android:indeterminate="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

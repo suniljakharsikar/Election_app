@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -40,11 +41,11 @@ public class Meetings extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private SharedPreferences preferences;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
     private TextView timeHeading;
 
     void startAnim() {
-        avi.show();
+       // avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

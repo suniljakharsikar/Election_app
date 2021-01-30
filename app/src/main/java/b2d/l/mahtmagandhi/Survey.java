@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,10 +34,10 @@ public class Survey extends AppCompatActivity {
     RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
 
-    private AVLoadingIndicatorView avi = null;
+    private ProgressBar avi = null;
 
     void startAnim() {
-        avi.show();
+      //  avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

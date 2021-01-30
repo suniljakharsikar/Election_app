@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -36,10 +37,9 @@ public class CommitteeMember extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     ArrayList<CommitteeMemberData> committeeMemberData;
     private SharedPreferences preferences;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
 
     void startAnim() {
-        avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

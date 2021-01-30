@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,10 +33,10 @@ import java.util.Map;
 public class OurWorks extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
 
     void startAnim() {
-        avi.show();
+        //avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

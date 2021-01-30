@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -50,12 +51,12 @@ public class Register extends AppCompatActivity {
     EditText name, number, age, pincode, state, distirct;
     AutoCompleteTextView city;
     private SharedPreferences preferences;
-    private AVLoadingIndicatorView avi;
+    private ProgressBar avi;
     private Calendar myCalendar;
     RadioGroup radioGroup;
 
     void startAnim() {
-        avi.show();
+       // avi.show();
         avi.setVisibility(View.VISIBLE);
         // or avi.smoothToShow();
     }

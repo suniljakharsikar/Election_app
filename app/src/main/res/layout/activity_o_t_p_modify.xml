@@ -71,15 +71,15 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/textView_resend_otp_modify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="resend"
+
                 android:text="@string/resend"
-                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +104,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/otpEdit1" />
 
 
-            <com.wang.avi.AVLoadingIndicatorView
+            <ProgressBar
                 android:id="@+id/avi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,6 +121,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="72dp" />
+
+            <TextView
+                android:id="@+id/textView_sec_otp_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView_resend_otp_modify"
+                app:layout_constraintStart_toEndOf="@+id/textView_resend_otp_modify" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

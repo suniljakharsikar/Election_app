@@ -88,12 +88,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.wang.avi.AVLoadingIndicatorView
+            <ProgressBar
                 android:id="@+id/avi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:indicatorColor="#000000"
-                app:indicatorName="BallClipRotatePulse"
+                android:indeterminate="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/language_list"
                 app:layout_constraintStart_toStartOf="parent"

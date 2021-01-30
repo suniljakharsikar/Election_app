@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -29,6 +30,7 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import java.io.File
 import java.io.IOException
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,11 +38,11 @@ import java.util.*
 class NewPost : AppCompatActivity() {
     private  var imageAdapter: ImagesRecyclerViewAdapter? =null
     var editText: EditText? = null
-    private var avi: AVLoadingIndicatorView? = null
+    private var avi: ProgressBar? = null
     val list = mutableListOf<Uri>()
 
     fun startAnim() {
-        avi!!.show()
+        //avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }
@@ -109,7 +111,7 @@ class NewPost : AppCompatActivity() {
                     .build()
             val mediaType = MediaType.parse("text/plain")
             val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("postData", s)
+                    .addFormDataPart("postData", URLEncoder.encode(s, "UTF-8"))
             var counter = 0
             for (i in imageAdapter!!.imagesEncodedList){
                 bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this, i)!!)))

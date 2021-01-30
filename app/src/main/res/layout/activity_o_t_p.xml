@@ -146,7 +146,7 @@
                 app:layout_constraintTop_toTopOf="@+id/otpEdit5" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/textView_resend_otp_modify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
