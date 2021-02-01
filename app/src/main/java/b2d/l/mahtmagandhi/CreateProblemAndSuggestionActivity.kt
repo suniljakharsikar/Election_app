@@ -144,14 +144,12 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                      // Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
                       et_prob_sugg_title.setText("")
                       et_prob_sugg.setText("")
-                      Utility.customSnackBar(et_prob_sugg, this@CreateProblemAndSuggestionActivity, "Successfully Submitted", ContextCompat.getColor(this@CreateProblemAndSuggestionActivity, R.color.success), R.drawable.ic_success)
 
                       images.clear()
                       imageAdapter!!.imagesEncodedList.clear()
                       imageAdapter!!.notifyDataSetChanged()
                       imageView_pic_create_prob.setImageDrawable(null)
                       stopAnim()
-                      delay(2000)
                       val intent = intent
                       setResult(1010, intent)
                       intent.putExtra("reload", true)

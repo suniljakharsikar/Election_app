@@ -191,21 +191,24 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         });
 */
 
-        holder.like.setOnClickListener(view -> {
+
+
+        if (x.getLikeStatus() == 1) {
+            holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
+            holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
+            holder.likeThumbTv.setText("Liked");
+
+        } else {
+            holder.likeThumbTv.setText("Like");
+            holder.like.setOnClickListener(view -> {
             if (x.getLikeStatus() == 1) {
-                Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
                 return;
             }
             like_dislike(1, x, holder.likesCountTv, holder.likesCountTv,position);
 
         });
 
-
-        if (x.getLikeStatus() == 1) {
-            holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
-            holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
-
-        } else {
             holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
             holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
 
@@ -241,7 +244,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             e.printStackTrace();
         }
         if (avi != null) {
-            avi.setVisibility(View.VISIBLE);
+           // avi.setVisibility(View.VISIBLE);
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, response -> {
             try {
@@ -258,8 +261,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 //                            notifyItemChanged(position);
                             dilikes.setText(x.getDislike() + "");
                         }
-                        if (avi != null)
-                            avi.setVisibility(View.INVISIBLE);
+                       // if (avi != null)
+                           // avi.setVisibility(View.INVISIBLE);
                     }
                     if (i == 2) {
                         x.setDislike(x.getDislike() + 1);

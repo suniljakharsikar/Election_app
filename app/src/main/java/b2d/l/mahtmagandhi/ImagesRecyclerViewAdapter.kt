@@ -23,15 +23,13 @@ return ImagesRecyclerViewHolder(v)
 
     override fun onBindViewHolder(holder: ImagesRecyclerViewHolder, position: Int) {
 
-
-        Glide.with(holder.itemView.context).load(imagesEncodedList?.get(position)).thumbnail(0.1f).into(holder.iv)
+        val model = imagesEncodedList?.get(position);
+        Glide.with(holder.itemView.context).load(model).thumbnail(0.1f).into(holder.iv)
 
         holder.removeIv.setOnClickListener {
-            try {
-                imagesEncodedList?.removeAt(position)
-                notifyItemRemoved(position)
-            } catch (e: Exception) {
-            }
+
+                imagesEncodedList.remove(model)
+                 notifyDataSetChanged()
         }
     }
 

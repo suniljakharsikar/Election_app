@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,7 +60,14 @@ public class ProblemSuggestion extends AppCompatActivity {
 
 
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && requestCode == 1010 & data.getBooleanExtra("reload", false)) {
+            Utility.INSTANCE.customSnackBar(rvProblems, ProblemSuggestion.this,"Successfully Submitted" , ContextCompat.getColor(ProblemSuggestion.this, R.color.success), R.drawable.ic_success);
+            // // Toast.makeText(this, "runnind code", // Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -71,7 +79,7 @@ public class ProblemSuggestion extends AppCompatActivity {
     }
 
     public void createNewProbSug(View view) {
-        startActivity(new Intent(this,CreateProblemAndSuggestionActivity.class));
+        startActivityForResult(new Intent(this,CreateProblemAndSuggestionActivity.class),1010);
     }
     private void fetchData() {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

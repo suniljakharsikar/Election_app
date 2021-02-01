@@ -235,29 +235,9 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             }
         });
 
-        holder.dislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (x.getUnlikeStatus() == 1) {
-                    Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                like_dislike(2, x, holder.likesCountTv, holder.dislikesCountTv, position);
 
-            }
-        });
 
-        holder.like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (x.getLikeStatus() == 1) {
-                    Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                like_dislike(1, x, holder.likesCountTv, holder.dislikesCountTv, position);
 
-            }
-        });
 
         String cmtCount = String.valueOf(x.getCommentCount());
         if (cmtCount != null) {
@@ -279,19 +259,45 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         }
 
         if (x.getLikeStatus() == 1) {
+            holder.likeThumbTv.setText("Liked");
             holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
             holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_up));
 
         } else {
+             holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (x.getLikeStatus() == 1) {
+                    //Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                like_dislike(1, x, holder.likesCountTv, holder.dislikesCountTv, position);
+
+            }
+        });
+            holder.likeThumbTv.setText("Like");
             holder.likeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
             holder.likeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
 
         }
 
         if (x.getUnlikeStatus() == 1) {
+            holder.dislikeThumbTv.setText("Disliked");
             holder.disLikeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_down));
             holder.dislikeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_down));
         } else {
+             holder.dislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (x.getUnlikeStatus() == 1) {
+                    //Toast.makeText(context, "you already disliked", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                like_dislike(2, x, holder.likesCountTv, holder.dislikesCountTv, position);
+
+            }
+        });
+            holder.dislikeThumbTv.setText("Dislike");
             holder.disLikeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
             holder.dislikeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dividercolor));
         }
@@ -329,7 +335,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             e.printStackTrace();
         }
         if (avi != null) {
-            avi.setVisibility(View.VISIBLE);
+         //   avi.setVisibility(View.VISIBLE);
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
             @Override
@@ -345,8 +351,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                                 x.setUnlikeStatus(0);
                                 dilikes.setText(x.getDislike() + "");
                             }
-                            if (avi != null)
-                                stopanim();
+                           // if (avi != null)
+                                //stopanim();
                         }
                         if (i == 2) {
                             x.setDislike(x.getDislike() + 1);
@@ -382,7 +388,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                stopanim();
+               // stopanim();
 
                 Toast.makeText(context, "" + error.toString(), Toast.LENGTH_SHORT).show();
             }

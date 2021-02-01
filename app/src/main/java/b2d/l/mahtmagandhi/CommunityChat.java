@@ -82,14 +82,21 @@ public class CommunityChat extends AppCompatActivity {
         recyclerView.getRecycledViewPool().setMaxRecycledViews(itemViewType, 0);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        reload();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reload();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && requestCode == 1010 & data.getBooleanExtra("reload", false)) {
+  Utility.INSTANCE.customSnackBar(recyclerView, CommunityChat.this,"Successfully Submitted" , ContextCompat.getColor(CommunityChat.this, R.color.success), R.drawable.ic_success);
             reload();
             // // Toast.makeText(this, "runnind code", // Toast.LENGTH_SHORT).show();
         }

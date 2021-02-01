@@ -42,6 +42,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
@@ -178,10 +179,9 @@ class SettingProfile : AppCompatActivity() {
         editText_district.isEnabled = true
         actv_city_locality.isEnabled = true
         actv_lang_locality.isEnabled = true
-        til_city_setting_profile.isEnabled = true
-        til_lang_profile.isEnabled = true
-        til_city_setting_profile.boxBackgroundColor = ContextCompat.getColor(this@SettingProfile, R.color.white)
-        til_lang_profile.boxBackgroundColor = ContextCompat.getColor(this@SettingProfile, R.color.white)
+        til_city_setting_profile.isEndIconVisible = true
+        til_lang_profile.isEndIconVisible = true
+
         radioGroup_gender.isEnabled = true
         radioGroup_gender.visibility = View.VISIBLE
         textView_gender_setting_profile.visibility = View.GONE
@@ -253,8 +253,11 @@ class SettingProfile : AppCompatActivity() {
         actv_city_locality.isEnabled = false
         actv_lang_locality.isEnabled = false
 
-        til_city_setting_profile.isEnabled = false
-        til_lang_profile.isEnabled = false
+
+
+        til_city_setting_profile.isEndIconVisible = false
+        til_lang_profile.isEndIconVisible = false
+       // til_lang_profile.isEnabled = false
 
         radioGroup_gender.isEnabled = false
         rb_male_setting_profile.isEnabled = false

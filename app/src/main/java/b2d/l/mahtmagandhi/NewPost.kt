@@ -95,7 +95,7 @@ class NewPost : AppCompatActivity() {
     }
 
     fun back(view: View?) {
-        Toast.makeText(this, "post not implemented", Toast.LENGTH_SHORT).show()
+       // Toast.makeText(this, "post not implemented", Toast.LENGTH_SHORT).show()
         finish()
     }
 
@@ -137,12 +137,10 @@ class NewPost : AppCompatActivity() {
                     GlobalScope.launch(Dispatchers.Main) {
                        // imageView_new_post.setImageDrawable(null)
                         et_prob_sugg.setText("")
-                        customSnackBar(et_prob_sugg, this@NewPost,"Successfully Submitted" , ContextCompat.getColor(this@NewPost, R.color.success), R.drawable.ic_success)
                         imageAdapter!!.imagesEncodedList.clear()
                         imageAdapter!!.notifyDataSetChanged()
                       //  Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
                         stopAnim()
-                        delay(2000)
                         val intent = intent
                         setResult(1010, intent)
                         intent.putExtra("reload", true)
@@ -241,7 +239,7 @@ class NewPost : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 if (data?.getClipData() != null) {
                     var count = data!!.getClipData()!!.getItemCount(); //evaluate the count before the for loop --- otherwise, the count is evaluated every loop.
-                    Toast.makeText(this, "" + count + "", Toast.LENGTH_SHORT).show()
+                  //  Toast.makeText(this, "" + count + "", Toast.LENGTH_SHORT).show()
 
                     for (i in 0..count - 1) {
                         val imageUri = data!!.getClipData()!!.getItemAt(i).getUri();

@@ -55,7 +55,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         String ds = appointment_data.getApptDate();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat tranDateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        SimpleDateFormat tranDateFormat = new SimpleDateFormat("dd MMM yyyy");
         Date date = null;
         try {
            date =  simpleDateFormat.parse(ds);
@@ -64,7 +64,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
         String dates = tranDateFormat.format(date);
 
-        holder.date.setText(dates);
+        holder.date.setText(dates+" "+appointment_data.getApptTime());
         //holder.status.setText(appointment_data.getBookedStatus());
         String msg = null;
         try {
