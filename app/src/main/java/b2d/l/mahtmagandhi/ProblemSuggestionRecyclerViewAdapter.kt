@@ -34,7 +34,8 @@ class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<Problem
             var x = model.imageArr
 
             intent.putExtra("imgs",x)
-            intent.putExtra("dis",model.description);
+            intent.putExtra("dis",URLDecoder.decode(model.description,"UTF-8"));
+            intent.putExtra("title",URLDecoder.decode(model.title,"UTF-8"))
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
             //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();

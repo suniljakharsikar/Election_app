@@ -17,6 +17,6 @@ public class Datas {
     public static String gender="gender";
     public static String registration="registration";
     public static String language_selected="language_selected";
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
 }

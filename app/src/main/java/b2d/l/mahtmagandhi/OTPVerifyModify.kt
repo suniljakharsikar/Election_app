@@ -31,6 +31,10 @@ import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCall
 import com.google.firebase.messaging.FirebaseMessaging
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_o_t_p_modify.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
@@ -230,12 +234,29 @@ class OTPVerifyModify : AppCompatActivity() {
     fun sumit(view: View?) {
         val otp = editText1!!.text.toString()
         if (otp.length == 6) {
-            if (Url.firebaseOTP) {
-                verifyfirebse(otp)
-            } else {
-                verifyotp(otp)
+            val job = GlobalScope.async {
+                return@async Utility.isInternetAvailable()
             }
-            startAnim()
+            job.invokeOnCompletion {
+                val isInternet = job.getCompleted()
+                GlobalScope.launch(Dispatchers.Main) {
+                    if (isInternet) {
+
+                        if (Url.firebaseOTP) {
+                            verifyfirebse(otp)
+                        } else {
+                            verifyotp(otp)
+                        }
+                        startAnim()
+
+
+                    } else {
+                        stopAnim()
+                        customSnackBar(editText1!!, this@OTPVerifyModify, "No Internet Available.", ContextCompat.getColor(this@OTPVerifyModify, R.color.error), R.drawable.ic_error)
+                    }
+                }
+            }
+
         } else {
             Toast.makeText(this, "please type 6 digit otp", Toast.LENGTH_SHORT).show()
         }
@@ -348,11 +369,23 @@ class OTPVerifyModify : AppCompatActivity() {
 
     fun resend(view: View?) {
         startAnim()
-        if (Url.firebaseOTP) {
-            resendVerificationCode(intent.getStringExtra("mobile"), LoginActivity.token)
-        } else {
-            resendotp(intent.getStringExtra("mobile"))
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
         }
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            if (isInternet) {
+                if (Url.firebaseOTP) {
+                    resendVerificationCode(intent.getStringExtra("mobile"), LoginActivity.token!!)
+                } else {
+                    resendotp(intent.getStringExtra("mobile"))
+                }
+            } else {
+                stopAnim()
+                customSnackBar(editText1!!, this, "No Internet Available.", ContextCompat.getColor(this, R.color.error), R.drawable.ic_error)
+            }
+        }
+
     }
     private fun resendotp(mobile: String) {
 

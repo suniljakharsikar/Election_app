@@ -17,6 +17,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_notification.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.json.JSONObject
 import java.util.*
 
@@ -27,8 +29,19 @@ class NotificationActivity : AppCompatActivity() {
         avi = findViewById(R.id.avi)
 
         rv_noti.layoutManager = LinearLayoutManager(this)
-        fetchData()
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
+        }
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            if (isInternet) {
+                fetchData()
 
+            } else {
+                stopAnim()
+                customSnackBar(rv_noti!!, this, "No Internet Available.", ContextCompat.getColor(this, R.color.error), R.drawable.ic_error)
+            }
+        }
 
     }
 

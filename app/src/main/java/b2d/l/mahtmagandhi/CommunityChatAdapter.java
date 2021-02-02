@@ -111,6 +111,19 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         holder.likesCountTv.setText(x.getLikes() + "");
         holder.dislikesCountTv.setText(x.getDislike() + "");
         holder.commentCountTv.setText(x.getCommentCount() + " Comment");
+        String  desc = null;
+        try {
+            desc = URLDecoder.decode(x.getDescription(),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            desc = x.getDescription();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.descTv.setText(Html.fromHtml(desc, Html.FROM_HTML_MODE_COMPACT).toString());
+        } else {
+            holder.descTv.setText(Html.fromHtml(desc).toString());
+
+        }
+        String finalDesc = desc;
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,6 +132,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 intent.putExtra("url", s1);
                 intent.putExtra("newposturl", s2);
                 intent.putExtra("passToken", passToken);
+                intent.putExtra("dis", finalDesc);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
@@ -134,18 +148,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 holder.comment.performClick();
             }
         });
-        String  desc = null;
-        try {
-            desc = URLDecoder.decode(x.getDescription(),"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            desc = x.getDescription();
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.descTv.setText(Html.fromHtml(desc, Html.FROM_HTML_MODE_COMPACT).toString());
-        } else {
-            holder.descTv.setText(Html.fromHtml(desc).toString());
 
-        }
 
         List<ChatDataResponseModel.Data.ImageData> imgs = x.getImageData();
 

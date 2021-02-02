@@ -26,6 +26,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.net.InetAddress
 
 
 object Utility {
@@ -265,7 +266,7 @@ object Utility {
         val layoutv = snackbar.view as FrameLayout
         val params = layoutv.layoutParams as FrameLayout.LayoutParams
 
-        params.setMargins(0, dpIntoPx(72f,context).toInt(), 0, 0)
+        params.setMargins(0, dpIntoPx(72f, context).toInt(), 0, 0)
         params.gravity = Gravity.TOP
         layoutv.layoutParams = params
 // Hide the text
@@ -302,7 +303,7 @@ object Utility {
     }
 
 
-    fun dpIntoPx(float:Float,context: Context):Float {
+    fun dpIntoPx(float: Float, context: Context):Float {
         val dip = float
         val r: Resources = context.getResources()
         val px: Float = TypedValue.applyDimension(
@@ -312,6 +313,16 @@ object Utility {
         )
         return px
 
+    }
+
+    fun isInternetAvailable(): Boolean {
+        return try {
+            val ipAddr: InetAddress = InetAddress.getByName("google.com")
+            //You can replace it with your name
+            !ipAddr.equals("")
+        } catch (e: Exception) {
+            false
+        }
     }
 
 }

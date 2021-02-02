@@ -11,12 +11,17 @@ import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_request_appointment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.net.URLEncoder
 import java.text.DateFormat
@@ -56,7 +61,23 @@ class RequestAppointmentActivity : AppCompatActivity() {
         }
 
 
-        validDateCheck()
+
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
+        }
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            GlobalScope.launch (Dispatchers.Main){
+                if (isInternet) {
+                    validDateCheck()
+
+                } else {
+                    stopAnim()
+                    Utility.customSnackBar(actv_choose_date!!, this@RequestAppointmentActivity, "No Internet Available.", ContextCompat.getColor(this@RequestAppointmentActivity, R.color.error), R.drawable.ic_error)
+                }
+            }
+
+        }
         actv_choose_date.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -67,8 +88,6 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 if (ts.containsKey(s.toString()))
-
-
                     actv_choose_time.setAdapter(ArrayAdapter<AppointmentTime>(this@RequestAppointmentActivity, android.R.layout.simple_spinner_dropdown_item, ts.get(s.toString())!!.toList()))
 
 
@@ -181,50 +200,64 @@ class RequestAppointmentActivity : AppCompatActivity() {
          if (time!!.isEmpty()) Toast.makeText(this, "Please select your time of appointment.", Toast.LENGTH_SHORT).show()
         else if (purpose!!.isEmpty()) Toast.makeText(this, "Please insert your purpose.", Toast.LENGTH_SHORT).show()
         else{
-             val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
-             val transDateFor = SimpleDateFormat("yyyy-MM-dd")
-             val date = formatter.parse(doa)
+             val job = GlobalScope.async {
+                 return@async Utility.isInternetAvailable()
+             }
+             job.invokeOnCompletion {
+                 val isInternet = job.getCompleted()
+                 GlobalScope.launch (Dispatchers.Main) {
+                     if (isInternet) {
+                         val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
+                         val transDateFor = SimpleDateFormat("yyyy-MM-dd")
+                         val date = formatter.parse(doa)
 
-             val appt_date = transDateFor.format(date);
-             val appt_time = time
-             val appt_id = aptId.toString()
-             val message = purpose
+                         val appt_date = transDateFor.format(date);
+                         val appt_time = time
+                         val appt_id = aptId.toString()
+                         val message = purpose
 
-             val jo = JSONObject()
-             jo.put("appt_id", appt_id)
-             jo.put("appt_date", appt_date)
-             jo.put("appt_time", appt_time)
-             jo.put("message", URLEncoder.encode(message,"UTF-8"))
+                         val jo = JSONObject()
+                         jo.put("appt_id", appt_id)
+                         jo.put("appt_date", appt_date)
+                         jo.put("appt_time", appt_time)
+                         jo.put("message", URLEncoder.encode(message, "UTF-8"))
 
-             startAnim()
-             val url = Url.baseurl + "/appt_booking"
+                         startAnim()
+                         val url = Url.baseurl + "/appt_booking"
 
-             val jor = object :JsonObjectRequest(Request.Method.POST, url, jo, Response.Listener<JSONObject> {
-                 Log.d("Response", "submit: " + it)
+                         val jor = object : JsonObjectRequest(Request.Method.POST, url, jo, Response.Listener<JSONObject> {
+                             Log.d("Response", "submit: " + it)
 
 
-                 stopAnim()
-                 finish()
-             }, object : Response.ErrorListener {
-                 override fun onErrorResponse(error: VolleyError?) {
-                     stopAnim()
-                     Log.d("Response", "onErrorResponse: " + error)
+                             stopAnim()
+                             finish()
+                         }, object : Response.ErrorListener {
+                             override fun onErrorResponse(error: VolleyError?) {
+                                 stopAnim()
+                                 Log.d("Response", "onErrorResponse: " + error)
+                             }
+                         }) {
+                             override fun getHeaders(): Map<String, String> {
+                                 val headers = HashMap<String, String>()
+                                 headers["Content-Type"] = "application/json"
+                                 var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+                                 headers["Token"] = preferences.getString(Datas.token, "").toString()
+                                 headers["lid"] = preferences.getString(Datas.lagnuage_id, "1").toString()
+                                 return headers
+                             }
+
+                         }
+
+                         MySingleton.getInstance(baseContext).addToRequestQueue(jor)
+
+                     } else {
+                         stopAnim()
+                         Utility.customSnackBar(actv_choose_date!!, this@RequestAppointmentActivity, "No Internet Available.", ContextCompat.getColor(this@RequestAppointmentActivity, R.color.error), R.drawable.ic_error)
+                     }
                  }
-             })
-             {
-                 override fun getHeaders(): Map<String, String> {
-                     val headers = HashMap<String, String>()
-                     headers["Content-Type"] = "application/json"
-                     var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-
-                     headers["Token"] = preferences.getString(Datas.token, "").toString()
-                     headers["lid"] = preferences.getString(Datas.lagnuage_id, "1").toString()
-                     return headers
-                 }
-
              }
 
-             MySingleton.getInstance(baseContext).addToRequestQueue(jor)
         }
 
 

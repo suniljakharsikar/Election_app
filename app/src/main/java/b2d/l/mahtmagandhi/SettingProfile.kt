@@ -129,7 +129,19 @@ class SettingProfile : AppCompatActivity() {
 
                     // Get new FCM registration token
                     try {
-                        fetchData(task.result)
+                        val job = GlobalScope.async {
+                            return@async Utility.isInternetAvailable()
+                        }
+                        job.invokeOnCompletion {
+                            val isInternet = job.getCompleted()
+                            if (isInternet) {
+                                fetchData(task.result)
+
+                            } else {
+                                stopAnim()
+                                customSnackBar(iv_edit_avtar_setting!!, this, "No Internet Available.", ContextCompat.getColor(this, R.color.error), R.drawable.ic_error)
+                            }
+                        }
                     } catch (e: Exception) {
 
                     }
@@ -497,107 +509,105 @@ class SettingProfile : AppCompatActivity() {
             Toast.makeText(this, "Please type district name", Toast.LENGTH_SHORT).show()
             return
         }
-        startAnim()
 
-        val url = Url.baseurl + "/update_profile"
-        val jsonRwquest = JSONObject()
-        val cityS: String
-        cityS = if (actv_city_locality.text == null) "" else actv_city_locality.text.toString()
-        try {
-            val formatter = SimpleDateFormat("dd MMM yyyy")
-            val date = formatter.parse(s5)
-            val transFormatter = SimpleDateFormat("yyyy-MM-dd")
-            s5 = transFormatter.format(date)
-        } catch (e: ParseException) {
-            //e.printStackTrace();
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
         }
-        try {
-            jsonRwquest.put("userMobile", editTextPhone2.getText().toString())
-            jsonRwquest.put("userName", s)
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            GlobalScope.launch(Dispatchers.Main) {
+            if (isInternet) {
+                startAnim()
 
-            try {
-                val r = findViewById<RadioButton>(radioGroup_gender.checkedRadioButtonId)
-                jsonRwquest.put("gender", r.text.toString())
-            } catch (e: Exception) {
-            }
-            //val x = s5.toInt()
-            jsonRwquest.put("userAge", s5)
-            jsonRwquest.put("userPostalCode", s1)
-            jsonRwquest.put("userState", s3)
-            jsonRwquest.put("userDistrict", s4)
-            jsonRwquest.put("userVillage", cityS)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        //startAnim()
-        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRwquest, Response.Listener { response ->
-            stopAnim()
-            try {
-                val success = response.getBoolean("success")
+                val url = Url.baseurl + "/update_profile"
+                val jsonRwquest = JSONObject()
+                val cityS: String
+                cityS = if (actv_city_locality.text == null) "" else actv_city_locality.text.toString()
+                try {
+                    val formatter = SimpleDateFormat("dd MMM yyyy")
+                    val date = formatter.parse(s5)
+                    val transFormatter = SimpleDateFormat("yyyy-MM-dd")
+                    s5 = transFormatter.format(date)
+                } catch (e: ParseException) {
+                    //e.printStackTrace();
+                }
+                try {
+                    jsonRwquest.put("userMobile", editTextPhone2.getText().toString())
+                    jsonRwquest.put("userName", s)
 
-                if (success) {
-                    //newposting
-                    Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "Successfully Updated", ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
-                    disableEdit()
-                    FirebaseMessaging.getInstance().getToken()
-                            .addOnCompleteListener(OnCompleteListener<String> { task ->
-                                if (!task.isSuccessful) {
-                                    return@OnCompleteListener
-                                }
+                    try {
+                        val r = findViewById<RadioButton>(radioGroup_gender.checkedRadioButtonId)
+                        jsonRwquest.put("gender", r.text.toString())
+                    } catch (e: Exception) {
+                    }
+                    //val x = s5.toInt()
+                    jsonRwquest.put("userAge", s5)
+                    jsonRwquest.put("userPostalCode", s1)
+                    jsonRwquest.put("userState", s3)
+                    jsonRwquest.put("userDistrict", s4)
+                    jsonRwquest.put("userVillage", cityS)
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+                //startAnim()
+                val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRwquest, Response.Listener { response ->
+                    stopAnim()
+                    try {
+                        val success = response.getBoolean("success")
 
-                                // Get new FCM registration token
-                                try {
-                                    fetchData(task.result)
-                                } catch (e: Exception) {
+                        if (success) {
+                            //newposting
+                            Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "Successfully Updated", ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
+                            disableEdit()
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(OnCompleteListener<String> { task ->
+                                        if (!task.isSuccessful) {
+                                            return@OnCompleteListener
+                                        }
 
-                                }
+                                        // Get new FCM registration token
+                                        try {
+                                            fetchData(task.result)
+                                        } catch (e: Exception) {
+
+                                        }
 
 
-                                // Log and toast
+                                        // Log and toast
 //                        String msg = getString(R.string.msg_token_fmt, token);
 //                        Log.d(TAG, msg);
 //                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            })
+                                    })
 
-                } else {
-                    Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "" + response.getString("message"), ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
+                        } else {
+                            Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "" + response.getString("message"), ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
 
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                    // stopAnim()
+                }, Response.ErrorListener { error ->
+                    stopAnim()
+                    Toast.makeText(this@SettingProfile, "e= $error", Toast.LENGTH_SHORT).show()
+                }) {
+                    override fun getHeaders(): Map<String, String> {
+                        val headers = HashMap<String, String>()
+                        headers["Content-Type"] = "application/json"
+                        var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+                        headers["Token"] = preferences.getString(Datas.token, "").toString()
+                        return headers
+                    }
                 }
-            } catch (e: JSONException) {
-                e.printStackTrace()
+                MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
+            } else {
+                stopAnim()
+                customSnackBar(editTextPersonName2!!, this@SettingProfile, "No Internet Available.", ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
             }
-            // stopAnim()
-        }, Response.ErrorListener { error ->
-            stopAnim()
-            Toast.makeText(this@SettingProfile, "e= $error", Toast.LENGTH_SHORT).show()
-        }) {
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/json"
-                var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-
-                headers["Token"] = preferences.getString(Datas.token, "").toString()
-                return headers
             }
-        } /*{
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("token", preferences.getString(Datas.token, ""));
-                return params;
+        }
 
-               */
-        /* Map<String, String> params = new HashMap<String, String>();
-                params.put("'Content-Type", "application/json");
-                params.put("'Token", preferences.getString(Datas.token, ""));
-                Log.d("ashok", "get header call");
-
-                return params;*/
-        /*
-            }
-        }*/
-        //        requestQueue.add(jsonObjectRequest);
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
 
 

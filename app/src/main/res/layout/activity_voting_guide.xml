@@ -76,7 +76,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:lineSpacingExtra="2dp"
-                    android:text="Loading..."
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </ScrollView>

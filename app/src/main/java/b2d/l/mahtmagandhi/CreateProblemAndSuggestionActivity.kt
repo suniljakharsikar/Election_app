@@ -104,7 +104,25 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     }
 
     fun submit(view: View) {
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
+        }
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    createProblem()
 
+                } else {
+                    stopAnim()
+                    Utility.customSnackBar(et_prob_sugg!!, this@CreateProblemAndSuggestionActivity, "No Internet Available.", ContextCompat.getColor(this@CreateProblemAndSuggestionActivity, R.color.error), R.drawable.ic_error)
+                }
+            }
+
+        }
+    }
+
+    private fun createProblem() {
         if (et_prob_sugg.text.isEmpty()) Toast.makeText(this, "Please write your problem and suggestion.", Toast.LENGTH_SHORT).show()
         else if (et_prob_sugg_title.text.isEmpty()) Toast.makeText(this, "Please write your title.", Toast.LENGTH_SHORT).show()
 
@@ -121,11 +139,11 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
 
             var counter = 0
             for (i in imageAdapter!!.imagesEncodedList){
-                        bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this,i)!!)))
-                        counter = counter +1 ;
+                bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this,i)!!)))
+                counter = counter +1 ;
             }
 
-                  val body =   bodyP.build()
+            val body =   bodyP.build()
             val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
             val request: Request = Request.Builder()
@@ -136,36 +154,36 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
                     .addHeader("Content-Type", "application/json")
 
                     .build()
-          GlobalScope.async {
-              val response: Response= client.newCall(request).execute()
+            GlobalScope.async {
+                val response: Response= client.newCall(request).execute()
 
-              if (response.isSuccessful){
-                  GlobalScope.launch(Dispatchers.Main) {
-                     // Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
-                      et_prob_sugg_title.setText("")
-                      et_prob_sugg.setText("")
+                if (response.isSuccessful){
+                    GlobalScope.launch(Dispatchers.Main) {
+                        // Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                        et_prob_sugg_title.setText("")
+                        et_prob_sugg.setText("")
 
-                      images.clear()
-                      imageAdapter!!.imagesEncodedList.clear()
-                      imageAdapter!!.notifyDataSetChanged()
-                      imageView_pic_create_prob.setImageDrawable(null)
-                      stopAnim()
-                      val intent = intent
-                      setResult(1010, intent)
-                      intent.putExtra("reload", true)
+                        images.clear()
+                        imageAdapter!!.imagesEncodedList.clear()
+                        imageAdapter!!.notifyDataSetChanged()
+                        imageView_pic_create_prob.setImageDrawable(null)
+                        stopAnim()
+                        val intent = intent
+                        setResult(1010, intent)
+                        intent.putExtra("reload", true)
 
-                      finish()
-                      //textView_tag_img_select.text = "Image Selected : 0"
+                        finish()
+                        //textView_tag_img_select.text = "Image Selected : 0"
 
-                      //finish()
+                        //finish()
 
-                  }
-              }
-
-
+                    }
+                }
 
 
-          }
+
+
+            }
 
 
 

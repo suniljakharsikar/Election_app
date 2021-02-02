@@ -23,8 +23,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import b2d.l.mahtmagandhi.Utility.customSnackBar
-import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.coroutines.*
 import okhttp3.*
@@ -106,51 +104,71 @@ class NewPost : AppCompatActivity() {
         } else {
 
 
-            startAnim()
-            val client = OkHttpClient().newBuilder()
-                    .build()
-            val mediaType = MediaType.parse("text/plain")
-            val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("postData", URLEncoder.encode(s, "UTF-8"))
-            var counter = 0
-            for (i in imageAdapter!!.imagesEncodedList){
-                bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this, i)!!)))
-                counter = counter +1 ;
-            }
-
-
-            val body = bodyP.build()
-            val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-
-            val request: Request = Request.Builder()
-                    .url(Url.baseurl + "/ctalk_post")
-                    .method("POST", body)
-                    .addHeader("token", preferences.getString(Datas.token, "")!!)
-                    .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
-                    .addHeader("Content-Type", "application/json")
-
-                    .build()
             val job = GlobalScope.async {
-                val response = client.newCall(request).execute()
-                Log.d("NewPost", "newposting: " + response.isSuccessful)
-                if (response.isSuccessful) {
-                    GlobalScope.launch(Dispatchers.Main) {
-                       // imageView_new_post.setImageDrawable(null)
-                        et_prob_sugg.setText("")
-                        imageAdapter!!.imagesEncodedList.clear()
-                        imageAdapter!!.notifyDataSetChanged()
-                      //  Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
-                        stopAnim()
-                        val intent = intent
-                        setResult(1010, intent)
-                        intent.putExtra("reload", true)
+                return@async Utility.isInternetAvailable()
+            }
+            job.invokeOnCompletion {
+                val isInternet = job.getCompleted()
+                GlobalScope.launch(Dispatchers.Main) {
+                    if (isInternet) {
+                        postToServer(s)
 
-                        finish()
+                    } else {
+                        stopAnim()
+                        Utility.customSnackBar(rv_imgs_new_post!!, this@NewPost, "No Internet Available.", ContextCompat.getColor(this@NewPost, R.color.error), R.drawable.ic_error)
                     }
                 }
-                stopAnim()
             }
+        }
 
+
+
+    }
+
+    private fun postToServer(s: String) {
+        startAnim()
+        val client = OkHttpClient().newBuilder()
+                .build()
+        val mediaType = MediaType.parse("text/plain")
+        val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("postData", URLEncoder.encode(s, "UTF-8"))
+        var counter = 0
+        for (i in imageAdapter!!.imagesEncodedList){
+            bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this, i)!!)))
+            counter = counter +1 ;
+        }
+
+
+        val body = bodyP.build()
+        val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+        val request: Request = Request.Builder()
+                .url(Url.baseurl + "/ctalk_post")
+                .method("POST", body)
+                .addHeader("token", preferences.getString(Datas.token, "")!!)
+                .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                .addHeader("Content-Type", "application/json")
+
+                .build()
+        val job = GlobalScope.async {
+            val response = client.newCall(request).execute()
+            Log.d("NewPost", "newposting: " + response.isSuccessful)
+            if (response.isSuccessful) {
+                GlobalScope.launch(Dispatchers.Main) {
+                    // imageView_new_post.setImageDrawable(null)
+                    et_prob_sugg.setText("")
+                    imageAdapter!!.imagesEncodedList.clear()
+                    imageAdapter!!.notifyDataSetChanged()
+                    //  Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                    stopAnim()
+                    val intent = intent
+                    setResult(1010, intent)
+                    intent.putExtra("reload", true)
+
+                    finish()
+                }
+            }
+            stopAnim()
         }
 
 

@@ -20,6 +20,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_appointment.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.json.JSONObject
 import java.util.*
 
@@ -56,7 +58,19 @@ class Appointment : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        fetchData()
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
+        }
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            if (isInternet) {
+                fetchData()
+
+            } else {
+                stopAnim()
+                customSnackBar(recyclerView!!, this@Appointment, "No Internet Available.", ContextCompat.getColor(this@Appointment, R.color.error), R.drawable.ic_error)
+            }
+        }
     }
 
     private fun fetchData() {
