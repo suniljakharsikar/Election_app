@@ -94,7 +94,6 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:hint="Loading..."
                 android:lineSpacingExtra="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"

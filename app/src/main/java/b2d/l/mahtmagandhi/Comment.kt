@@ -25,8 +25,11 @@ import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
 import com.lopei.collageview.CollageView
 import com.smarteist.autoimageslider.SliderView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
@@ -301,55 +304,58 @@ class Comment : AppCompatActivity() {
         }
         job.invokeOnCompletion {
             val isInternet = job.getCompleted()
-            if (isInternet) {
-                startAnim()
-                val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
-                    Log.d("ashok", response.toString())
-                    try {
-                        if (response.getBoolean("success")) {
-                            // Toast.makeText(Comment.this, "success", // Toast.LENGTH_SHORT).show();
-                            resol = true
-                            resolwork()
-                            materialCardViewResolved!!.visibility = View.GONE
-                            if (recyclerView!!.adapter is CommentAdapter) {
-                                (recyclerView!!.adapter as CommentAdapter?)!!.reol(true)
-                                recyclerView!!.adapter!!.notifyDataSetChanged()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    startAnim()
+                    val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
+                        Log.d("ashok", response.toString())
+                        try {
+                            if (response.getBoolean("success")) {
+                                // Toast.makeText(Comment.this, "success", // Toast.LENGTH_SHORT).show();
+                                resol = true
+                                resolwork()
+                                materialCardViewResolved!!.visibility = View.GONE
+                                if (recyclerView!!.adapter is CommentAdapter) {
+                                    (recyclerView!!.adapter as CommentAdapter?)!!.reol(true)
+                                    recyclerView!!.adapter!!.notifyDataSetChanged()
+                                }
+
+                            } else {
+                                // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
+                                //login page
+                                val preferences = PreferenceManager.getDefaultSharedPreferences(this@Comment)
+                                val editor = preferences.edit()
+                                editor.clear()
+                                editor.apply()
+                                startActivity(Intent(this@Comment, LoginActivity::class.java))
                             }
-
-                        } else {
-                            // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
-                            //login page
-                            val preferences = PreferenceManager.getDefaultSharedPreferences(this@Comment)
-                            val editor = preferences.edit()
-                            editor.clear()
-                            editor.apply()
-                            startActivity(Intent(this@Comment, LoginActivity::class.java))
+                            Log.d("ashok", response.getString("message"))
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
                         }
-                        Log.d("ashok", response.getString("message"))
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                        stopAnim()
+                    }, Response.ErrorListener { error -> // Toast.makeText(Comment.this, "" + error, // Toast.LENGTH_SHORT).show();
+                        Log.d("ashok", error.toString())
+                        stopAnim()
+                    }) {
+                        @Throws(AuthFailureError::class)
+                        override fun getHeaders(): Map<String, String> {
+                            val headers: MutableMap<String, String> = HashMap()
+                            headers["Content-Type"] = "application/json"
+                            headers["token"] = preferences!!.getString(Datas.token, "")!!
+                            headers["lid"] = preferences!!.getString(Datas.lagnuage_id, "1")!!
+                            Log.d("ashok", preferences!!.getString(Datas.lagnuage_id, "1"))
+                            return headers
+                        }
                     }
-                    stopAnim()
-                }, Response.ErrorListener { error -> // Toast.makeText(Comment.this, "" + error, // Toast.LENGTH_SHORT).show();
-                    Log.d("ashok", error.toString())
-                    stopAnim()
-                }) {
-                    @Throws(AuthFailureError::class)
-                    override fun getHeaders(): Map<String, String> {
-                        val headers: MutableMap<String, String> = HashMap()
-                        headers["Content-Type"] = "application/json"
-                        headers["token"] = preferences!!.getString(Datas.token, "")!!
-                        headers["lid"] = preferences!!.getString(Datas.lagnuage_id, "1")!!
-                        Log.d("ashok", preferences!!.getString(Datas.lagnuage_id, "1"))
-                        return headers
-                    }
-                }
-                MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+                    MySingleton.getInstance(this@Comment).addToRequestQueue(jsonObjectRequest)
 
-            } else {
-                stopAnim()
-                customSnackBar(recyclerView!!, this@Comment, "No Internet Available.", ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
+                } else {
+                    stopAnim()
+                    customSnackBar(recyclerView!!, this@Comment, "No Internet Available.", ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
+                }
             }
+
         }
 
     }

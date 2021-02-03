@@ -5,13 +5,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -42,13 +40,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import com.wang.avi.AVLoadingIndicatorView
-import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_setting_profile.*
 import kotlinx.android.synthetic.main.activity_setting_profile.button_submit
 import kotlinx.coroutines.Dispatchers
@@ -71,9 +66,11 @@ import java.util.*
 class SettingProfile : AppCompatActivity() {
 
 
+    val langIds = arrayListOf<String>()
     private var resultUri: Uri? = null
     private lateinit var myCalendar: Calendar
     private var avi: ProgressBar? = null
+    val languages = arrayListOf<String>()
 
     fun startAnim() {
         //avi!!.show()
@@ -385,16 +382,19 @@ class SettingProfile : AppCompatActivity() {
                 if (success) {
 
                     val data = response.getJSONArray("data")
-                    val strings = arrayListOf<String>()
+
+
                     for (i in 0 until data.length()) {
                         val jsonObject = data.getJSONObject(i)
                         //                            JsonObject jsonObject = (JsonObject) data.get(i);
-                        strings.add(jsonObject["name"].toString())
-                        if (jsonObject["id"].toString() == languageId)
+                        languages.add(jsonObject["name"].toString())
+                        langIds.add(jsonObject["id"].toString())
+                        if (jsonObject["id"].toString() == languageId) {
                             actv_lang_locality.setText(jsonObject["name"].toString(), false)
+                        }
                     }
 
-                    val adapter = StringAdapter(this, strings)
+                    val adapter = StringAdapter(this, languages)
 
                     actv_lang_locality.setAdapter(adapter)
                 } else {
@@ -518,6 +518,7 @@ class SettingProfile : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.Main) {
             if (isInternet) {
                 startAnim()
+                submitLang()
 
                 val url = Url.baseurl + "/update_profile"
                 val jsonRwquest = JSONObject()
@@ -855,6 +856,70 @@ class SettingProfile : AppCompatActivity() {
         }
 
     }
+
+
+    fun submitLang() {
+
+        val url = Url.baseurl + "/language_update"
+        val jsonRequest = JSONObject()
+        val actvLang = actv_lang_locality.text.toString()
+
+        var index = ""
+        for (i in 0..(languages.size-1)){
+            if (languages.get(i).contentEquals(actvLang)){
+                index = langIds.get(i)
+            }
+        }
+
+
+
+
+        try {
+            jsonRequest.put("langId", index)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+        startAnim()
+        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
+            try {
+                val success = response.getBoolean("success")
+                if (success) {
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                    val editor = preferences.edit()
+                    editor.putBoolean(Datas.language_selected, true)
+                    editor.putString(Datas.lagnuage_id, index)
+                    editor.apply()
+                    startActivity(Intent(this@SettingProfile, Home::class.java))
+                    finish()
+                } else {
+                    // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
+                    //login page
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                    val editor = preferences.edit()
+                    editor.clear()
+                    editor.apply()
+                    startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            stopAnim()
+        }, Response.ErrorListener {
+            stopAnim()
+            // Toast.makeText(Language.this, "" + error, // Toast.LENGTH_SHORT).show();
+        }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+                headers["token"] = preferences!!.getString(Datas.token, "")!!
+                return headers
+            }
+        }
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+    }
+
 
 
 }

@@ -79,6 +79,9 @@
                     android:id="@+id/actv_lang_locality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="8dp"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -255,6 +258,9 @@
                 android:layout_marginEnd="16dp"
 
 
+
+
+
                 app:boxBackgroundColor="@android:color/white"
 
                 app:boxBackgroundMode="filled"
@@ -268,6 +274,9 @@
                     android:id="@+id/actv_city_locality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="8dp"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
