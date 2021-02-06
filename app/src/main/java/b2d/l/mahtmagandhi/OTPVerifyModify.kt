@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
@@ -108,14 +109,7 @@ class OTPVerifyModify : AppCompatActivity() {
             override fun onCodeSent(s: String, forceResendingToken: ForceResendingToken) {
                 super.onCodeSent(s, forceResendingToken)
                 stopAnim()
-                //                mVerificationId = s;
-             //   Toast.makeText(this@OTPVerifyModify, "OTP sent successfully", Toast.LENGTH_SHORT).show()
-                //                Intent intent = new Intent(OTPVerify.this, OTPVerify.class);
-//                intent.putExtra("mobile", mobile);
-//                intent.putExtra("forceResendingToken", forceResendingToken);
-//                intent.putExtra("mCallbacks", mCallbacks);
-//                startActivityForResult(intent, getcode);
-//                startActivity(intent);
+
             }
         }
     }
@@ -129,13 +123,18 @@ class OTPVerifyModify : AppCompatActivity() {
 
             timer = object : CountDownTimer(30000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                    textView_sec_otp_modify.setText("in " + millisUntilFinished / 1000 + "sec")
+                    textView_sec_otp_modify.setText("Resend in " + millisUntilFinished / 1000 + "sec")
+                    textView_sec_otp_modify.setTextColor(ContextCompat.getColor(this@OTPVerifyModify, R.color.black))
+
+                    if (textView_resend_otp_modify.visibility == View.VISIBLE)
+                        textView_resend_otp_modify.visibility = View.GONE
                 }
 
                 override fun onFinish() {
                     textView_resend_otp_modify.isEnabled = true
                     textView_resend_otp_modify.setTextColor(ContextCompat.getColor(this@OTPVerifyModify, R.color.black))
                     textView_sec_otp_modify.setText("")
+                    textView_resend_otp_modify.visibility = View.VISIBLE
                 }
             }.start()
 
@@ -459,16 +458,5 @@ class OTPVerifyModify : AppCompatActivity() {
         finish()
     }
 
-    companion object {
-        fun hideKeyboard(activity: Activity) {
-            val imm = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            //Find the currently focused view, so we can grab the correct window token from it.
-            var view = activity.currentFocus
-            //If no view currently has focus, create a new one, just so we can grab a window token from it
-            if (view == null) {
-                view = View(activity)
-            }
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
+
 }

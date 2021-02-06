@@ -118,6 +118,7 @@ class LoginActivity : AppCompatActivity() {
 
     fun submit(view: View?) {
 //        Toast.makeText(this, "testing", Toast.LENGTH_SHORT).show();
+        Utility.hideKeyboard(this)
         mobile = editText!!.text.toString().trim { it <= ' ' }
         if (mobile!!.length < 6) {
             editText!!.error = "Please enter your valid Mobile no."

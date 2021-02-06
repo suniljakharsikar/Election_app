@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -116,10 +117,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
             else if (img != null && !img.toString().contains("election"))img = Url.burl+img;
 
-        if (img==null)holder.descIv.setVisibility(View.GONE);
-        else holder.descIv.setVisibility(View.VISIBLE);
 
-        Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
 
         Object finalImg = img;
         holder.share.setOnClickListener(new View.OnClickListener() {
@@ -150,9 +148,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
             }
         });
-        if (x.getImage_name() == null) holder.descIv.setVisibility(View.GONE);
-        else holder.descIv.setVisibility(View.VISIBLE);
-        Glide.with(context).load(img).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.descIv);
+        if (x.getImage_name() == null) holder.viewPager2.setVisibility(View.GONE);
+        else holder.viewPager2.setVisibility(View.VISIBLE);
        if (x.getUserData()!=null && x.getUserData().size()>0) {
            if (x.getUserData().get(0).getUser_image()!=null) {
                Glide.with(context).load(Url.burl + x.getUserData().get(0).getUser_image()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.avtarIv);
@@ -315,14 +312,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView descIv, avtarIv,likeThumbIv;
+        private final ViewPager2 viewPager2;
+        ImageView  avtarIv,likeThumbIv;
         TextView likesCountTv, usernameTv, descTv, timeTv,likeThumbTv;
         LinearLayout like, share;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            descIv = itemView.findViewById(R.id.imageView_desc_news);
             avtarIv = itemView.findViewById(R.id.iv_avtar_news);
             timeTv = itemView.findViewById(R.id.tv_time_news);
             likesCountTv = itemView.findViewById(R.id.textView_like_count);
@@ -332,6 +329,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             //commentBtnTv = itemView.findViewById(R.id.textView_btn_comment_commu_talk);
             usernameTv = itemView.findViewById(R.id.tv_name_news);
             descTv = itemView.findViewById(R.id.tv_des_news);
+            viewPager2 = itemView.findViewById(R.id.photos_viewpager);
             like = itemView.findViewById(R.id.like_news);
             share = itemView.findViewById(R.id.dislike_news);
             timeTv = itemView.findViewById(R.id.tv_time_news);

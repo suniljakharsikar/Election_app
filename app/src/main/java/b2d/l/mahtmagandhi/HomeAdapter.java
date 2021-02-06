@@ -24,10 +24,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<HomelistData> homelistDatas;
     private RecyclerView mRecyclerView;
 
-    public HomeAdapter(Context context, RecyclerView mRecyclerView, ArrayList<HomelistData> homelistDatas) {
+    private Home home ;
+    public HomeAdapter(Context context, RecyclerView mRecyclerView, ArrayList<HomelistData> homelistDatas,Home home) {
         this.context =context;
         this.mRecyclerView = mRecyclerView;
         this.homelistDatas = homelistDatas;
+        this.home = home;
 
     }
 
@@ -45,6 +47,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 case 1:
                     intent.setClass(context, Appointment.class);
                     break;
+
                 case 2:
                     intent.setClass(context, CommunityChat.class);
                     break;
@@ -78,7 +81,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 case 12:
                     intent.setClass(context, SettingProfile.class);
                     break;
-                default:
+                case 13:
+                    intent.setClass(context, Meetings.class);
+                    break;
+
+                    default:
                     intent.setClass(context, Home.class);
                     break;
             }
@@ -123,7 +130,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.clear();
                     editor.apply();
-                    context.startActivity(new Intent(context, LoginActivity.class));                }
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                    home.finish();
+
+
+                }
             });
         }else if (holder instanceof VHItem){
           HomelistData homelistData = getItem(position);

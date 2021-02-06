@@ -24,8 +24,10 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import java.text.ParseException
@@ -172,14 +174,18 @@ class Register : AppCompatActivity() {
             return@async Utility.isInternetAvailable()
         }
         job.invokeOnCompletion {
-            val isInternet = job.getCompleted()
-            if (isInternet) {
-                call()
 
-            } else {
-                stopAnim()
-                customSnackBar(name!!, this, "No Internet Available.", ContextCompat.getColor(this, R.color.error), R.drawable.ic_error)
+                val isInternet = job.getCompleted()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    call()
+
+                } else {
+                    stopAnim()
+                    customSnackBar(name!!, this@Register, "No Internet Available.", ContextCompat.getColor(this@Register, R.color.error), R.drawable.ic_error)
+                }
             }
+
         }
         //        call1();
     }

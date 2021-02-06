@@ -51,7 +51,8 @@ public class CommitteeMemberAdapter extends RecyclerView.Adapter<CommitteeMember
         holder.textView.setText(data.getFirstName() + " " + data.getLastName());
         holder.textView1.setText(data.getDesignation());
         data.setImage(Url.burl + data.getImage());
-        Glide.with(context).load(data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
+
+        Glide.with(holder.itemView).load(data.getImage()).placeholder(R.drawable.ic_user_place_holder).into(holder.imageView);
         //Toast.makeText(context, "https://election.suniljakhar.in/"+data.getImage(), Toast.LENGTH_SHORT).show();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

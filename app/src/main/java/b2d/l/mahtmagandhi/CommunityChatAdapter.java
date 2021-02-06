@@ -133,6 +133,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                 intent.putExtra("newposturl", s2);
                 intent.putExtra("passToken", passToken);
                 intent.putExtra("dis", finalDesc);
+                intent.putExtra("page_name","Community Chat");
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();

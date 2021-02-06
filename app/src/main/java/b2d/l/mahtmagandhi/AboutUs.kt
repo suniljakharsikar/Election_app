@@ -82,6 +82,7 @@ class AboutUs : AppCompatActivity() {
                                 }
                                 if (data_images.length()==0) sliderView.visibility = View.GONE
                                 sliderView.setSliderAdapter(adapter)
+                                sliderView.setInfiniteAdapterEnabled(false)
                                 sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM) //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
                                 sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
                                 //sliderView.setAutoCycleDirection(SliderView.AUTO_C);

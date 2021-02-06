@@ -13,8 +13,10 @@ import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
@@ -70,14 +72,19 @@ class Language : AppCompatActivity() {
             return@async Utility.isInternetAvailable()
         }
         job.invokeOnCompletion {
-            val isInternet = job.getCompleted()
-            if (isInternet) {
-                fetchData()
 
-            } else {
-                stopAnim()
-                customSnackBar(listView!!, this, "No Internet Available.", ContextCompat.getColor(this, R.color.error), R.drawable.ic_error)
+
+            val isInternet = job.getCompleted()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    fetchData()
+
+                } else {
+                    stopAnim()
+                    customSnackBar(listView!!, this@Language, "No Internet Available.", ContextCompat.getColor(this@Language, R.color.error), R.drawable.ic_error)
+                }
             }
+
         }    }
 
     private fun fetchData() {

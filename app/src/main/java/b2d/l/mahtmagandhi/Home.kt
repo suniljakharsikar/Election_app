@@ -57,7 +57,9 @@ class Home : AppCompatActivity() {
         homelistDatas!!.add(HomelistData("Voting Guide", R.drawable.vote))
         homelistDatas!!.add(HomelistData("Helpline", R.drawable.helpline))
         homelistDatas!!.add(HomelistData("Setting & Profile", R.drawable.setting))
-        val mAdapter: RecyclerView.Adapter<*> = HomeAdapter(this, recyclerView, homelistDatas)
+        homelistDatas!!.add(HomelistData("Meetings", R.drawable.suitcase))
+
+        val mAdapter: RecyclerView.Adapter<*> = HomeAdapter(this, recyclerView, homelistDatas,this)
         recyclerView!!.setAdapter(mAdapter)
         findViewById<View>(R.id.imageView_noti_home).setOnClickListener {
             val intent = Intent(applicationContext, NotificationActivity::class.java)

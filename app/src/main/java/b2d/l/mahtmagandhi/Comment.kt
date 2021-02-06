@@ -25,6 +25,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
 import com.lopei.collageview.CollageView
 import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -65,6 +66,7 @@ class Comment : AppCompatActivity() {
         val sliderView = findViewById<SliderView>(R.id.imageSlider)
         textView = findViewById(R.id.textView30)
         comment_box = findViewById(R.id.cardView2)
+        textView12.setText(intent.getStringExtra("page_name"))
         val adapter = SliderAdapterExample(this)
         //        StatusBarUtil.setTransparent(this);
         avi = findViewById(R.id.avi)
@@ -134,7 +136,7 @@ class Comment : AppCompatActivity() {
             //            materialCardView.setVisibility(View.GONE);
         }
         if (intent.hasExtra("title") && intent.hasExtra("dis"))
-            textView!!.setText(intent.getStringExtra("title")+"\n"+intent.getStringExtra("dis"))
+            textView!!.setText(intent.getStringExtra("title") + "\n" + intent.getStringExtra("dis"))
         else if (intent.hasExtra("dis"))
             textView!!.setText(intent.getStringExtra("dis"))
         val job = GlobalScope.async {
@@ -142,13 +144,16 @@ class Comment : AppCompatActivity() {
         }
         job.invokeOnCompletion {
             val isInternet = job.getCompleted()
-            if (isInternet) {
-                fetchComments()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    fetchComments()
 
-            } else {
-                stopAnim()
-                customSnackBar(recyclerView!!, this@Comment, "No Internet Available.", ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
+                } else {
+                    stopAnim()
+                    customSnackBar(recyclerView!!, this@Comment, "No Internet Available.", ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
+                }
             }
+
         }
     }
 
@@ -244,49 +249,52 @@ class Comment : AppCompatActivity() {
         }
         job.invokeOnCompletion {
             val isInternet = job.getCompleted()
-            if (isInternet) {
-                startAnim()
-                val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, json, Response.Listener { response ->
-                    try {
-                        if (response.getBoolean("success")) {
-                            val data = response.getJSONArray("data")
-                            val gson = Gson()
-                            val commentData = ArrayList<CommentData?>()
-                            for (i in 0 until data.length()) {
-                                val comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData::class.java)
-                                commentData.add(comment)
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    startAnim()
+                    val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, json, Response.Listener { response ->
+                        try {
+                            if (response.getBoolean("success")) {
+                                val data = response.getJSONArray("data")
+                                val gson = Gson()
+                                val commentData = ArrayList<CommentData?>()
+                                for (i in 0 until data.length()) {
+                                    val comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData::class.java)
+                                    commentData.add(comment)
+                                }
+                                // commentData.add(new CommentData("xyz",s));
+                                Collections.reverse(commentData)
+                                val adapter: RecyclerView.Adapter<*> = CommentAdapter(this@Comment, commentData, preferences!!.getInt(Datas.id, 1), resol)
+                                recyclerView!!.adapter = adapter
+                                comment!!.setText("")
                             }
-                            // commentData.add(new CommentData("xyz",s));
-                            Collections.reverse(commentData)
-                            val adapter: RecyclerView.Adapter<*> = CommentAdapter(this@Comment, commentData, preferences!!.getInt(Datas.id, 1), resol)
-                            recyclerView!!.adapter = adapter
-                            comment!!.setText("")
+                            // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
                         }
-                        // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                    stopAnim()
-                }, Response.ErrorListener { error ->
-                    customSnackBar(recyclerView!!, this@Comment, error.toString(), ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
+                        stopAnim()
+                    }, Response.ErrorListener { error ->
+                        customSnackBar(recyclerView!!, this@Comment, error.toString(), ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
 
-                    //// Toast.makeText(Comment.this, "" + error.getMessage(), // Toast.LENGTH_SHORT).show();
-                    stopAnim()
-                }) {
-                    override fun getHeaders(): Map<String, String> {
-                        val header: MutableMap<String, String> = HashMap()
-                        header["Content-Type"] = "application/json"
-                        header["token"] = preferences!!.getString(Datas.token, "")!!
-                        header["lid"] = preferences!!.getString(Datas.lagnuage_id, "1")!!
-                        return header
+                        //// Toast.makeText(Comment.this, "" + error.getMessage(), // Toast.LENGTH_SHORT).show();
+                        stopAnim()
+                    }) {
+                        override fun getHeaders(): Map<String, String> {
+                            val header: MutableMap<String, String> = HashMap()
+                            header["Content-Type"] = "application/json"
+                            header["token"] = preferences!!.getString(Datas.token, "")!!
+                            header["lid"] = preferences!!.getString(Datas.lagnuage_id, "1")!!
+                            return header
+                        }
                     }
+                    MySingleton.getInstance(this@Comment).addToRequestQueue(jsonObjectRequest)
+
+                } else {
+                    stopAnim()
+                    customSnackBar(recyclerView!!, this@Comment, "No Internet Available.", ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
                 }
-                MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
-
-            } else {
-                stopAnim()
-                customSnackBar(recyclerView!!, this@Comment, "No Internet Available.", ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
             }
+
         }
 
     }

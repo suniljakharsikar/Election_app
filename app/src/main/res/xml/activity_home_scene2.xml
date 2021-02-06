@@ -40,7 +40,7 @@
         <Constraint
             android:id="@+id/textView10"
             android:elevation="2dp"
-            android:visibility="visible"
+            android:visibility="gone"
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,17 +49,18 @@
         <Constraint
             android:id="@+id/textView4"
             android:elevation="2dp"
-            android:visibility="visible"
+            android:visibility="gone"
 
             motion:layout_constraintEnd_toEndOf="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             motion:layout_constraintTop_toBottomOf="@+id/textView10"
-            motion:layout_constraintStart_toStartOf="@+id/textView10" />
+            motion:layout_constraintStart_toStartOf="@+id/textView10"
+            motion:transitionEasing="linear" />
         <Constraint
             android:id="@+id/textView32"
             android:elevation="2dp"
-            android:visibility="visible"
+            android:visibility="gone"
 
             motion:layout_constraintEnd_toEndOf="@+id/profile_image"
             android:layout_width="wrap_content"

@@ -96,15 +96,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_city_setting_profile" />
 
-            <ProgressBar
-                android:id="@+id/avi2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
@@ -367,13 +358,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup_gender" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/textView_gender_setting_profile"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+
                 android:visibility="visible"
+                android:editable="false"
+                android:inputType="none"
+                android:clickable="false"
+                android:enabled="false"
+                android:focusable="false"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_gender_tag_setting_profile" />
 
@@ -418,6 +418,15 @@
                 app:srcCompat="@drawable/ic_baseline_edit_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    <ProgressBar
+        android:id="@+id/avi2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- <com.wang.avi.AVLoadingIndicatorView
          android:id="@+id/avi"

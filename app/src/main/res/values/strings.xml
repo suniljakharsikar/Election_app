@@ -4,4 +4,6 @@
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">FCM Message</string>
     <string name="resend">Didn\'t Receive ? <u>Resend OTP</u></string>
+    <string name="more">View More</string>
+    <string name="ok">Ok</string>
 </resources>

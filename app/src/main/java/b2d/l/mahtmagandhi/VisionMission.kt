@@ -2,6 +2,7 @@ package b2d.l.mahtmagandhi
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -19,8 +20,13 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
+import com.smarteist.autoimageslider.SliderAnimations
+import com.smarteist.autoimageslider.SliderView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
@@ -60,13 +66,16 @@ class VisionMission : AppCompatActivity() {
         }
         job.invokeOnCompletion {
             val isInternet = job.getCompleted()
-            if (isInternet) {
-                fetchData()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    fetchData()
 
-            } else {
-                stopAnim()
-                customSnackBar(textView!!, this, "No Internet Available.", ContextCompat.getColor(this, R.color.error), R.drawable.ic_error)
+                } else {
+                    stopAnim()
+                    customSnackBar(textView!!, this@VisionMission, "No Internet Available.", ContextCompat.getColor(this@VisionMission, R.color.error), R.drawable.ic_error)
+                }
             }
+
         }    }
 
     private fun fetchData() {
@@ -87,11 +96,22 @@ class VisionMission : AppCompatActivity() {
                         textView!!.text = Html.fromHtml(description)
                     }
                     // textView.setText(description);
-                    val data1 = response.getJSONArray("data_images")
-                    val jsonObject1 = data1.getJSONObject(0)
-                    val s = jsonObject1.getString("image_url")
-                    Log.d("ashok url", s)
-                    Glide.with(this@VisionMission).load(Url.burl + s).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView!!)
+                    val sliderView = findViewById<SliderView>(R.id.imageSlider)
+                    val adapter = SliderAdapterExample(this)
+                    val data_images = response.getJSONArray("data_images")
+                    for (i in 0 until data_images.length()) {
+                        adapter.addItem(SliderItem(Url.burl + data_images.getJSONObject(i).getString("image_url")))
+                    }
+                    if (data_images.length()==0) sliderView.visibility = View.GONE
+                    else sliderView.visibility = View.VISIBLE
+                    sliderView.setSliderAdapter(adapter)
+                    sliderView.setInfiniteAdapterEnabled(false)
+                    sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM) //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                    sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+                    //sliderView.setAutoCycleDirection(SliderView.AUTO_C);
+                    sliderView.indicatorSelectedColor = Color.WHITE
+                    sliderView.indicatorUnselectedColor = Color.GRAY
+                    sliderView.scrollTimeInSec = 4 //set
                 } else {
                     // Toast.makeText(getBaseContext(), "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                     //login page

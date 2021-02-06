@@ -7,15 +7,7 @@
     android:background="@color/white_text_color"
     tools:context=".Helpline">
 
-    <ProgressBar
-        android:id="@+id/avi6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar15"
@@ -66,7 +58,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar15"
         app:layout_constraintVertical_bias="1.0" />
-
+    <ProgressBar
+        android:id="@+id/avi6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <!-- <com.wang.avi.AVLoadingIndicatorView
          android:id="@+id/avi"
          android:layout_width="wrap_content"

@@ -20,8 +20,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.activity_appointment.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.*
 
@@ -50,7 +52,6 @@ class Appointment : AppCompatActivity() {
         val la: LayoutManager = LinearLayoutManager(this)
         recyclerView!!.setLayoutManager(la)
 
-
         empty_message = findViewById(R.id.textView7)
         empty_message!!.setVisibility(View.INVISIBLE)
 
@@ -63,13 +64,16 @@ class Appointment : AppCompatActivity() {
         }
         job.invokeOnCompletion {
             val isInternet = job.getCompleted()
-            if (isInternet) {
-                fetchData()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    fetchData()
 
-            } else {
-                stopAnim()
-                customSnackBar(recyclerView!!, this@Appointment, "No Internet Available.", ContextCompat.getColor(this@Appointment, R.color.error), R.drawable.ic_error)
+                } else {
+                    stopAnim()
+                    customSnackBar(recyclerView!!, this@Appointment, "No Internet Available.", ContextCompat.getColor(this@Appointment, R.color.error), R.drawable.ic_error)
+                }
             }
+
         }
     }
 

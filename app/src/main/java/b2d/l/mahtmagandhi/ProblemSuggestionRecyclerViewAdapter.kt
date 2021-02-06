@@ -1,7 +1,6 @@
 package b2d.l.mahtmagandhi
 
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,21 +28,23 @@ class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<Problem
             intent.putExtra("pos", model.id)
             intent.putExtra("url", s1)
             intent.putExtra("newposturl", s2)
-            if (model.isResolved==1)intent.putExtra("isResolved",true)
-            else if (model.isResolved==0)intent.putExtra("isResolved",false)
+            intent.putExtra("page_name", "Problem & Suggestion")
+
+            if (model.isResolved==1)intent.putExtra("isResolved", true)
+            else if (model.isResolved==0)intent.putExtra("isResolved", false)
             var x = model.imageArr
 
-            intent.putExtra("imgs",x)
-            intent.putExtra("dis",URLDecoder.decode(model.description,"UTF-8"));
-            intent.putExtra("title",URLDecoder.decode(model.title,"UTF-8"))
+            intent.putExtra("imgs", x)
+            intent.putExtra("dis", URLDecoder.decode(model.description, "UTF-8"));
+            intent.putExtra("title", URLDecoder.decode(model.title, "UTF-8"))
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
             //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
             holder.itemView.context.startActivity(intent)
 //                holder.itemView.context.startActivity(Intent(holder.itemView.context, ChatOnProblem::class.java))
         }
-        holder.titleTv.text = URLDecoder.decode(model.title,"UTF-8")
-        holder.desTv.text = URLDecoder.decode(model.description,"UTF-8")
+        holder.titleTv.text = URLDecoder.decode(model.title, "UTF-8")
+        holder.desTv.text = URLDecoder.decode(model.description, "UTF-8")
         //holder.upTv.text = model.
 
     }
