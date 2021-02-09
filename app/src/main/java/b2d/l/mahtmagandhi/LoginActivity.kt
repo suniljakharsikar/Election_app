@@ -101,7 +101,8 @@ class LoginActivity : AppCompatActivity() {
 //                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
                 })
         if (loginstatus) {
-            startActivity(Intent(this@LoginActivity, Home::class.java))
+            // FIXME: 08-02-2021 Home
+            startActivity(Intent(this@LoginActivity, Register::class.java))
             finish()
         }
     }
@@ -124,10 +125,6 @@ class LoginActivity : AppCompatActivity() {
             editText!!.error = "Please enter your valid Mobile no."
         } else {
 
-            /*if (mobile.length() != 10) {
-            Toast.makeText(this, "Please enter correct 10 digit mobile number", Toast.LENGTH_SHORT).show();
-            return;
-        }*/
             val job = GlobalScope.async {
                 return@async Utility.isInternetAvailable()
             }
@@ -180,46 +177,7 @@ class LoginActivity : AppCompatActivity() {
         editText4!!.addTextChangedListener(PinTextWatcher(3))
         editText5!!.addTextChangedListener(PinTextWatcher(4))
         editText6!!.addTextChangedListener(PinTextWatcher(5))
-
-        //        imageView = findViewById(R.id.subbtn);
-        /* Rect rectangle = new Rect();
-        Window window = getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);*/
-//        int statusBarHeight = rectangle.top;
-//        int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
-//        int titleBarHeight = contentViewTop - statusBarHeight;
-//        Log.d("ashok", "s=" + statusBarHeight + " t= " + titleBarHeight);
-//        Toast.makeText(this, "s=" + statusBarHeight + " t= " + titleBarHeight, Toast.LENGTH_SHORT).show();
-
-        /* TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -200);
-        animation.setDuration(1000);
-        animation.setFillAfter(false);
-        animation.setAnimationListener(new MyAnimationListener());
-
-        circleImageView = findViewById(R.id.profile_image);
-        circleImageView.startAnimation(animation);*/
-
-        /* String url = "http://election.suniljakhar.in/api/user_onboard";
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(LoginActivity.this, ""+response.toString(), Toast.LENGTH_SHORT).show();
-//                        textView.setText("Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-
-                    }
-                });
-
-// Access the RequestQueue through your singleton class.
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);*/stopAnim()
+        stopAnim()
     }
 
     private fun sendotpusingfirebase(phoneNumber: String) {

@@ -14,10 +14,12 @@ import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.bumptech.glide.Glide
 import com.google.android.youtube.player.YouTubeBaseActivity
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerView
+import kotlinx.android.synthetic.main.activity_voting_guide.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.json.JSONException
@@ -45,7 +47,7 @@ class VotingGuide : YouTubeBaseActivity() {
         setContentView(R.layout.activity_voting_guide)
         avi = findViewById(R.id.avi)
         youTubePlayerView = findViewById(R.id.youtube_voting_guide)
-        youTubePlayerView!!.visibility = View.GONE
+        youTubePlayerView!!.visibility = View.INVISIBLE
 
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -78,17 +80,31 @@ class VotingGuide : YouTubeBaseActivity() {
                 if (response.getBoolean("success")) {
                     val description = response.getJSONArray("data").getJSONObject(0).getString("description")
                     val media = response.getJSONArray("data").getJSONObject(0).getString("media")
+                    val mediaType = response.getJSONArray("data").getJSONObject(0).optInt("media_type")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         textView!!.text = Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT)
                     } else {
                         textView!!.text = Html.fromHtml(description)
                     }
 
+                    if (mediaType==2){
+                        youTubePlayerView!!.visibility = View.INVISIBLE
+                        imageView_voting_guide.visibility = View.VISIBLE
+                        Glide.with(this).load(Url.burl+media).into(imageView_voting_guide)
+
+                    }else if (mediaType==1){
+                        youTubePlayerView!!.visibility = View.VISIBLE
+                        imageView_voting_guide.visibility = View.INVISIBLE
+                    }else{
+                        youTubePlayerView!!.visibility = View.GONE
+                        imageView_voting_guide.visibility = View.GONE
+                    }
+
                     youTubePlayerView!!.initialize("AIzaSyD5IrFsnu-cC6ODQM1r_KcIg_G584aBvzY", object : YouTubePlayer.OnInitializedListener {
                         override fun onInitializationSuccess(provider: YouTubePlayer.Provider, youTubePlayer: YouTubePlayer, b: Boolean) {
                             try {
                                 val ms = media.split("=").toTypedArray()
-                                if (ms.size > 0) {
+                                if (ms.size > 0 && mediaType==1) {
                                     youTubePlayerView!!.visibility = View.VISIBLE
 
                                     youTubePlayer.loadVideo(ms[1])

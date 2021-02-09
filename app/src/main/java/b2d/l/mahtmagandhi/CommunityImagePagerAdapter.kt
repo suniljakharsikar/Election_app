@@ -12,7 +12,6 @@ import android.renderscript.ScriptIntrinsicBlur
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -21,7 +20,7 @@ import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivi
 import kotlinx.android.synthetic.main.item_of_img_pager.view.*
 
 
-class ImagePagerAdapter(private val imgs: MutableList<ChatDataResponseModel.Data.ImageData>) : RecyclerView.Adapter<ImagePagerAdapter.MyViewHolder>() {
+class CommunityImagePagerAdapter(private val imgs: MutableList<ChatDataResponseModel.Data.ImageData>) : RecyclerView.Adapter<CommunityImagePagerAdapter.MyViewHolder>() {
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     }

@@ -24,6 +24,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_setting_profile.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -63,8 +64,10 @@ class Register : AppCompatActivity() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val loginstatus = preferences.getBoolean(Datas.registration, false)
         if (loginstatus) {
-            startActivity(Intent(this@Register, Language::class.java))
+            // FIXME: 08-02-2021  
+           startActivity(Intent(this@Register, Language::class.java))
             finish()
+            //inish()
         }
     }
 
@@ -89,7 +92,18 @@ class Register : AppCompatActivity() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         name!!.setText(preferences!!.getString(Datas.user_name, ""))
         number!!.setText(preferences!!.getString(Datas.user_mobile, ""))
-        age!!.setText(preferences!!.getString(Datas.user_age, ""))
+        number!!.isEnabled = false
+        //AppHelper.filterAlphabates(name)
+
+        try {
+            val dob = preferences!!.getString(Datas.user_age, "")
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val dobp = simpleDateFormat.parse(dob)
+            val transformFormat = SimpleDateFormat("dd MMM yyyy")
+
+            age!!.setText(transformFormat.format(dobp))
+        } catch (e: Exception) {
+        }
         pincode!!.setText(preferences!!.getString(Datas.user_postal_code, ""))
         if (preferences!!.getString(Datas.user_postal_code, "")!!.length == 6) fetchLoc(preferences!!.getString(Datas.user_postal_code, ""))
         state!!.setText(preferences!!.getString(Datas.user_state, ""))
@@ -97,8 +111,22 @@ class Register : AppCompatActivity() {
         distirct!!.setEnabled(false)
         distirct!!.setText(preferences!!.getString(Datas.user_district, ""))
         city!!.setText(preferences!!.getString(Datas.user_village, ""), false)
+
         radioGroup = findViewById(R.id.radioGroup_gender)
-        //        city.setText(preferences.getString(Datas.user_village, ""));
+
+        when(preferences!!.getString(Datas.gender,"Male")){
+            "Male"->{
+                radioGroup_gender.check(R.id.rb_male_regi)
+            }
+            "Female"->{
+                radioGroup_gender.check(R.id.rb_female_regi)
+            }
+            "Others"->{
+                radioGroup_gender.check(R.id.rb_others)
+
+            }
+
+        }        //        city.setText(preferences.getString(Datas.user_village, ""));
         stopAnim()
         myCalendar = Calendar.getInstance()
         val date = OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
@@ -118,23 +146,7 @@ class Register : AppCompatActivity() {
             calendar.add(Calendar.YEAR, -14)
             datepickerdialog.datePicker.maxDate = calendar.timeInMillis
             datepickerdialog.show()
-            /*  DatePickerFragment d =new   DatePickerFragment(age);
-                d.setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);
 
-               d.show(getSupportFragmentManager(),"date");*/
-            /*MaterialDatePicker<Long> dp = MaterialDatePicker.Builder.datePicker().build();
-
-                dp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-                    @Override
-                    public void onPositiveButtonClick(Long it) {
-                        Date date = new Date(it);
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-                        //formatter.setTimeZone(TimeZone.getTimeZone(""))
-                        String dateFormatted = formatter.format(date);
-                        age.setText(dateFormatted);
-                    }
-                });
-                dp.show(getSupportFragmentManager(), "date");*/
         })
         pincode!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -203,7 +215,12 @@ class Register : AppCompatActivity() {
         }
         val s1 = pincode!!.text.toString()
         if (isNullOrEmpty(s1)) {
-            Toast.makeText(this, "Please type pincode", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter valid pincode", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (s1.trim().length!=6) {
+            Toast.makeText(this, "Please enter valid pincode.", Toast.LENGTH_SHORT).show()
             return
         }
         val s3 = state!!.text.toString()
@@ -252,6 +269,7 @@ class Register : AppCompatActivity() {
                     val preferences = PreferenceManager.getDefaultSharedPreferences(this@Register)
                     val editor = preferences.edit()
                     editor.putBoolean(Datas.registration, true)
+                    editor.putString(Datas.gender,gender)
                     editor.apply()
                     startActivity(Intent(this@Register, Language::class.java))
                     finish()
@@ -312,51 +330,7 @@ class Register : AppCompatActivity() {
     }
 
     companion object {
-        /*private void call1() {
-        String requestURL = Url.baseurl + "/update_profile";
 
-        HashMap<String, String> headers = new HashMap<String, String>();
-        headers.put("Content-Type", "application/json");
-        headers.put("Token", preferences.getString(Datas.token, ""));
-
-        JSONObject jsonRwquest = new JSONObject();
-        try {
-            jsonRwquest.put("userMobile", number.getText().toString());
-            jsonRwquest.put("userName", name.getText().toString());
-            int x = Integer.parseInt(age.getText().toString());
-            jsonRwquest.put("userAge", x);
-            jsonRwquest.put("userPostalCode", pincode.getText().toString());
-            jsonRwquest.put("userState", state.getText().toString());
-            jsonRwquest.put("userDistrict", distirct.getText().toString());
-            jsonRwquest.put("userVillage", city.getSelectedItem().toString());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        ConnectionManager.volleyJSONRequest(this, true, null, requestURL, Request.Method.POST, jsonRwquest, headers, new VolleyResponse() {
-            @Override
-            public void onResponse(String _response) {
-
-//                _response.
-                Toast.makeText(Register.this, "" + _response, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Toast.makeText(Register.this, "" + error, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void isNetwork(boolean connected) {
-
-//                Toast.makeText(Register.this, "" + connected, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }*/
         fun isNullOrEmpty(str: String?): Boolean {
             return str == null || str.isEmpty()
         }

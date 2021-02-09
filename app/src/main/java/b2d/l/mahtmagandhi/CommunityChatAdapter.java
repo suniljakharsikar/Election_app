@@ -36,17 +36,14 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -155,9 +152,9 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 
         int width  = Resources.getSystem().getDisplayMetrics().widthPixels;
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        ImagePagerAdapter adapter ;
+        CommunityImagePagerAdapter adapter ;
         if (x.getImgAdapter()==null){
-            adapter = new ImagePagerAdapter(imgs);
+            adapter = new CommunityImagePagerAdapter(imgs);
             holder.viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
             holder.viewPager2.setMinimumHeight(width);

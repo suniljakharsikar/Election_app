@@ -83,9 +83,9 @@ class Survey : AppCompatActivity() {
             stopAnim()
             try {
                 val gson = Gson()
-                val (data, _, _, success) = gson.fromJson(response.toString(), SurveyResponseModel::class.java)
+                val (data, _, _, success) = gson.fromJson(response.toString(), SurveyResponseModifyModel::class.java)
                 if (success) {
-                    val adapter: RecyclerView.Adapter<*> = Surveydapter(data)
+                    val adapter: RecyclerView.Adapter<*> = Surveydapter(data,)
                     recyclerView!!.adapter = adapter
                 } else {
                     // Toast.makeText(Survey.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

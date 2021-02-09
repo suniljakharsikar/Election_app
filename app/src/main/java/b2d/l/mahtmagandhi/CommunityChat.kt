@@ -65,10 +65,6 @@ class CommunityChat : AppCompatActivity() {
         val itemViewType = 0
         recyclerView!!.getRecycledViewPool().setMaxRecycledViews(itemViewType, 0)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
         val job = GlobalScope.async {
             return@async Utility.isInternetAvailable()
         }
@@ -82,6 +78,11 @@ class CommunityChat : AppCompatActivity() {
                 customSnackBar(recyclerView!!, this@CommunityChat, "No Internet Available.", ContextCompat.getColor(this@CommunityChat, R.color.error), R.drawable.ic_error)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
 
     }
 

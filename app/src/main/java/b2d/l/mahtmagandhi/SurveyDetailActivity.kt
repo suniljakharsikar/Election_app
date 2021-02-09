@@ -23,7 +23,7 @@ import java.util.*
 
 
 class SurveyDetailActivity : AppCompatActivity() {
-    private var data: SurveyResponseModel.Data? = null
+    private var data: SurveyResponseModifyModel.Data? = null
 
     private var avi: ProgressBar? = null
 
@@ -44,25 +44,28 @@ class SurveyDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_survey_detail)
 
         avi = findViewById(R.id.avi10)
-        data = intent.getParcelableExtra<SurveyResponseModel.Data>("data")
+        data = intent.getParcelableExtra<SurveyResponseModifyModel.Data>("data")
 
         textView_que_survey.text = data?.title
 
-        if (data !=null && data!!.isAnswered==1)button_submit2.visibility = View.GONE
+        if (data !=null && data!!.is_answered==1)button_submit2.visibility = View.GONE
 
 
         for (i in data!!.optionsData) {
             val rb = RadioButton(this)
             rb.setPadding(0, 32, 0, 32)
-            rb.text = i.optionsData
+            rb.text = i.options_data
             rb.tag = i.id.toString()
+            rb.id = i.id
 
             val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             params.setMargins(15, 20, 15, 20)
             rb.setLayoutParams(params)
             rg_options_survey.addView(rb)
 
+
         }
+        rg_options_survey.check(data!!.answered_option_id)
 
 
         stopAnim()

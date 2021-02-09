@@ -94,7 +94,7 @@ class SettingProfile : AppCompatActivity() {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
-      disableEdit()
+        disableEdit()
 
         //        city.setText(preferences.getString(Datas.user_district, ""));
         editText_postal_code.addTextChangedListener(object : TextWatcher {
@@ -153,7 +153,7 @@ class SettingProfile : AppCompatActivity() {
 
         var radioGroupSex = findViewById<RadioGroup>(R.id.radioGroup_gender)
         materialButton_edit_setting_profie.setOnClickListener {
-           enableEdit()
+            enableEdit()
         }
 
 
@@ -204,10 +204,11 @@ class SettingProfile : AppCompatActivity() {
         // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
         //editTextPersonName2.setFilters(arrayOf(getEditTextFilter()))
         //editTextPhone2.inputType = InputType.TYPE_CLASS_PHONE
-        val digits = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // or any characters you want to allow
-        editTextPersonName2.keyListener = DigitsKeyListener.getInstance(digits)
-        editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+       // val digits = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // or any characters you want to allow
+       // editTextPersonName2.keyListener = DigitsKeyListener.getInstance(digits)
+       // editTextPersonName2.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
 
+        //AppHelper.filterAlphabates(editTextPersonName2)
         val blankDigit = ""
         editTextPhone2.keyListener = DigitsKeyListener.getInstance(blankDigit)
 
@@ -245,7 +246,7 @@ class SettingProfile : AppCompatActivity() {
     private fun disableEdit() {
         materialButton_edit_setting_profie.visibility = View.VISIBLE
 
-        editTextPersonName2.inputType = InputType.TYPE_NULL
+       // editTextPersonName2.inputType = InputType.TYPE_NULL
         editTextPhone2.inputType = InputType.TYPE_NULL
         editText_postal_code.inputType = InputType.TYPE_NULL
         editText_dob_setting_profile.inputType = InputType.TYPE_NULL
@@ -266,7 +267,7 @@ class SettingProfile : AppCompatActivity() {
 
         til_city_setting_profile.isEndIconVisible = false
         til_lang_profile.isEndIconVisible = false
-       // til_lang_profile.isEnabled = false
+        // til_lang_profile.isEnabled = false
 
         radioGroup_gender.isEnabled = false
         rb_male_setting_profile.isEnabled = false
@@ -329,598 +330,587 @@ class SettingProfile : AppCompatActivity() {
                     editor.putString(Datas.token, token)
                     editor.apply()
                     val img = jsonObject.getString(Datas.user_image)
-                    if (img.contains("http")) Glide.with(this).load(img).into(profile_image)
-                    else if (img == "null") Glide.with(this).load(R.drawable.ic_user_place_holder).into(profile_image)
-                    else if (img.length > 0 && img != "null") Glide.with(this).load(Url.burl + img).into(profile_image)
+                    if (!isFinishing()) {
+                        if (img.contains("http")) Glide.with(this).load(img).into(profile_image)
+                        else if (img == "null") Glide.with(this).load(R.drawable.ic_user_place_holder).into(profile_image)
+                        else if (img.length > 0 && img != "null") Glide.with(this).load(Url.burl + img).into(profile_image)
 
-
+                    }
                     editTextPersonName2.setText(preferences.getString(Datas.user_name, ""))
                     editTextPhone2.setText(preferences.getString(Datas.user_mobile, ""))
-                    editText_dob_setting_profile.setText(preferences.getString(Datas.user_age, ""))
+                    try {
+                        val dob = preferences.getString(Datas.user_age, "")
+                        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+                        val dobp = simpleDateFormat.parse(dob)
+                        val transformFormat = SimpleDateFormat("dd MMM yyyy")
+
+                        editText_dob_setting_profile.setText(transformFormat.format(dobp))
+                    } catch (e: Exception) {
+                    }
+
                     editText_postal_code.setText(preferences.getString(Datas.user_postal_code, ""))
                     editText_state.setText(preferences.getString(Datas.user_state, ""))
                     editText_district.setText(preferences.getString(Datas.user_district, ""))
                     actv_city_locality.setText(preferences.getString(Datas.user_village, ""))
                     textView_gender_setting_profile.setText(preferences.getString(Datas.gender, ""))
 
-                    setLanguage(preferences.getString(Datas.lagnuage_id, "")!!)
-                    // Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
-                    //finish()
-                } else {
-                    Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
-                    //login page
-                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
-                    val editor = preferences.edit()
-                    editor.clear()
-                    editor.apply()
-                    startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
+                    when (preferences!!.getString(Datas.gender, "Male")) {
+                        "Male" -> {
+                            radioGroup_gender.check(R.id.rb_male_setting_profile)
+                        }
+                        "Female" -> {
+                            radioGroup_gender.check(R.id.rb_female_setting_profile)
+                        }
+                        "Others" -> {
+                            radioGroup_gender.check(R.id.rb_other_setting_profile)
+
+                        }
+                    }
+
+                        setLanguage(preferences.getString(Datas.lagnuage_id, "")!!)
+                        // Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                        //finish()
+                    } else {
+                        Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                        //login page
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                        val editor = preferences.edit()
+                        editor.clear()
+                        editor.apply()
+                        startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                    //                                        sendbtn.setEnabled(true);
                 }
-            } catch (e: JSONException) {
-                e.printStackTrace()
-                //                                        sendbtn.setEnabled(true);
-            }
-            stopAnim()
-        }, { error ->
+                stopAnim()
+            }, { error ->
 
             stopAnim()
             customSnackBar(iv_edit_avtar_setting, this@SettingProfile, error.toString(),
                     ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
 
         })
-        MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
-    }
-
-    private fun setLanguage(languageId: String) {
-
-        val url = Url.baseurl + "/language_list"
-        val jsonRequest = JSONObject()
-        startAnim()
-        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
-            stopAnim()
-            try {
-                val success = response.getBoolean("success")
-                if (success) {
-
-                    val data = response.getJSONArray("data")
-
-
-                    for (i in 0 until data.length()) {
-                        val jsonObject = data.getJSONObject(i)
-                        //                            JsonObject jsonObject = (JsonObject) data.get(i);
-                        languages.add(jsonObject["name"].toString())
-                        langIds.add(jsonObject["id"].toString())
-                        if (jsonObject["id"].toString() == languageId) {
-                            actv_lang_locality.setText(jsonObject["name"].toString(), false)
-                        }
-                    }
-
-                    val adapter = StringAdapter(this, languages)
-
-                    actv_lang_locality.setAdapter(adapter)
-                } else {
-                    Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
-                    //login page
-                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
-                    val editor = preferences.edit()
-                    editor.clear()
-                    editor.apply()
-                    startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
-                }
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-            stopAnim()
-        }, Response.ErrorListener { error ->
-            Toast.makeText(this@SettingProfile, "" + error, Toast.LENGTH_SHORT).show()
-            stopAnim()
-        }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                var preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
-
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/json"
-                headers["Token"] = preferences.getString(Datas.token, "")!!
-                return headers
-            }
+            MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
         }
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
 
-    }
+                private fun setLanguage(languageId: String) {
 
-    private fun fetchLoc(s: String) {
-        Utility.hideKeyboard(this)
-        startAnim()
-        val jsonObjectRequest = StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/$s",
-                { response ->
-                    stopAnim()
-                    Log.d("Register", "onResponse: $response")
-                    val gson = Gson()
-                    val pinCodeResponseModelItems = gson.fromJson(response, PinCodeResponseModel::class.java)
-                    try {
-                        if (pinCodeResponseModelItems != null && pinCodeResponseModelItems.size > 0) {
-                            val (_, postOffice) = pinCodeResponseModelItems[0]
-                            val (_, _, _, _, _, _, district, _, _, _, _, state) = postOffice[0]
-                            editText_state.setText(state)
-                            editText_district.setText(district)
-                            val cities: MutableList<String> = ArrayList()
-                            for (i in postOffice) {
-                                cities.add(i.name)
+            val url = Url.baseurl + "/language_list"
+            val jsonRequest = JSONObject()
+            startAnim()
+            val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
+                stopAnim()
+                try {
+                    val success = response.getBoolean("success")
+                    if (success) {
+
+                        val data = response.getJSONArray("data")
+
+
+                        for (i in 0 until data.length()) {
+                            val jsonObject = data.getJSONObject(i)
+                            //                            JsonObject jsonObject = (JsonObject) data.get(i);
+                            languages.add(jsonObject["name"].toString())
+                            langIds.add(jsonObject["id"].toString())
+                            if (jsonObject["id"].toString() == languageId) {
+                                actv_lang_locality.setText(jsonObject["name"].toString(), false)
                             }
-                            val adapter1 = StringAdapter(this@SettingProfile, ArrayList(cities))
-
-                            actv_city_locality.setAdapter(adapter1)
-                            if (cities.size > 0)
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                    if (actv_city_locality.text.length == 0)
-                                        actv_city_locality.setText(cities.get(0), false)
-
-                                }
                         }
-                    } catch (e: Exception) {
+
+                        val adapter = StringAdapter(this, languages)
+
+                        actv_lang_locality.setAdapter(adapter)
+                    } else {
+                        Toast.makeText(this@SettingProfile, "" + response.getString("message"), Toast.LENGTH_SHORT).show()
+                        //login page
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                        val editor = preferences.edit()
+                        editor.clear()
+                        editor.apply()
+                        startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
                     }
-                }) { error ->
-            Log.d("Register", "onErrorResponse: $error")
-            stopAnim()
-        }
-        MySingleton.getInstance(applicationContext).addToRequestQueue(jsonObjectRequest)
-    }
-
-
-    fun hideKeyboard(activity: Activity) {
-        val imm: InputMethodManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        //Find the currently focused view, so we can grab the correct window token from it.
-        var view = activity.currentFocus
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-
-    fun back(view: View?) {
-        finish()
-    }
-
-    fun update(view: View) {
-        val s: String = editTextPersonName2.getText().toString()
-        if (Register.isNullOrEmpty(s)) {
-            Toast.makeText(this, "Please type name", Toast.LENGTH_SHORT).show()
-            return
-        }
-        var s5: String = editText_dob_setting_profile.getText().toString()
-        if (Register.isNullOrEmpty(s5)) {
-            Toast.makeText(this, "Please type your age", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val s1: String = editText_postal_code.getText().toString()
-        if (Register.isNullOrEmpty(s1)) {
-            Toast.makeText(this, "Please type pincode", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val s3: String = editText_state.getText().toString()
-        if (Register.isNullOrEmpty(s3)) {
-            Toast.makeText(this, "Please type state name", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val s4: String = editText_district.getText().toString()
-        if (Register.isNullOrEmpty(s4)) {
-            Toast.makeText(this, "Please type district name", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val job = GlobalScope.async {
-            return@async Utility.isInternetAvailable()
-        }
-        job.invokeOnCompletion {
-            val isInternet = job.getCompleted()
-            GlobalScope.launch(Dispatchers.Main) {
-            if (isInternet) {
-                startAnim()
-                submitLang()
-
-                val url = Url.baseurl + "/update_profile"
-                val jsonRwquest = JSONObject()
-                val cityS: String
-                cityS = if (actv_city_locality.text == null) "" else actv_city_locality.text.toString()
-                try {
-                    val formatter = SimpleDateFormat("dd MMM yyyy")
-                    val date = formatter.parse(s5)
-                    val transFormatter = SimpleDateFormat("yyyy-MM-dd")
-                    s5 = transFormatter.format(date)
-                } catch (e: ParseException) {
-                    //e.printStackTrace();
-                }
-                try {
-                    jsonRwquest.put("userMobile", editTextPhone2.getText().toString())
-                    jsonRwquest.put("userName", s)
-
-                    try {
-                        val r = findViewById<RadioButton>(radioGroup_gender.checkedRadioButtonId)
-                        jsonRwquest.put("gender", r.text.toString())
-                    } catch (e: Exception) {
-                    }
-                    //val x = s5.toInt()
-                    jsonRwquest.put("userAge", s5)
-                    jsonRwquest.put("userPostalCode", s1)
-                    jsonRwquest.put("userState", s3)
-                    jsonRwquest.put("userDistrict", s4)
-                    jsonRwquest.put("userVillage", cityS)
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
-                //startAnim()
-                val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRwquest, Response.Listener { response ->
-                    stopAnim()
-                    try {
-                        val success = response.getBoolean("success")
+                stopAnim()
+            }, Response.ErrorListener { error ->
+                Toast.makeText(this@SettingProfile, "" + error, Toast.LENGTH_SHORT).show()
+                stopAnim()
+            }) {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    var preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
 
-                        if (success) {
-                            //newposting
-                            Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "Successfully Updated", ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
-                            disableEdit()
-                            FirebaseMessaging.getInstance().getToken()
-                                    .addOnCompleteListener(OnCompleteListener<String> { task ->
-                                        if (!task.isSuccessful) {
-                                            return@OnCompleteListener
-                                        }
+                    val headers = HashMap<String, String>()
+                    headers["Content-Type"] = "application/json"
+                    headers["Token"] = preferences.getString(Datas.token, "")!!
+                    return headers
+                }
+            }
+            MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
 
-                                        // Get new FCM registration token
-                                        try {
-                                            fetchData(task.result)
-                                        } catch (e: Exception) {
+        }
 
-                                        }
+                private fun fetchLoc(s: String) {
+            Utility.hideKeyboard(this)
+            startAnim()
+            val jsonObjectRequest = StringRequest(Request.Method.GET, "https://api.postalpincode.in/pincode/$s",
+                    { response ->
+                        stopAnim()
+                        Log.d("Register", "onResponse: $response")
+                        val gson = Gson()
+                        val pinCodeResponseModelItems = gson.fromJson(response, PinCodeResponseModel::class.java)
+                        try {
+                            if (pinCodeResponseModelItems != null && pinCodeResponseModelItems.size > 0) {
+                                val (_, postOffice) = pinCodeResponseModelItems[0]
+                                val (_, _, _, _, _, _, district, _, _, _, _, state) = postOffice[0]
+                                editText_state.setText(state)
+                                editText_district.setText(district)
+                                val cities: MutableList<String> = ArrayList()
+                                for (i in postOffice) {
+                                    cities.add(i.name)
+                                }
+                                val adapter1 = StringAdapter(this@SettingProfile, ArrayList(cities))
+
+                                actv_city_locality.setAdapter(adapter1)
+                                if (cities.size > 0)
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                        if (actv_city_locality.text.length == 0)
+                                            actv_city_locality.setText(cities.get(0), false)
+
+                                    }
+                            }
+                        } catch (e: Exception) {
+                        }
+                    }) { error ->
+                Log.d("Register", "onErrorResponse: $error")
+                stopAnim()
+            }
+            MySingleton.getInstance(applicationContext).addToRequestQueue(jsonObjectRequest)
+        }
 
 
-                                        // Log and toast
+                fun hideKeyboard(activity: Activity) {
+                    val imm: InputMethodManager = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    //Find the currently focused view, so we can grab the correct window token from it.
+                    var view = activity.currentFocus
+                    //If no view currently has focus, create a new one, just so we can grab a window token from it
+                    if (view == null) {
+                        view = View(activity)
+                    }
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+
+
+                fun back(view: View?) {
+                    finish()
+                }
+
+                fun update(view: View) {
+                    val s: String = editTextPersonName2.getText().toString()
+                    if (Register.isNullOrEmpty(s)) {
+                        Toast.makeText(this, "Please type name", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    var s5: String = editText_dob_setting_profile.getText().toString()
+                    if (Register.isNullOrEmpty(s5)) {
+                        Toast.makeText(this, "Please type your age", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    val s1: String = editText_postal_code.getText().toString()
+                    if (Register.isNullOrEmpty(s1)) {
+                        Toast.makeText(this, "Please enter valid pincode", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    if (s1.trim().length != 6) {
+                        Toast.makeText(this, "Please enter valid pincode", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    val s3: String = editText_state.getText().toString()
+                    if (Register.isNullOrEmpty(s3)) {
+                        Toast.makeText(this, "Please type state name", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+                    val s4: String = editText_district.getText().toString()
+                    if (Register.isNullOrEmpty(s4)) {
+                        Toast.makeText(this, "Please type district name", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    val job = GlobalScope.async {
+                        return@async Utility.isInternetAvailable()
+                    }
+                    job.invokeOnCompletion {
+                        val isInternet = job.getCompleted()
+                        GlobalScope.launch(Dispatchers.Main) {
+                            if (isInternet) {
+                                startAnim()
+                                submitLang()
+
+                                val url = Url.baseurl + "/update_profile"
+                                val jsonRwquest = JSONObject()
+                                val cityS: String
+                                cityS = if (actv_city_locality.text == null) "" else actv_city_locality.text.toString()
+                                try {
+                                    val formatter = SimpleDateFormat("dd MMM yyyy")
+                                    val date = formatter.parse(s5)
+                                    val transFormatter = SimpleDateFormat("yyyy-MM-dd")
+                                    s5 = transFormatter.format(date)
+                                } catch (e: ParseException) {
+                                    //e.printStackTrace();
+                                }
+                                try {
+                                    jsonRwquest.put("userMobile", editTextPhone2.getText().toString())
+                                    jsonRwquest.put("userName", s)
+
+                                    try {
+                                        val r = findViewById<RadioButton>(radioGroup_gender.checkedRadioButtonId)
+                                        jsonRwquest.put("gender", r.text.toString())
+                                    } catch (e: Exception) {
+                                    }
+                                    //val x = s5.toInt()
+                                    jsonRwquest.put("userAge", s5)
+                                    jsonRwquest.put("userPostalCode", s1)
+                                    jsonRwquest.put("userState", s3)
+                                    jsonRwquest.put("userDistrict", s4)
+                                    jsonRwquest.put("userVillage", cityS)
+                                } catch (e: JSONException) {
+                                    e.printStackTrace()
+                                }
+                                //startAnim()
+                                val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRwquest, Response.Listener { response ->
+                                    stopAnim()
+                                    try {
+                                        val success = response.getBoolean("success")
+
+                                        if (success) {
+                                            //newposting
+                                            Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "Successfully Updated", ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
+                                            disableEdit()
+                                            FirebaseMessaging.getInstance().getToken()
+                                                    .addOnCompleteListener(OnCompleteListener<String> { task ->
+                                                        if (!task.isSuccessful) {
+                                                            return@OnCompleteListener
+                                                        }
+
+                                                        // Get new FCM registration token
+                                                        try {
+                                                            fetchData(task.result)
+                                                        } catch (e: Exception) {
+
+                                                        }
+
+
+                                                        // Log and toast
 //                        String msg = getString(R.string.msg_token_fmt, token);
 //                        Log.d(TAG, msg);
 //                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                    })
+                                                    })
 
-                        } else {
-                            Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "" + response.getString("message"), ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
+                                        } else {
+                                            Utility.customSnackBar(editTextPersonName2, this@SettingProfile, "" + response.getString("message"), ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
+
+                                        }
+                                    } catch (e: JSONException) {
+                                        e.printStackTrace()
+                                    }
+                                    // stopAnim()
+                                }, Response.ErrorListener { error ->
+                                    stopAnim()
+                                    Toast.makeText(this@SettingProfile, "e= $error", Toast.LENGTH_SHORT).show()
+                                }) {
+                                    override fun getHeaders(): Map<String, String> {
+                                        val headers = HashMap<String, String>()
+                                        headers["Content-Type"] = "application/json"
+                                        var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+                                        headers["Token"] = preferences.getString(Datas.token, "").toString()
+                                        return headers
+                                    }
+                                }
+                                MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
+                            } else {
+                                stopAnim()
+                                customSnackBar(editTextPersonName2!!, this@SettingProfile, "No Internet Available.", ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
+                            }
+                        }
+                    }
+
+                }
+
+
+                        private fun dispatchTakePictureIntent(requestCode: Int) {
+
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                        // Ensure that there's a camera activity to handle the intent
+
+                        (packageManager)?.also {
+                            // Create the File where the photo should go
+                            val photoFile: File? = try {
+                                createImageFile()
+                            } catch (ex: IOException) {
+                                // Error occurred while creating the File
+
+                                null
+                            }
+                            // Continue only if the File was successfully created
+                            photoFile?.also {
+                                val photoURI: Uri = FileProvider.getUriForFile(
+                                        this,
+                                        "b2d.l.mahtmagandhi.fileprovider",
+                                        it
+                                )
+
+
+                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                                startActivityForResult(takePictureIntent, requestCode)
+
+
+                            }
+
 
                         }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
                     }
-                    // stopAnim()
-                }, Response.ErrorListener { error ->
-                    stopAnim()
-                    Toast.makeText(this@SettingProfile, "e= $error", Toast.LENGTH_SHORT).show()
-                }) {
-                    override fun getHeaders(): Map<String, String> {
-                        val headers = HashMap<String, String>()
-                        headers["Content-Type"] = "application/json"
-                        var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-
-                        headers["Token"] = preferences.getString(Datas.token, "").toString()
-                        return headers
-                    }
-                }
-                MySingleton.getInstance(this@SettingProfile).addToRequestQueue(jsonObjectRequest)
-            } else {
-                stopAnim()
-                customSnackBar(editTextPersonName2!!, this@SettingProfile, "No Internet Available.", ContextCompat.getColor(this@SettingProfile, R.color.error), R.drawable.ic_error)
-            }
-            }
-        }
-
-    }
-
-
-    private fun dispatchTakePictureIntent(requestCode: Int) {
-
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-
-            (packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    // Error occurred while creating the File
-
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                            this,
-                            "b2d.l.mahtmagandhi.fileprovider",
-                            it
-                    )
-
-
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, requestCode)
-
 
                 }
 
 
+                        private
+                        var currentPath: String = ""
+                                private
+                                val REQUEST_TAKE_GPHOTO: Int = 51
+                                        private
+                                        val REQUEST_TAKE_PHOTO: Int = 50
+                var currentPhotoPath : String = ""
+
+        @Throws(IOException::class)
+        private fun createImageFile(): File {
+            // Create an image file name
+            val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+            return File.createTempFile(
+                    "JPEG_${timeStamp}_", /* prefix */
+                    ".jpg", /* suffix */
+                    storageDir /* directory */
+            ).apply {
+                // Save a file: path for use with ACTION_VIEW intents
+                currentPhotoPath = absolutePath
             }
         }
 
-    }
+
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                val result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    resultUri = result!!.getUri();
+                    if (!isFinishing())
+                    Glide.with(this).load(resultUri).into(profile_image)
+                    newposting()
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result!!.getError();
+                }
+            } else if (resultCode.equals(Activity.RESULT_OK)) {
+
+                var uri = data?.data
 
 
+                /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                    // Do something for lollipop and above versions
+                    val file = File(uri!!.path) //create path from uri
+                     if (file.path.contains(":")) {
+                         val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
 
-    private var currentPath: String = ""
-    private val REQUEST_TAKE_GPHOTO: Int = 51
-    private val REQUEST_TAKE_PHOTO: Int = 50
-    var currentPhotoPath: String = ""
+                         currentPhotoPath = split[1]
+                     }else{
+                         currentPhotoPath =file.path
+                     }
+                } else{*/
+                // do something for phones running an SDK before lollipop
+                if (uri != null)
+                    currentPhotoPath = PathUtil.getPath(this, uri)
 
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-        return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-        }
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                resultUri = result!!.getUri();
-                Glide.with(this).load(resultUri).into(profile_image)
-                newposting()
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result!!.getError();
-            }
-        } else if (resultCode.equals(Activity.RESULT_OK)) {
-
-            var uri = data?.data
-
-
-            /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                // Do something for lollipop and above versions
-                val file = File(uri!!.path) //create path from uri
-                 if (file.path.contains(":")) {
-                     val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
-
-                     currentPhotoPath = split[1]
-                 }else{
-                     currentPhotoPath =file.path
-                 }
-            } else{*/
-            // do something for phones running an SDK before lollipop
-            if (uri != null)
-                currentPhotoPath = PathUtil.getPath(this, uri)
-
-            var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
-            if (result == null) {
-                val file = File(uri!!.path) //create path from uri
-                if (file.path.contains(":")) {
-                    val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
-
-                    currentPhotoPath = split[1]
-                } else currentPhotoPath = file.absolutePath
-                result = BitmapFactory.decodeFile(currentPhotoPath)
+                var result: Bitmap? = BitmapFactory.decodeFile(currentPhotoPath)
                 if (result == null) {
-                    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+                    val file = File(uri!!.path) //create path from uri
+                    if (file.path.contains(":")) {
+                        val split = file.path.split(":".toRegex()).toTypedArray() //split the path.
 
-                    val cursor: Cursor? = getContentResolver()?.query(
-                            uri,
-                            filePathColumn, null, null, null
-                    )
-                    cursor?.moveToFirst()
+                        currentPhotoPath = split[1]
+                    } else currentPhotoPath = file.absolutePath
+                    result = BitmapFactory.decodeFile(currentPhotoPath)
+                    if (result == null) {
+                        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
-                    val columnIndex: Int? = cursor?.getColumnIndex(filePathColumn[0])
-                    currentPhotoPath = columnIndex?.let { cursor?.getString(it) }.toString()
-                    cursor?.close()
+                        val cursor: Cursor? = getContentResolver()?.query(
+                                uri,
+                                filePathColumn, null, null, null
+                        )
+                        cursor?.moveToFirst()
+
+                        val columnIndex: Int? = cursor?.getColumnIndex(filePathColumn[0])
+                        currentPhotoPath = columnIndex?.let { cursor?.getString(it) }.toString()
+                        cursor?.close()
+                    }
+
+                    result = BitmapFactory.decodeFile(currentPhotoPath)
+
+
                 }
 
-                result = BitmapFactory.decodeFile(currentPhotoPath)
+                //   BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?
+                //}
 
 
             }
-
-            //   BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?
-            //}
+            //setPic(requestCode)
 
 
         }
-        //setPic(requestCode)
 
 
-    }
+        fun getPic(tag: String?, s: String) {
+            if (s.equals("c")) {
+                when (tag) {
+                    "pic" -> dispatchTakePictureIntent(REQUEST_TAKE_PHOTO)
 
+                }
+            } else {
+                when (tag) {
+                    "pic" -> dispatchTakeGalleryPictureIntent(REQUEST_TAKE_GPHOTO)
 
-    fun getPic(tag: String?, s: String) {
-        if (s.equals("c")) {
-            when (tag) {
-                "pic" -> dispatchTakePictureIntent(REQUEST_TAKE_PHOTO)
-
+                }
             }
-        } else {
-            when (tag) {
-                "pic" -> dispatchTakeGalleryPictureIntent(REQUEST_TAKE_GPHOTO)
 
-            }
         }
 
-    }
-
-    val REQUEST_IMAGE_CAPTURE = 1
+        val REQUEST_IMAGE_CAPTURE = 1
 
 
+        private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
+            startActivityForResult(
+                    Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.INTERNAL_CONTENT_URI
+                    ), requestTakePhotoCode
+            )
 
-    private fun dispatchTakeGalleryPictureIntent(requestTakePhotoCode: Int) {
-        startActivityForResult(
-                Intent(
-                        Intent.ACTION_PICK,
-                        MediaStore.Images.Media.INTERNAL_CONTENT_URI
-                ), requestTakePhotoCode
-        )
-
-    }
+        }
 
 
-    fun newposting() {
+        fun newposting() {
 
 //        Toast.makeText(this, "new posting", Toast.LENGTH_SHORT).show()
-        startAnim()
-        /*  val vollley = object : VolleyMultipartRequest(Request.Method.POST, Url.baseurl+"/profile_image", Response.Listener {
-  //            Toast.makeText(this, it.statusCode, Toast.LENGTH_LONG).show()
-              stopAnim()
-
-          }, object : Response.ErrorListener {
-              override fun onErrorResponse(error: VolleyError?) {
-                  Toast.makeText(this@SettingProfile, error!!.localizedMessage, Toast.LENGTH_LONG).show()
+            startAnim()
 
 
-                  stopAnim()
-              }
+            val client = OkHttpClient().newBuilder()
+                    .build()
+            val mediaType = MediaType.parse("text/plain")
+            val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
 
-          }) {
-
-              override fun getByteData(): MutableMap<String, DataPart> {
-                  val params: MutableMap<String, DataPart> = mutableMapOf()
-                  // file name could found file base or direct access from real path
-                  // for now just get bitmap data from ImageView
-                  // file name could found file base or direct access from real path
-                  // for now just get bitmap data from ImageView
-                  params.put("profileImage", DataPart("file_avatar.jpg", resultUri!!.toFile().readBytes(), "image/jpeg"))
-
-                  return params
-              }
-
-              override fun getHeaders(): Map<String, String> {
-                  val headers = HashMap<String, String>()
-                  //headers["Content-Type"] = "application/json"
-                  var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-
-                  //headers["Token"] = preferences.getString(Datas.token, "").toString()
-                  headers.put("token", preferences.getString(Datas.token, "")!!)
-                  headers.put("Content-Type", "application/json")
-                  headers.put("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
-                  return headers
-              }
+            if (resultUri != null) {
+                bodyp.addFormDataPart("profileImage", "profilej.jpg",
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                resultUri!!.toFile()))
 
 
-          }
-          MySingleton.getInstance(this).addToRequestQueue(vollley)*/
+            }
 
-        val client = OkHttpClient().newBuilder()
-                .build()
-        val mediaType = MediaType.parse("text/plain")
-        val bodyp = MultipartBody.Builder().setType(MultipartBody.FORM)
+            val body = bodyp.build()
+            val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
-        if (resultUri != null) {
-            bodyp.addFormDataPart("profileImage", "profilej.jpg",
-                    RequestBody.create(MediaType.parse("application/octet-stream"),
-                            resultUri!!.toFile()))
+            val request: okhttp3.Request = okhttp3.Request.Builder()
+                    .url(Url.baseurl + "/profile_image")
+                    .method("POST", body)
+                    .addHeader("token", preferences.getString(Datas.token, "")!!)
+                    .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
+                    .addHeader("Content-Type", "application/json")
 
+                    .build()
+            val job = GlobalScope.async {
+                val response = client.newCall(request).execute()
+                Log.d("NewPost", "newposting: " + response.isSuccessful)
+                if (response.isSuccessful) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        // profile_image.setImageDrawable(null)
+
+                        customSnackBar(editText_postal_code, this@SettingProfile, "Successfully profile uploaded", ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
+                        stopAnim()
+
+                    }
+                }
+                stopAnim()
+            }
 
         }
 
-        val body = bodyp.build()
-        val preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
-        val request: okhttp3.Request = okhttp3.Request.Builder()
-                .url(Url.baseurl + "/profile_image")
-                .method("POST", body)
-                .addHeader("token", preferences.getString(Datas.token, "")!!)
-                .addHeader("lid", preferences.getString(Datas.lagnuage_id, "1")!!)
-                .addHeader("Content-Type", "application/json")
+        fun submitLang() {
 
-                .build()
-        val job = GlobalScope.async {
-            val response = client.newCall(request).execute()
-            Log.d("NewPost", "newposting: " + response.isSuccessful)
-            if (response.isSuccessful) {
-                GlobalScope.launch(Dispatchers.Main) {
-                    // profile_image.setImageDrawable(null)
+            val url = Url.baseurl + "/language_update"
+            val jsonRequest = JSONObject()
+            val actvLang = actv_lang_locality.text.toString()
 
-                    customSnackBar(editText_postal_code, this@SettingProfile,"Successfully profile uploaded" , ContextCompat.getColor(this@SettingProfile, R.color.success), R.drawable.ic_success)
-                    stopAnim()
-
+            var index = ""
+            for (i in 0..(languages.size - 1)) {
+                if (languages.get(i).contentEquals(actvLang)) {
+                    index = langIds.get(i)
                 }
             }
-            stopAnim()
-        }
-
-    }
-
-
-    fun submitLang() {
-
-        val url = Url.baseurl + "/language_update"
-        val jsonRequest = JSONObject()
-        val actvLang = actv_lang_locality.text.toString()
-
-        var index = ""
-        for (i in 0..(languages.size-1)){
-            if (languages.get(i).contentEquals(actvLang)){
-                index = langIds.get(i)
-            }
-        }
 
 
 
 
-        try {
-            jsonRequest.put("langId", index)
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        startAnim()
-        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
             try {
-                val success = response.getBoolean("success")
-                if (success) {
-                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
-                    val editor = preferences.edit()
-                    editor.putBoolean(Datas.language_selected, true)
-                    editor.putString(Datas.lagnuage_id, index)
-                    editor.apply()
-                    startActivity(Intent(this@SettingProfile, Home::class.java))
-                    finish()
-                } else {
-                    // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
-                    //login page
-                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
-                    val editor = preferences.edit()
-                    editor.clear()
-                    editor.apply()
-                    startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
-                }
+                jsonRequest.put("langId", index)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-            stopAnim()
-        }, Response.ErrorListener {
-            stopAnim()
-            // Toast.makeText(Language.this, "" + error, // Toast.LENGTH_SHORT).show();
-        }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/json"
-                var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
-                headers["token"] = preferences!!.getString(Datas.token, "")!!
-                return headers
+            startAnim()
+            val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
+                try {
+                    val success = response.getBoolean("success")
+                    if (success) {
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                        val editor = preferences.edit()
+                        editor.putBoolean(Datas.language_selected, true)
+                        editor.putString(Datas.lagnuage_id, index)
+                        editor.apply()
+                        startActivity(Intent(this@SettingProfile, Home::class.java))
+                        finish()
+                    } else {
+                        // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
+                        //login page
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(this@SettingProfile)
+                        val editor = preferences.edit()
+                        editor.clear()
+                        editor.apply()
+                        startActivity(Intent(this@SettingProfile, LoginActivity::class.java))
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+                stopAnim()
+            }, Response.ErrorListener {
+                stopAnim()
+                // Toast.makeText(Language.this, "" + error, // Toast.LENGTH_SHORT).show();
+            }) {
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Content-Type"] = "application/json"
+                    var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+                    headers["token"] = preferences!!.getString(Datas.token, "")!!
+                    return headers
+                }
             }
+            MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
         }
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+
+
     }
-
-
-
-}
 

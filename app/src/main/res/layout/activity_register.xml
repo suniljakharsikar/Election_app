@@ -62,7 +62,7 @@
                         android:layout_marginRight="16dp"
                         app:boxBackgroundColor="@android:color/white"
                         app:boxBackgroundMode="filled"
-                        app:layout_constraintEnd_toEndOf="@+id/editText_dob_setting_profile"
+
                         app:layout_constraintStart_toStartOf="@+id/textView48"
                         app:layout_constraintTop_toBottomOf="@+id/textView48">
 
@@ -70,6 +70,8 @@
                             android:id="@+id/actv_city_locality"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="2dp"
+                            android:paddingStart="2dp"
                             android:inputType="none" />
 
                     </com.google.android.material.textfield.TextInputLayout>

@@ -15,17 +15,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_FOOTER = 0;
     private static final int TYPE_ITEM = 1;
     private final Context context;
-    private ArrayList<HomelistData> homelistDatas;
+    private List<MenusResponseModel.Data> homelistDatas;
     private RecyclerView mRecyclerView;
 
     private Home home ;
-    public HomeAdapter(Context context, RecyclerView mRecyclerView, ArrayList<HomelistData> homelistDatas,Home home) {
+    public HomeAdapter(Context context, RecyclerView mRecyclerView, List<MenusResponseModel.Data> homelistDatas,Home home) {
         this.context =context;
         this.mRecyclerView = mRecyclerView;
         this.homelistDatas = homelistDatas;
@@ -33,66 +36,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    private View.OnClickListener i = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            view.setSelected(true);
-            new Handler().postDelayed(() -> view.setSelected(false), 100);
-            int itemPosition = mRecyclerView.getChildLayoutPosition(view);
-            Intent intent = new Intent();
-            switch (itemPosition) {
-                case 0:
-                    intent.setClass(context, AboutUs.class);
-                    break;
-                case 1:
-                    intent.setClass(context, Appointment.class);
-                    break;
-
-                case 2:
-                    intent.setClass(context, CommunityChat.class);
-                    break;
-                case 3:
-                    intent.setClass(context, NewsUpdate.class);
-                    break;
-                case 4:
-                    intent.setClass(context, OurWorks.class);
-                    break;
-                case 5:
-                    intent.setClass(context, VisionMission.class);
-                    break;
-                case 6:
-                    intent.setClass(context, ProblemSuggestion.class);
-                    break;
-                case 7:
-                    intent.setClass(context, Manifesto.class);
-                    break;
-                case 8:
-                    intent.setClass(context, Survey.class);
-                    break;
-                case 9:
-                    intent.setClass(context, CommitteeMember.class);
-                    break;
-                case 10:
-                    intent.setClass(context, VotingGuide.class);
-                    break;
-                case 11:
-                    intent.setClass(context, Helpline.class);
-                    break;
-                case 12:
-                    intent.setClass(context, SettingProfile.class);
-                    break;
-                case 13:
-                    intent.setClass(context, Meetings.class);
-                    break;
-
-                    default:
-                    intent.setClass(context, Home.class);
-                    break;
-            }
-            context.startActivity(intent);
-
-        }
-    };
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -104,7 +47,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             // Inflate the custom layout
             View contactView = inflater.inflate(R.layout.home_raw, parent, false);
 
-            contactView.setOnClickListener(i);
             // Return a new holder instance
             return new VHItem(contactView);
         } else if (viewType == TYPE_FOOTER) {
@@ -137,10 +79,140 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
         }else if (holder instanceof VHItem){
-          HomelistData homelistData = getItem(position);
+          MenusResponseModel.Data model = getItem(position);
+          holder.itemView.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  view.setSelected(true);
+                  new Handler().postDelayed(() -> view.setSelected(false), 100);
+                  int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+                  Intent intent = new Intent();
+                  switch (model.getMenu()) {
+                      case "About Us":
+                          intent.setClass(context, AboutUs.class);
+                          break;
+                      case "Appointment":
+                          intent.setClass(context, Appointment.class);
+                          break;
 
-          ((VHItem) holder).name.setText(homelistData.getMenuName());
-          ((VHItem) holder).icon.setImageResource(homelistData.getIconId());
+                      case "Community Chat":
+                          intent.setClass(context, CommunityChat.class);
+                          break;
+                      case "News Update":
+                          intent.setClass(context, NewsUpdate.class);
+                          break;
+                      case "Our Work":
+                          intent.setClass(context, OurWorks.class);
+                          break;
+                      case "Vision Mission":
+                          intent.setClass(context, VisionMission.class);
+                          break;
+                      case "Problem Suggestion":
+                          intent.setClass(context, ProblemSuggestion.class);
+                          break;
+                      case "Manifesto":
+                          intent.setClass(context, Manifesto.class);
+                          break;
+                      case "Survey":
+                          intent.setClass(context, Survey.class);
+                          break;
+                      case "Committee Members":
+                          intent.setClass(context, CommitteeMember.class);
+                          break;
+                      case "Voating Guide":
+                          intent.setClass(context, VotingGuide.class);
+                          break;
+                      case "Helpline":
+                          intent.setClass(context, Helpline.class);
+                          break;
+                      case "Setting Profile":
+                          intent.setClass(context, SettingProfile.class);
+                          break;
+
+                      case "Meeting":
+                          intent.setClass(context, Meetings.class);
+                          break;
+
+                      default: {
+                          if (model.getType()==2){
+                          intent.putExtra("url",model.getUrl());
+                          intent.putExtra("title",model.getMenu());
+
+                          intent.setClass(context, WebViewActivity.class);
+                          }
+                          else
+                              intent.setClass(context, Home.class);
+
+                          break;
+                      }
+                  }
+                  context.startActivity(intent);
+
+              }
+          });
+
+
+
+
+          ((VHItem) holder).name.setText(model.getMenu());
+          if (model.getIcon().length()>0) {
+              Glide.with(context).load(Url.burl+model.getIcon()).into(((VHItem) holder).icon);
+          }else{
+
+              int drawableRes = R.drawable.info;
+              switch (model.getMenu()) {
+                  case "About Us":
+                      drawableRes = R.drawable.info;
+                      break;
+                  case "Appointment":
+                      drawableRes = R.drawable.suitcase;
+                      break;
+
+                  case "Community Chat":
+                      drawableRes = R.drawable.chatboxes;
+                      break;
+                  case "News Update":
+                      drawableRes = R.drawable.newspaper;
+                      break;
+                  case "Our Work":
+                      drawableRes = R.drawable.groupwork;
+                      break;
+                  case "Vision Mission":
+                      drawableRes = R.drawable.vision;
+                      break;
+                  case "Problem Suggestion":
+                      drawableRes = R.drawable.problem;
+                      break;
+                  case "Manifesto":
+                      drawableRes = R.drawable.menifesto;
+                      break;
+                  case "Survey":
+                      drawableRes = R.drawable.sarve;
+                      break;
+                  case "Committee Members":
+                      drawableRes = R.drawable.commetee;
+                      break;
+                  case "Voating Guide":
+                      drawableRes = R.drawable.vote;
+                      break;
+                  case "Helpline":
+                      drawableRes = R.drawable.helpline;
+                      break;
+                  case "Setting Profile":
+                      drawableRes = R.drawable.setting;
+                      break;
+
+                  case "Meeting":
+                      drawableRes = R.drawable.suitcase;
+                      break;
+
+
+              }
+              Glide.with(context).load(drawableRes).into(((VHItem) holder).icon);
+
+          }
+
+
 
       }
     }
@@ -162,7 +234,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return position == 0;
     }
 
-    private HomelistData getItem(int position) {
+    private MenusResponseModel.Data getItem(int position) {
         return homelistDatas.get(position);
     }
 

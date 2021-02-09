@@ -141,7 +141,10 @@ class RequestAppointmentActivity : AppCompatActivity() {
                         val sdf = SimpleDateFormat("yyyy-mm-dd")
                         val tdf = SimpleDateFormat("dd MMM yyyy")
                         val d = sdf.parse(names.get(i).toString())
-                        ts.put(tdf.format(d), ds)
+                        val currentTime = Calendar.getInstance()
+                        if(d.after(currentTime.time)) {
+                            ts.put(tdf.format(d), ds)
+                        }
 
 
                     }

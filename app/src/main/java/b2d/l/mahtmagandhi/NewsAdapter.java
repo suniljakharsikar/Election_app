@@ -3,6 +3,7 @@ package b2d.l.mahtmagandhi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -10,7 +11,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +29,12 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.wang.avi.AVLoadingIndicatorView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,23 +88,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         // holder.username.setText(x.getTitle());
 
 
+
+
 //        holder.imageView.setImageResource(x.getImage());
         holder.likesCountTv.setText(x.getLikes() + "");
-       /* holder.dislikesCountTv.setText(x.getDislike() + "");
-        holder.commentBtnTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, Comment.class);
-                intent.putExtra("pos", x.getId());
-                intent.putExtra("url", s1);
-                intent.putExtra("newposturl", s2);
-                intent.putExtra("passToken", passToken);
 
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
-                context.startActivity(intent);
-            }
-        })*/
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             holder.descTv.setText(Html.fromHtml(x.getDescription(), Html.FROM_HTML_MODE_COMPACT));
@@ -110,12 +101,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
         Object img = x.getImage_name();
 
+        if (img!=null)
+        img = Url.burl + img.toString();
 
 
-        if (img != null && img.toString().contains("election")) {
-            if (!img.toString().contains("https")) img = Url.http + img;
-        }
-            else if (img != null && !img.toString().contains("election"))img = Url.burl+img;
+
+        viewPagerInit(holder, x);
 
 
 
@@ -148,7 +139,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
             }
         });
-        if (x.getImage_name() == null) holder.viewPager2.setVisibility(View.GONE);
+        if (x.getNews_images().size()==0) holder.viewPager2.setVisibility(View.GONE);
         else holder.viewPager2.setVisibility(View.VISIBLE);
        if (x.getUserData()!=null && x.getUserData().size()>0) {
            if (x.getUserData().get(0).getUser_image()!=null) {
@@ -211,6 +202,51 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         }
 
+    }
+
+    private void viewPagerInit(ViewHolder holder, NewsUpdateResponseModel.Data x) {
+
+
+       // List<ChatDataResponseModel.Data.ImageData> imgs = x.getImageData();
+
+        int width  = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+       NewsImagePagerAdapter adapter = new NewsImagePagerAdapter(x.getNews_images());
+        holder.viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+
+        holder.viewPager2.setMinimumHeight(width);
+
+       /* if (x==null){
+            adapter = new NewsImagePagerAdapter(imgs);
+            holder.viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+
+            holder.viewPager2.setMinimumHeight(width);
+            x.setImgAdapter(adapter);
+        }else{
+            adapter = x.getImgAdapter();
+            holder.viewPager2.setMinimumHeight(width);
+        }*/
+
+        holder.viewPager2.setAdapter(adapter);
+
+
+
+        if (x.getNews_images().size()==0) {
+            holder.viewPager2.setVisibility(View.GONE);
+            holder.tabLayout.setVisibility(View.GONE);
+        }
+
+        if (x.getNews_images().size()==1)holder.tabLayout.setVisibility(View.GONE);
+
+
+        new TabLayoutMediator(holder.tabLayout, holder.viewPager2, new  TabLayoutMediator.TabConfigurationStrategy(){
+
+            @Override
+            public void onConfigureTab(@NonNull @NotNull TabLayout.Tab tab, int position) {
+
+            }
+        }).attach();
     }
 
     private File createImageFile() throws IOException {
@@ -316,6 +352,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         ImageView  avtarIv,likeThumbIv;
         TextView likesCountTv, usernameTv, descTv, timeTv,likeThumbTv;
         LinearLayout like, share;
+        TabLayout tabLayout;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -336,6 +373,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             timeTv = itemView.findViewById(R.id.tv_time_news);
             likeThumbIv = itemView.findViewById(R.id.imageView53);
             likeThumbTv = itemView.findViewById(R.id.like_thumb_news);
+            tabLayout = itemView.findViewById(R.id.tab_layout);
 
 
 

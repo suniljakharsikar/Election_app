@@ -53,6 +53,8 @@ class NewsUpdate : AppCompatActivity() {
         }*/recyclerView = findViewById(R.id.rv_news)
         linearLayoutManager = LinearLayoutManager(this)
         recyclerView!!.setLayoutManager(linearLayoutManager)
+        val itemViewType = 0
+        recyclerView!!.getRecycledViewPool().setMaxRecycledViews(itemViewType, 0)
         chatData = ArrayList()
         val job = GlobalScope.async {
             return@async Utility.isInternetAvailable()

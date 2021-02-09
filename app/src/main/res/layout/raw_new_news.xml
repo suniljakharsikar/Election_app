@@ -14,7 +14,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/photos_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
 
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
@@ -26,6 +26,21 @@
 
         </androidx.viewpager2.widget.ViewPager2>
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/photos_viewpager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photos_viewpager"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabContentStart="0dp"
+            app:tabGravity="center"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="0dp" />
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_avtar_news"
             android:layout_width="30dp"
