@@ -59,6 +59,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     private String s2;
     private Boolean passToken;
     private ProgressBar avi;
+    private boolean isProgressing = false;
 
 
     public CommunityChatAdapter(Context context, List<ChatDataResponseModel.Data> chatData, String s, String s1, String s2, boolean pass, ProgressBar avi) {
@@ -272,7 +273,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                     //Toast.makeText(context, "you already liked", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                like_dislike(1, x, holder.likesCountTv, holder.dislikesCountTv, position);
+                 like_dislike(1, x, holder.likesCountTv, holder.dislikesCountTv, position);
 
             }
         });
@@ -286,6 +287,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             holder.dislikeThumbTv.setText("Disliked");
             holder.disLikeThumbIv.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_down));
             holder.dislikeThumbTv.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.thumb_down));
+
         } else {
              holder.dislike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -326,6 +328,8 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
     }
 
     private void like_dislike(int i, ChatDataResponseModel.Data x, TextView likes, TextView dilikes, int position) {
+
+
         String url = Url.baseurl + s;
         JSONObject json = new JSONObject();
         try {
@@ -335,77 +339,78 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (avi != null) {
-         //   avi.setVisibility(View.VISIBLE);
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    if (response.getBoolean("success")) {
-                        if (i == 1) {//like increase
-                            x.setLikes(x.getLikes() + 1);
-                            x.setLikeStatus(1);
-                            likes.setText(x.getLikes() + "");
-                            if (x.getUnlikeStatus() == 1) {
-                                x.setDislike(x.getDislike() - 1);
-                                x.setUnlikeStatus(0);
-                                dilikes.setText(x.getDislike() + "");
-                            }
-                           // if (avi != null)
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (response.getBoolean("success")) {
+
+                            if (i == 1) {//like increase
+                                x.setLikes(x.getLikes() + 1);
+                                x.setLikeStatus(1);
+                                likes.setText(x.getLikes() + "");
+                                if (x.getUnlikeStatus() == 1 && x.getDislike()!=0) {
+                                    x.setDislike(x.getDislike() - 1);
+                                    x.setUnlikeStatus(0);
+                                    dilikes.setText(x.getDislike() + "");
+                                }
+                                // if (avi != null)
                                 //stopanim();
-                        }
-                        if (i == 2) {
-                            x.setDislike(x.getDislike() + 1);
-                            x.setUnlikeStatus(1);
-                            dilikes.setText(x.getDislike() + "");
-                            if (x.getLikeStatus() == 1) {
-                                x.setLikes(x.getLikes() - 1);
-                                x.setLikeStatus(0);
-                                likes.setText(x.getDislike() + "");
                             }
-                            if (avi != null)
-                                avi.setVisibility(View.INVISIBLE);
+                            if (i == 2) {
+                                x.setDislike(x.getDislike() + 1);
+                                x.setUnlikeStatus(1);
+                                dilikes.setText(x.getDislike() + "");
+                                if (x.getLikeStatus() == 1 && x.getLikes()!=0)   {
+                                    x.setLikes(x.getLikes() - 1);
+                                    x.setLikeStatus(0);
+                                    likes.setText(x.getDislike() + "");
+                                }
+                                if (avi != null)
+                                    avi.setVisibility(View.INVISIBLE);
 
-                        }
+                            }
 //                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-                        notifyItemChanged(position);
-                        //// TODO: 19/12/20 refresh number of likes
-                    } else {
-                        Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
-                        //login page
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.apply();
-                        editor.clear();
-                        context.startActivity(new Intent(context, LoginActivity.class));
+                            notifyItemChanged(position);
+                            //// TODO: 19/12/20 refresh number of likes
+                        } else {
+                            Toast.makeText(context, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+                            //login page
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.apply();
+                            editor.clear();
+                            context.startActivity(new Intent(context, LoginActivity.class));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
                 }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                    // stopanim();
 
-               // stopanim();
+                    Toast.makeText(context, "" + error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("Content-Type", "application/json");
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    header.put("token", preferences.getString(Datas.token, ""));
+                    header.put("lid", preferences.getString(Datas.lagnuage_id, "1"));
+                    return header;
+                }
+            };
+            MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
 
-                Toast.makeText(context, "" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> header = new HashMap<>();
-                header.put("Content-Type", "application/json");
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                header.put("token", preferences.getString(Datas.token, ""));
-                header.put("lid", preferences.getString(Datas.lagnuage_id, "1"));
-                return header;
-            }
-        };
-        MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
-    }
+        }
+
 
     private void stopanim() {
         avi.setVisibility(View.INVISIBLE);

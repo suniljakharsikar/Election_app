@@ -90,7 +90,7 @@ class VotingGuide : YouTubeBaseActivity() {
                     if (mediaType==2){
                         youTubePlayerView!!.visibility = View.INVISIBLE
                         imageView_voting_guide.visibility = View.VISIBLE
-                        Glide.with(this).load(Url.burl+media).into(imageView_voting_guide)
+                        Glide.with(this).load(Url.burl+media).placeholder(R.drawable.ic_icon_placeholder).into(imageView_voting_guide)
 
                     }else if (mediaType==1){
                         youTubePlayerView!!.visibility = View.VISIBLE

@@ -39,6 +39,8 @@
             android:ems="10"
             android:gravity="start"
             android:hint="Title"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/&amp;^%$#@!"
+
             android:inputType="textShortMessage"
             android:padding="8dp"
             android:singleLine="true"
@@ -163,6 +165,8 @@
             android:background="@drawable/stroke_rectangle_shape"
             android:ems="10"
             android:gravity="start"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/&amp;^%$#@!"
+
             android:hint="Write your problem or suggestion here."
             android:inputType="textMultiLine"
             android:padding="8dp"

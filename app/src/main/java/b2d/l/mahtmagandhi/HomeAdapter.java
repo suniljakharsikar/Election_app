@@ -128,7 +128,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                       case "Setting Profile":
                           intent.setClass(context, SettingProfile.class);
                           break;
-
+                      case "Profile":
+                          intent.setClass(context, SettingProfile.class);
+                          break;
                       case "Meeting":
                           intent.setClass(context, Meetings.class);
                           break;
@@ -201,7 +203,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                   case "Setting Profile":
                       drawableRes = R.drawable.setting;
                       break;
-
+                  case "Profile":
+                      drawableRes = R.drawable.setting;
+                      break;
                   case "Meeting":
                       drawableRes = R.drawable.suitcase;
                       break;

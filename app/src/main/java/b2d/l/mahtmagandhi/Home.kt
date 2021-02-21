@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -20,6 +21,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_request_appointment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -70,8 +75,23 @@ class Home : AppCompatActivity() {
 //        homelistDatas!!.add(HomelistData("Setting & Profile", R.drawable.setting))
 //        homelistDatas!!.add(HomelistData("Meetings", R.drawable.suitcase))
 
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
+        }
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+                    fetchMenus()
 
-        fetchMenus()
+                } else {
+                    progressBar_home.visibility = View.GONE
+                    Utility.customSnackBar(recyclerView!!, this@Home, "No Internet Available.", ContextCompat.getColor(this@Home, R.color.error), R.drawable.ic_error)
+                }
+            }
+
+        }
+
 
 
         findViewById<View>(R.id.imageView_noti_home).setOnClickListener {
@@ -105,6 +125,7 @@ class Home : AppCompatActivity() {
         val url = Url.baseurl+"/menu_list"
         val jsonObjectRequet = object : JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
             override fun onResponse(response: JSONObject?) {
+                progressBar_home.visibility = View.GONE
 
                 val gson = Gson()
                 val res = gson.fromJson(response.toString(), MenusResponseModel::class.java)
@@ -122,6 +143,8 @@ class Home : AppCompatActivity() {
 
         }, object : Response.ErrorListener {
             override fun onErrorResponse(error: VolleyError?) {
+                progressBar_home.visibility = View.GONE
+
                 Log.d("RequestAppointment", "onErrorResponse: " + error)
             }
 

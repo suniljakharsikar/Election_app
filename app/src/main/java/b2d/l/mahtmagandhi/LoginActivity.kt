@@ -3,6 +3,7 @@ package b2d.l.mahtmagandhi
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -35,12 +36,14 @@ import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCall
 import com.google.firebase.messaging.FirebaseMessaging
 import com.hbb20.CountryCodePicker
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_o_t_p_modify.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
+import java.math.BigInteger
 import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
@@ -108,11 +111,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private var editText1: EditText? = null
-    private var editText2: EditText? = null
-    private var editText3: EditText? = null
-    private var editText4: EditText? = null
-    private var editText5: EditText? = null
-    private var editText6: EditText? = null
+
     fun back(view: View?) {
         finish()
     }
@@ -121,9 +120,14 @@ class LoginActivity : AppCompatActivity() {
 //        Toast.makeText(this, "testing", Toast.LENGTH_SHORT).show();
         Utility.hideKeyboard(this)
         mobile = editText!!.text.toString().trim { it <= ' ' }
-        if (mobile!!.length < 6) {
-            editText!!.error = "Please enter your valid Mobile no."
-        } else {
+        if (mobile!!.length < 6 ) {
+            editText!!.error = "Enter Valid Mobile Number"
+        }else if(mobile!!.toBigIntegerOrNull()== BigInteger.ZERO){
+            editText!!.error = "Enter Valid Mobile Number."
+
+        }else if (mobile!!.length >15 ) {
+            editText!!.error = "Enter Valid Mobile Number" }
+        else {
 
             val job = GlobalScope.async {
                 return@async Utility.isInternetAvailable()
@@ -165,18 +169,7 @@ class LoginActivity : AppCompatActivity() {
         }
         editText = findViewById(R.id.editTextPhone3)
         editText1 = findViewById<View>(R.id.otpEdit1) as EditText
-        editText2 = findViewById<View>(R.id.otpEdit2) as EditText
-        editText3 = findViewById<View>(R.id.otpEdit3) as EditText
-        editText4 = findViewById<View>(R.id.otpEdit4) as EditText
-        editText5 = findViewById<View>(R.id.otpEdit5) as EditText
-        editText6 = findViewById<View>(R.id.otpEdit6) as EditText
-        //        sendbtn = findViewById(R.id.button_verify_otp);
-        editText1!!.addTextChangedListener(PinTextWatcher(0))
-        editText2!!.addTextChangedListener(PinTextWatcher(1))
-        editText3!!.addTextChangedListener(PinTextWatcher(2))
-        editText4!!.addTextChangedListener(PinTextWatcher(3))
-        editText5!!.addTextChangedListener(PinTextWatcher(4))
-        editText6!!.addTextChangedListener(PinTextWatcher(5))
+
         stopAnim()
     }
 
@@ -223,7 +216,7 @@ class LoginActivity : AppCompatActivity() {
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId
                 mResendToken = token
-
+                timerForResend()
                 // ...
                 if (Datas.DEBUG) Toast.makeText(this@LoginActivity, "OTP sent successfully", Toast.LENGTH_SHORT).show()
                 stopAnim()
@@ -252,6 +245,35 @@ class LoginActivity : AppCompatActivity() {
         editText!!.isFocusable = false
     }
 
+    private var timer: CountDownTimer? = null
+
+
+    private fun timerForResend() {
+        if (timer!=null)
+            timer!!.cancel()
+
+        textView_resend_otp_modify.isEnabled = false
+        textView_resend_otp_modify.setTextColor(ContextCompat.getColor(this, R.color.browser_actions_divider_color))
+
+        timer = object : CountDownTimer(60000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                textView_sec_otp_modify.setText("Resend in " + millisUntilFinished / 1000 + "sec")
+                textView_sec_otp_modify.setTextColor(ContextCompat.getColor(this@LoginActivity, R.color.black))
+
+                if (textView_resend_otp_modify.visibility == View.VISIBLE)
+                    textView_resend_otp_modify.visibility = View.GONE
+            }
+
+            override fun onFinish() {
+                textView_resend_otp_modify.isEnabled = true
+                textView_resend_otp_modify.setTextColor(ContextCompat.getColor(this@LoginActivity, R.color.black))
+                textView_sec_otp_modify.setText("")
+                textView_resend_otp_modify.visibility = View.VISIBLE
+            }
+        }.start()
+
+
+    }
     // [START sign_in_with_phone]
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         mAuth!!.signInWithCredential(credential)
@@ -432,14 +454,32 @@ class LoginActivity : AppCompatActivity() {
         signInWithPhoneAuthCredential(credential)
     }
 
-    fun resend(view: View?) {}
+    fun resend(view: View?) {
+        val job = GlobalScope.async {
+            return@async Utility.isInternetAvailable()
+        }
+        job.invokeOnCompletion {
+            val isInternet = job.getCompleted()
+            GlobalScope.launch(Dispatchers.Main) {
+                if (isInternet) {
+
+                    if (Url.firebaseOTP) {
+                        sendotpusingfirebase(mobile!!) //firebase otp
+                    } else {
+                        sendotp(mobile!!) //api
+                    }
+
+
+                } else {
+                    stopAnim()
+                    customSnackBar(editText!!, this@LoginActivity, "No Internet Available.", ContextCompat.getColor(this@LoginActivity, R.color.error), R.drawable.ic_error)
+                }
+            }
+
+        }
+    }
     fun sumit(view: View?) {
-        val code = editText1!!.text.toString() +
-                editText2!!.text.toString() +
-                editText3!!.text.toString() +
-                editText4!!.text.toString() +
-                editText5!!.text.toString() +
-                editText6!!.text.toString()
+        val code = editText1!!.text.toString()
         verifyPhoneNumberWithCode(mVerificationId, code)
     }
 

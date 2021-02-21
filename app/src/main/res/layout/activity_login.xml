@@ -148,6 +148,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone">
 
+
             <TextView
                 android:id="@+id/textView211"
                 android:layout_width="wrap_content"
@@ -163,97 +164,22 @@
 
             <EditText
                 android:id="@+id/otpEdit1"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:ems="2"
-                android:gravity="center"
+                android:layout_marginEnd="16dp"
+                android:background="@color/white_text_color"
+                android:gravity="left|start"
+                android:hint="______"
                 android:inputType="phone"
-                app:backgroundTint="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/otpEdit2"
-                app:layout_constraintHorizontal_bias="0.5"
+                android:letterSpacing="1"
+                android:maxLength="6"
+                android:minWidth="120dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
-
-            <EditText
-                android:id="@+id/otpEdit2"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                android:ems="2"
-                android:gravity="center"
-                android:inputType="phone"
-                app:backgroundTint="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/otpEdit1"
-                app:layout_constraintEnd_toStartOf="@+id/otpEdit3"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/otpEdit1"
-                app:layout_constraintTop_toTopOf="@+id/otpEdit1" />
-
-            <EditText
-                android:id="@+id/otpEdit3"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                android:ems="2"
-                android:gravity="center"
-                android:inputType="phone"
-                app:backgroundTint="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/otpEdit2"
-                app:layout_constraintEnd_toStartOf="@+id/otpEdit4"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/otpEdit2"
-                app:layout_constraintTop_toTopOf="@+id/otpEdit2" />
-
-            <EditText
-                android:id="@+id/otpEdit4"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                android:ems="2"
-                android:gravity="center"
-                android:inputType="phone"
-                app:backgroundTint="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/otpEdit3"
-                app:layout_constraintEnd_toStartOf="@+id/otpEdit5"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/otpEdit3"
-                app:layout_constraintTop_toTopOf="@+id/otpEdit3" />
-
-            <EditText
-                android:id="@+id/otpEdit5"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                android:ems="2"
-                android:gravity="center"
-                android:inputType="phone"
-                app:backgroundTint="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/otpEdit4"
-                app:layout_constraintEnd_toStartOf="@+id/otpEdit6"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/otpEdit4"
-                app:layout_constraintTop_toTopOf="@+id/otpEdit4" />
-
-            <EditText
-                android:id="@+id/otpEdit6"
-                android:layout_width="40dp"
-                android:layout_height="48dp"
-                android:layout_margin="4dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:ems="2"
-                android:gravity="center"
-                android:inputType="phone"
-                app:backgroundTint="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/otpEdit5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/otpEdit5"
-                app:layout_constraintTop_toTopOf="@+id/otpEdit5" />
 
             <TextView
                 android:id="@+id/textView_resend_otp_modify"
@@ -263,8 +189,8 @@
                 android:layout_marginBottom="16dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="resend"
-                android:text="Didn't Receive ? Resend OTP"
-                android:textColor="@color/black"
+
+                android:text="@string/resend"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -286,7 +212,21 @@
                 app:cornerRadius="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/otpEdit3" />
+                app:layout_constraintTop_toBottomOf="@+id/otpEdit1" />
+
+
+
+            <TextView
+                android:id="@+id/textView_sec_otp_modify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_verify_otp" />
+
 
 
             <androidx.constraintlayout.widget.Guideline

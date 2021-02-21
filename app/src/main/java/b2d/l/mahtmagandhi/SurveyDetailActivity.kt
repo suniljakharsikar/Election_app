@@ -10,12 +10,13 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
-import com.wang.avi.AVLoadingIndicatorView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_survey_detail.*
 import kotlinx.coroutines.*
 import org.json.JSONObject
@@ -28,7 +29,7 @@ class SurveyDetailActivity : AppCompatActivity() {
     private var avi: ProgressBar? = null
 
     fun startAnim() {
-       // avi!!.show()
+        // avi!!.show()
         avi!!.visibility = View.VISIBLE
         // or avi.smoothToShow();
     }
@@ -48,7 +49,7 @@ class SurveyDetailActivity : AppCompatActivity() {
 
         textView_que_survey.text = data?.title
 
-        if (data !=null && data!!.is_answered==1)button_submit2.visibility = View.GONE
+
 
 
         for (i in data!!.optionsData) {
@@ -68,6 +69,14 @@ class SurveyDetailActivity : AppCompatActivity() {
         rg_options_survey.check(data!!.answered_option_id)
 
 
+        rv_survey_detail.layoutManager = LinearLayoutManager(this)
+        if (data != null && data!!.is_answered == 1) {
+            button_submit2.visibility = View.GONE
+            rg_options_survey.visibility = View.GONE
+            fetchPercentage(data!!.optionsData,data!!.answered_option_id)
+
+        }
+
         stopAnim()
     }
 
@@ -77,7 +86,7 @@ class SurveyDetailActivity : AppCompatActivity() {
 
     fun submit(view: View) {
 
-        if(rg_options_survey.checkedRadioButtonId==null)
+        if (rg_options_survey.checkedRadioButtonId == null)
             Toast.makeText(this, "Please select your answer.", Toast.LENGTH_SHORT).show()
         else {
             val job = GlobalScope.async {
@@ -85,7 +94,7 @@ class SurveyDetailActivity : AppCompatActivity() {
             }
             job.invokeOnCompletion {
                 val isInternet = job.getCompleted()
-                GlobalScope.launch (Dispatchers.Main) {
+                GlobalScope.launch(Dispatchers.Main) {
                     if (isInternet) {
                         val url = Url.baseurl + "/survey_response"
 
@@ -139,5 +148,54 @@ class SurveyDetailActivity : AppCompatActivity() {
             }
 
         }
+
+
+
+    }
+
+    fun fetchPercentage(optionsData: List<SurveyResponseModifyModel.Data.OptionsData>, answeredOptionId: Int) {
+
+        val url = Url.baseurl + "/survey_result"
+
+
+        val jsr = JSONObject()
+        jsr.put("qid", data!!.id)
+        startAnim()
+        val jor = object : JsonObjectRequest(Request.Method.POST, url, jsr, object : Response.Listener<JSONObject> {
+            override fun onResponse(response: JSONObject?) {
+                val gson = Gson()
+                val (data, _, _, success) = gson.fromJson(response.toString(), SurveyResponseResultModel::class.java)
+
+                for (i in optionsData){
+                    for (j in data){
+                        if (i.id==j.answer_id){
+                            i.answer_per = j.result
+                        }
+                    }
+
+                }
+                rv_survey_detail.adapter = SurveyResultDetailRvAdapter(optionsData, answeredOptionId)
+
+            }
+        }, object : Response.ErrorListener {
+            override fun onErrorResponse(error: VolleyError?) {
+                customSnackBar(rg_options_survey, this@SurveyDetailActivity, error.toString(),
+                        ContextCompat.getColor(this@SurveyDetailActivity, R.color.error), R.drawable.ic_error)
+                stopAnim()
+            }
+        }) {
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+                headers["Token"] = preferences.getString(Datas.token, "").toString()
+                headers["lid"] = preferences.getString(Datas.lagnuage_id, "1").toString()
+                return headers
+            }
+
+        }
+
+        MySingleton.getInstance(this@SurveyDetailActivity).addToRequestQueue(jor)
     }
 }

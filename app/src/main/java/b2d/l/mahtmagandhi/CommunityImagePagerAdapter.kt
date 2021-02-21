@@ -57,6 +57,7 @@ class CommunityImagePagerAdapter(private val imgs: MutableList<ChatDataResponseM
         Glide.with(holder.itemView.context)
                 .asBitmap()
                 .load(Url.burl + imgs.get(position).image_name)
+                .placeholder(R.drawable.ic_icon_placeholder)
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
 
@@ -89,7 +90,7 @@ class CommunityImagePagerAdapter(private val imgs: MutableList<ChatDataResponseM
         try {
             smallBitmap = RGB565toARGB888(smallBitmap)
         } catch (e: Exception) {
-            e.printStackTrace()
+            //e.printStackTrace()
         }
         val bitmap = Bitmap.createBitmap(
                 smallBitmap.width, smallBitmap.height,

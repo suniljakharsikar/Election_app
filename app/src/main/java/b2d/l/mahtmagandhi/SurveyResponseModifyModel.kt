@@ -20,7 +20,8 @@ data class SurveyResponseModifyModel(
         @Parcelize
         data class OptionsData(
             val id: Int, // 12
-            val options_data: String // Testing Survey - Option1
+            val options_data: String,
+            var answer_per:String?    // Testing Survey - Option1
         ):Parcelable
     }
 }

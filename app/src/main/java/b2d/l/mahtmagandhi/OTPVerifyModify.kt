@@ -114,6 +114,9 @@ class OTPVerifyModify : AppCompatActivity() {
         }
     }
 
+
+
+
     private fun timerForResend() {
         if (timer!=null)
         timer!!.cancel()

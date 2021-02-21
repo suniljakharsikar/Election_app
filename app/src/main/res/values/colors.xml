@@ -18,4 +18,5 @@
     <color name="thumb_up">#1846b1</color>
     <color name="success">#03CC75</color>
     <color name="error">#F60808</color>
+    <color name="grey_light">#F6F6F6</color>
 </resources>

@@ -123,8 +123,8 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
     }
 
     private fun createProblem() {
-        if (et_prob_sugg.text.isEmpty()) Toast.makeText(this, "Please write your problem and suggestion.", Toast.LENGTH_SHORT).show()
-        else if (et_prob_sugg_title.text.isEmpty()) Toast.makeText(this, "Please write your title.", Toast.LENGTH_SHORT).show()
+        if (et_prob_sugg.text.trim().isEmpty()) Toast.makeText(this, "Please write your problem and suggestion.", Toast.LENGTH_SHORT).show()
+        else if (et_prob_sugg_title.text.trim().isEmpty()) Toast.makeText(this, "Please write your title.", Toast.LENGTH_SHORT).show()
 
         else {
             startAnim()

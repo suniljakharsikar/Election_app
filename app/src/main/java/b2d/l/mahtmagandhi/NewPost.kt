@@ -98,7 +98,7 @@ class NewPost : AppCompatActivity() {
     }
 
     fun newposting(view: View?) {
-        val s = editText!!.text.toString()
+        val s = editText!!.text.toString().trim()
         if (isNullOrEmpty(s)) {
             Toast.makeText(this, "Please write something before post", Toast.LENGTH_SHORT).show()
         } else {

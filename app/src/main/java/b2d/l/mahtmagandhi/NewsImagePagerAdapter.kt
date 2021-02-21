@@ -57,6 +57,7 @@ class NewsImagePagerAdapter(private val imgs: MutableList<NewsUpdateResponseMode
         Glide.with(holder.itemView.context)
                 .asBitmap()
                 .load(Url.burl + imgs.get(position))
+                .placeholder(R.drawable.ic_icon_placeholder)
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
 
