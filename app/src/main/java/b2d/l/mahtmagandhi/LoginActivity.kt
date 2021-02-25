@@ -140,7 +140,12 @@ class LoginActivity : AppCompatActivity() {
                         if (Url.firebaseOTP) {
                             sendotpusingfirebase(mobile!!) //firebase otp
                         } else {
+                            if(countryCodePicker!!.selectedCountryCodeWithPlus.equals("+91"))
                             sendotp(mobile!!) //api
+                            else
+                                customSnackBar(editText!!, this@LoginActivity, "This app working in India only.", ContextCompat.getColor(this@LoginActivity, R.color.error), R.drawable.ic_error)
+
+
                         }
 
 
@@ -169,6 +174,7 @@ class LoginActivity : AppCompatActivity() {
         }
         editText = findViewById(R.id.editTextPhone3)
         editText1 = findViewById<View>(R.id.otpEdit1) as EditText
+
 
         stopAnim()
     }
@@ -466,7 +472,11 @@ class LoginActivity : AppCompatActivity() {
                     if (Url.firebaseOTP) {
                         sendotpusingfirebase(mobile!!) //firebase otp
                     } else {
-                        sendotp(mobile!!) //api
+                        if(countryCodePicker!!.selectedCountryCodeWithPlus.equals("+91"))
+                            sendotp(mobile!!) //api
+                        else
+                            customSnackBar(editText!!, this@LoginActivity, "This app working in India only.", ContextCompat.getColor(this@LoginActivity, R.color.error), R.drawable.ic_error)
+
                     }
 
 

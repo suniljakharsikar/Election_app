@@ -87,51 +87,50 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                   new Handler().postDelayed(() -> view.setSelected(false), 100);
                   int itemPosition = mRecyclerView.getChildLayoutPosition(view);
                   Intent intent = new Intent();
-                  switch (model.getMenu()) {
-                      case "About Us":
+
+                  switch (model.getId()) {
+                      case 1:
                           intent.setClass(context, AboutUs.class);
                           break;
-                      case "Appointment":
+                      case 2:
                           intent.setClass(context, Appointment.class);
                           break;
 
-                      case "Community Chat":
+                      case 3:
                           intent.setClass(context, CommunityChat.class);
                           break;
-                      case "News Update":
+                      case 4:
                           intent.setClass(context, NewsUpdate.class);
                           break;
-                      case "Our Work":
+                      case 5:
                           intent.setClass(context, OurWorks.class);
                           break;
-                      case "Vision Mission":
+                      case 6:
                           intent.setClass(context, VisionMission.class);
                           break;
-                      case "Problem Suggestion":
+                      case 7:
                           intent.setClass(context, ProblemSuggestion.class);
                           break;
-                      case "Manifesto":
+                      case 8:
                           intent.setClass(context, Manifesto.class);
                           break;
-                      case "Survey":
+                      case 9:
                           intent.setClass(context, Survey.class);
                           break;
-                      case "Committee Members":
+                      case 10:
                           intent.setClass(context, CommitteeMember.class);
                           break;
-                      case "Voating Guide":
+                      case 11:
                           intent.setClass(context, VotingGuide.class);
                           break;
-                      case "Helpline":
+                      case 12:
                           intent.setClass(context, Helpline.class);
                           break;
-                      case "Setting Profile":
+                      case 13:
                           intent.setClass(context, SettingProfile.class);
                           break;
-                      case "Profile":
-                          intent.setClass(context, SettingProfile.class);
-                          break;
-                      case "Meeting":
+
+                      case 14:
                           intent.setClass(context, Meetings.class);
                           break;
 
@@ -162,51 +161,49 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
           }else{
 
               int drawableRes = R.drawable.info;
-              switch (model.getMenu()) {
-                  case "About Us":
+              switch (model.getId()) {
+                  case 1:
                       drawableRes = R.drawable.info;
                       break;
-                  case "Appointment":
+                  case 2:
                       drawableRes = R.drawable.suitcase;
                       break;
 
-                  case "Community Chat":
+                  case 3:
                       drawableRes = R.drawable.chatboxes;
                       break;
-                  case "News Update":
+                  case 4:
                       drawableRes = R.drawable.newspaper;
                       break;
-                  case "Our Work":
+                  case 5:
                       drawableRes = R.drawable.groupwork;
                       break;
-                  case "Vision Mission":
+                  case 6:
                       drawableRes = R.drawable.vision;
                       break;
-                  case "Problem Suggestion":
+                  case 7:
                       drawableRes = R.drawable.problem;
                       break;
-                  case "Manifesto":
+                  case 8:
                       drawableRes = R.drawable.menifesto;
                       break;
-                  case "Survey":
+                  case 9:
                       drawableRes = R.drawable.sarve;
                       break;
-                  case "Committee Members":
+                  case 10:
                       drawableRes = R.drawable.commetee;
                       break;
-                  case "Voating Guide":
+                  case 11:
                       drawableRes = R.drawable.vote;
                       break;
-                  case "Helpline":
+                  case 12:
                       drawableRes = R.drawable.helpline;
                       break;
-                  case "Setting Profile":
+                  case 13:
                       drawableRes = R.drawable.setting;
                       break;
-                  case "Profile":
-                      drawableRes = R.drawable.setting;
-                      break;
-                  case "Meeting":
+
+                  case 14:
                       drawableRes = R.drawable.suitcase;
                       break;
 
