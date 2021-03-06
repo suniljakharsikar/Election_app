@@ -117,10 +117,13 @@ class RequestAppointmentActivity : AppCompatActivity() {
         val jsonObjectRequet = object :JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
             override fun onResponse(response: JSONObject?) {
 
+                stopAnim()
                 val isSuccess = response!!.optBoolean("success")
                 val statusCode = response.optInt("status_code")
                 if (isSuccess && statusCode == 200) {
                     val data = response.optJSONObject("data")
+                    if (data?.names()?.length()==null)
+                        return
                     val names = data.names();
 
 
@@ -138,7 +141,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
                         }
 
-                        val sdf = SimpleDateFormat("yyyy-mm-dd")
+                        val sdf = SimpleDateFormat("yyyy-MM-dd")
                         val tdf = SimpleDateFormat("dd MMM yyyy")
                         val d = sdf.parse(names.get(i).toString())
                         val currentTime = Calendar.getInstance()
@@ -154,7 +157,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
                     actv_choose_date.setAdapter(adapter1)
 
 
-                    stopAnim()
+
 
                     /* if (!hasDate){
                         Snackbar.make(sv_req_app,"Sorry for not available your choice date for appointment. ",Snackbar.LENGTH_LONG).show()

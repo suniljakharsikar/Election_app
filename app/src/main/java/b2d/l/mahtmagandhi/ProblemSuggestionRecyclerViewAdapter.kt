@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.apache.commons.lang3.StringEscapeUtils
 import java.net.URLDecoder
 
 class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<ProblemsResponseModel.Data>, val s1: String, val s2: String) : RecyclerView.Adapter<ProblemSuggestionRecyclerViewAdapter.ProblemSuggestionViewHolder>() {
@@ -35,16 +36,16 @@ class ProblemSuggestionRecyclerViewAdapter(private val data: MutableList<Problem
             var x = model.imageArr
 
             intent.putExtra("imgs", x)
-            intent.putExtra("dis", URLDecoder.decode(model.description, "UTF-8"));
-            intent.putExtra("title", URLDecoder.decode(model.title, "UTF-8"))
+            intent.putExtra("dis", StringEscapeUtils.unescapeJava(model.description));
+            intent.putExtra("title", StringEscapeUtils.unescapeJava(model.title))
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
             //                Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
             holder.itemView.context.startActivity(intent)
 //                holder.itemView.context.startActivity(Intent(holder.itemView.context, ChatOnProblem::class.java))
         }
-        holder.titleTv.text = URLDecoder.decode(model.title, "UTF-8")
-        holder.desTv.text = URLDecoder.decode(model.description, "UTF-8")
+        holder.titleTv.text = StringEscapeUtils.unescapeJava(model.title)
+        holder.desTv.text = StringEscapeUtils.unescapeJava(model.description)
         //holder.upTv.text = model.
 
     }

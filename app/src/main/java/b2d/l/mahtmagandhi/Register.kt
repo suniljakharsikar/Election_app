@@ -107,8 +107,10 @@ class Register : AppCompatActivity() {
         pincode!!.setText(preferences!!.getString(Datas.user_postal_code, ""))
         if (preferences!!.getString(Datas.user_postal_code, "")!!.length == 6) fetchLoc(preferences!!.getString(Datas.user_postal_code, ""))
         state!!.setText(preferences!!.getString(Datas.user_state, ""))
-        state!!.setEnabled(false)
-        distirct!!.setEnabled(false)
+        if (!Url.firebaseOTP) {
+            state!!.setEnabled(false)
+            distirct!!.setEnabled(false)
+        }
         distirct!!.setText(preferences!!.getString(Datas.user_district, ""))
         city!!.setText(preferences!!.getString(Datas.user_village, ""), false)
 
@@ -151,11 +153,11 @@ class Register : AppCompatActivity() {
         pincode!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
+                if (s.length > 5 && s.length == 6 && !Url.firebaseOTP) fetchLoc(s.toString())
             }
 
             override fun afterTextChanged(s: Editable) {
-                if (s.length > 5 && s.length == 6) fetchLoc(s.toString())
+                if (s.length > 5 && s.length == 6 && !Url.firebaseOTP) fetchLoc(s.toString() )
             }
         }
         )
@@ -219,7 +221,7 @@ class Register : AppCompatActivity() {
             return
         }
 
-        if (s1.trim().length!=6) {
+        if (!Url.firebaseOTP && s1.trim().length!=6) {
             Toast.makeText(this, "Please enter valid pincode.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -316,6 +318,7 @@ class Register : AppCompatActivity() {
                         val adapter = ArrayAdapter(baseContext, android.R.layout.simple_spinner_dropdown_item, cities)
                         val adapter1 = StringAdapter(this@Register, ArrayList(cities))
                         city!!.setAdapter(adapter1)
+                        city!!.setText("")
                         if (cities.size > 0) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                                 if (city!!.text.toString().length == 0) city!!.setText(cities[0], false)

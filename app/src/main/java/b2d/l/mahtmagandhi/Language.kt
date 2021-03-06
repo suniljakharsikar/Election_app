@@ -13,6 +13,7 @@ import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -26,6 +27,7 @@ class Language : AppCompatActivity() {
     private var preferences: SharedPreferences? = null
     private var listadapter: MyLangAdapter? = null
     private var avi: ProgressBar? = null
+    private val langIds = arrayListOf<Int>()
     fun startAnim() {
         // avi.show();
         avi!!.visibility = View.VISIBLE
@@ -93,16 +95,17 @@ class Language : AppCompatActivity() {
         startAnim()
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
             try {
-                val success = response.getBoolean("success")
+                val gson = Gson()
+                val (data, _, _, success) = gson.fromJson(response.toString(), LanguageResponseModel::class.java)
                 if (success) {
-                    val data = response.getJSONArray("data")
-                    val strings = arrayOfNulls<String>(data.length())
-                    for (i in 0 until data.length()) {
-                        val jsonObject = data.getJSONObject(i)
-                        //                            JsonObject jsonObject = (JsonObject) data.get(i);
-                        strings[i] = jsonObject["name"].toString()
+                    val strings = mutableListOf<String>()
+                    for (i in data){
+                        strings.add(i.name)
+                        langIds.add(i.id)
                     }
-                    listadapter = MyLangAdapter(this@Language, strings)
+
+
+                    listadapter = MyLangAdapter(this@Language, strings.toTypedArray())
                     listView!!.adapter = listadapter
                 } else {
                     // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
@@ -191,7 +194,8 @@ class Language : AppCompatActivity() {
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);*/
         val url = Url.baseurl + "/language_update"
         val jsonRequest = JSONObject()
-        val index = (listadapter!!.getselected() + 1).toString()
+        if (langIds.size==0)return
+        val index = (langIds.get(listadapter!!.getselected())).toString()
         try {
             jsonRequest.put("langId", index)
         } catch (e: JSONException) {

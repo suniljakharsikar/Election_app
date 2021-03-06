@@ -34,8 +34,12 @@ class NotificationAdapter(val data: List<NotificationResponseModel.Data>) : Recy
         } else {
             holder.descTv.text = Html.fromHtml(model.description)
         }
-        Glide.with(holder.itemView).load(Url.burl + model.image_url).into(holder.iv)
+        if (model.image_url.length>0) {
+            Glide.with(holder.itemView).load(Url.burl + model.image_url).into(holder.iv)
+            holder.iv.visibility = View.VISIBLE
 
+        }else
+            holder.iv.visibility=View.GONE
 
         //10:20 AM January 22,  2020
         //2021-01-07 13:02:02

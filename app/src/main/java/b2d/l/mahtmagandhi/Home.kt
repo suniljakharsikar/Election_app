@@ -75,6 +75,8 @@ class Home : AppCompatActivity() {
 //        homelistDatas!!.add(HomelistData("Setting & Profile", R.drawable.setting))
 //        homelistDatas!!.add(HomelistData("Meetings", R.drawable.suitcase))
 
+
+
         val job = GlobalScope.async {
             return@async Utility.isInternetAvailable()
         }
@@ -91,8 +93,6 @@ class Home : AppCompatActivity() {
             }
 
         }
-
-
 
         findViewById<View>(R.id.imageView_noti_home).setOnClickListener {
             val intent = Intent(applicationContext, NotificationActivity::class.java)
@@ -167,6 +167,11 @@ class Home : AppCompatActivity() {
 
     fun back(view: View?) {
         finish()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 
     var doubleBackToExitPressedOnce = false

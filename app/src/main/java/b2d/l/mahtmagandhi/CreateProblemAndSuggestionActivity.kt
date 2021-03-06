@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.fragment_image_picker_bottom_sheet.*
 import kotlinx.coroutines.*
 import okhttp3.*
+import org.apache.commons.lang3.StringEscapeUtils
 import java.io.File
 import java.io.IOException
 import java.net.URI
@@ -133,9 +134,11 @@ class CreateProblemAndSuggestionActivity : AppCompatActivity() {
             val client: OkHttpClient = OkHttpClient().newBuilder()
                     .build()
             val mediaType: MediaType = MediaType.parse("text/plain")!!
+            val title = et_prob_sugg_title.text.toString()
+            val desc = et_prob_sugg.text.toString()
             val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("title", URLEncoder.encode(et_prob_sugg_title.text.toString(),"UTF-8"))
-                    .addFormDataPart("descritpion", URLEncoder.encode(et_prob_sugg.text.toString(),"UTF-8"));
+                    .addFormDataPart("title", StringEscapeUtils.escapeJava(title))
+                    .addFormDataPart("descritpion", StringEscapeUtils.escapeJava(desc));
 
             var counter = 0
             for (i in imageAdapter!!.imagesEncodedList){

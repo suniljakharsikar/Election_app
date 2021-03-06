@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.coroutines.*
 import okhttp3.*
+import org.apache.commons.lang3.StringEscapeUtils
 import java.io.File
 import java.io.IOException
 import java.net.URLEncoder
@@ -131,7 +132,7 @@ class NewPost : AppCompatActivity() {
                 .build()
         val mediaType = MediaType.parse("text/plain")
         val bodyP = MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("postData", URLEncoder.encode(s, "UTF-8"))
+                .addFormDataPart("postData", StringEscapeUtils.escapeJava(s))
         var counter = 0
         for (i in imageAdapter!!.imagesEncodedList){
             bodyP.addFormDataPart("postImage[" + counter + "]", "p.jpg", RequestBody.create(MediaType.parse("application/octet-stream"), File(Utility.getPath(this, i)!!)))

@@ -31,6 +31,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
+import org.apache.commons.lang3.StringEscapeUtils
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
@@ -238,7 +239,7 @@ class Comment : AppCompatActivity() {
         val json = JSONObject()
         try {
             json.put("parentId", intent.getStringExtra("pos"))
-            json.put("comment", URLEncoder.encode(s, "UTF-8"))
+            json.put("comment", StringEscapeUtils.escapeJava(s))
         } catch (e: JSONException) {
             e.printStackTrace()
         } catch (e: UnsupportedEncodingException) {

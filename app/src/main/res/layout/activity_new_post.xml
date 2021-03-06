@@ -131,7 +131,6 @@
             android:hint="Write your post here."
             android:inputType="textPersonName"
             android:padding="8dp"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/&amp;^%$#@!"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

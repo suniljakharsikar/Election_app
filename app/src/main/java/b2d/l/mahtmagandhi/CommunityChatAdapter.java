@@ -37,6 +37,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,11 +111,9 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
         holder.dislikesCountTv.setText(x.getDislike() + "");
         holder.commentCountTv.setText(x.getCommentCount() + " Comment");
         String  desc = null;
-        try {
-            desc = URLDecoder.decode(x.getDescription(),"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            desc = x.getDescription();
-        }
+
+            desc = StringEscapeUtils.unescapeJava(x.getDescription());
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             holder.descTv.setText(Html.fromHtml(desc, Html.FROM_HTML_MODE_COMPACT).toString());
         } else {

@@ -1,11 +1,13 @@
 package b2d.l.mahtmagandhi;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +23,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 //import com.google.firebase.quickstart.fcm.R;
 
@@ -92,7 +97,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody());
+            sendNotification(remoteMessage.getNotification().getBody(),remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getImageUrl());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -232,9 +237,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      *
-     * @param messageBody FCM message body received.
+     * @param body
+     * @param imageUrl
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String body, String title, Uri imageUrl) {
         Intent intent = new Intent(this, NotificationActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -245,11 +251,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_status_icon)
-                        .setContentTitle(getString(R.string.fcm_message))
-                        .setContentText(messageBody)
+                        .setContentTitle(title)
+                        .setContentText(body)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
+
+        FutureTarget<Bitmap> futureTarget = Glide.with(this)
+                .asBitmap()
+                .load("https://"+imageUrl)
+                .submit();
+
+        Bitmap bitmap = null;
+        try {
+            bitmap = futureTarget.get();
+            notificationBuilder.setLargeIcon(bitmap);
+            notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap));
+            //notificationBuilder.setStyle(new Notification.BigPictureStyle().bigPicture(bitmap));
+        } catch (ExecutionException e) {
+           // e.printStackTrace();
+        } catch (InterruptedException e) {
+           // e.printStackTrace();
+        }
+
+
+        Glide.with(this).clear(futureTarget);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -257,7 +284,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
+                    "My App",
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
