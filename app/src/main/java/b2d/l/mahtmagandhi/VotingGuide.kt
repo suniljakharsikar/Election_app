@@ -78,9 +78,9 @@ class VotingGuide : YouTubeBaseActivity() {
             Log.d("ashok_voting", response.toString())
             try {
                 if (response.getBoolean("success")) {
-                    val description = response.getJSONArray("data").getJSONObject(0).getString("description")
-                    val media = response.getJSONArray("data").getJSONObject(0).getString("media")
-                    val mediaType = response.getJSONArray("data").getJSONObject(0).optInt("media_type")
+                    val description = response.getJSONArray("data").getJSONObject(1).getString("description")
+                    val media = response.getJSONArray("data").getJSONObject(1).getString("media")
+                    val mediaType = response.getJSONArray("data").getJSONObject(1).optInt("media_type")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         textView!!.text = Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT)
                     } else {

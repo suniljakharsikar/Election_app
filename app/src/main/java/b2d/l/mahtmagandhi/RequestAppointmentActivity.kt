@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.apache.commons.lang3.StringEscapeUtils
 import org.json.JSONObject
 import java.net.URLEncoder
 import java.text.DateFormat
@@ -87,21 +88,33 @@ class RequestAppointmentActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (ts.containsKey(s.toString()))
-                    actv_choose_time.setAdapter(ArrayAdapter<AppointmentTime>(this@RequestAppointmentActivity, android.R.layout.simple_spinner_dropdown_item, ts.get(s.toString())!!.toList()))
+                if (ts.containsKey(s.toString())) {
+                    actv_choose_time.setText("")
+                    actv_choose_time.setAdapter(
 
+                        ArrayAdapter<AppointmentTime>(
+                            this@RequestAppointmentActivity,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            ts.get(s.toString())!!.toList()
+                        )
+                    )
+
+
+                }
 
             }
         })
 
 
         actv_choose_time.setOnItemClickListener { parent, view, position, id ->
-            try {
-                val item = parent.selectedItem as AppointmentTime
+
+                val item = parent.getItemAtPosition(position) as AppointmentTime
                 aptId = item.id
-            } catch (e: Exception) {
-            }
+                //Toast.makeText(this, aptId.toString(), Toast.LENGTH_SHORT).show()
+
         }
+
+
 
     }
     private fun updateLabel() {
@@ -226,7 +239,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
                          jo.put("appt_id", appt_id)
                          jo.put("appt_date", appt_date)
                          jo.put("appt_time", appt_time)
-                         jo.put("message", URLEncoder.encode(message, "UTF-8"))
+                         jo.put("message", StringEscapeUtils.escapeJava(message))
 
                          startAnim()
                          val url = Url.baseurl + "/appt_booking"

@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -84,11 +85,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         //holder.status.setText(appointment_data.getBookedStatus());
         String msg = null;
-        try {
-             msg = URLDecoder.decode(appointment_data.getMessage(),"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            msg = appointment_data.getMessage();
-        }
+        msg = StringEscapeUtils.unescapeJava(appointment_data.getMessage());
 
         holder.detail.setText(msg);
 
