@@ -194,6 +194,19 @@ class OTPVerifyModify : AppCompatActivity() {
                 if (success) {
                     val token = response.getString("token")
                     val data1 = response.getJSONArray("data")
+
+                    if (data1.optJSONObject(0).optInt("user_status")==0) {
+                        customSnackBar(
+                            editText1!!,
+                            this@OTPVerifyModify,
+                            "Inactive User.",
+                            ContextCompat.getColor(this@OTPVerifyModify, R.color.error),
+                            R.drawable.ic_error
+                        )
+                        sendbtn!!.isEnabled = true
+                        stopAnim()
+                        return@JsonObjectRequest
+                    }
                     val preferences = PreferenceManager.getDefaultSharedPreferences(this@OTPVerifyModify)
                     val editor = preferences.edit()
                     editor.putBoolean(Datas.loginstatus, true)
@@ -303,6 +316,21 @@ class OTPVerifyModify : AppCompatActivity() {
                 if (success) {
                     val token = response.getString("token")
                     val data1 = response.getJSONArray("data")
+
+
+                    if (data1.optJSONObject(0).optInt("user_status")==0) {
+                        customSnackBar(
+                            editText1!!,
+                            this@OTPVerifyModify,
+                            "Inactive User.",
+                            ContextCompat.getColor(this@OTPVerifyModify, R.color.error),
+                            R.drawable.ic_error
+                        )
+                        sendbtn!!.isEnabled = true
+                        stopAnim()
+                        return@JsonObjectRequest
+                    }
+
                     val preferences = PreferenceManager.getDefaultSharedPreferences(this@OTPVerifyModify)
                     val editor = preferences.edit()
                     editor.putBoolean(Datas.loginstatus, true)
@@ -313,10 +341,10 @@ class OTPVerifyModify : AppCompatActivity() {
                     }
                     editor.putString(Datas.user_mobile, jsonObject.getString(Datas.user_mobile))
                     if (jsonObject.getString(Datas.user_age) != "null") editor.putString(Datas.user_age, jsonObject.getString(Datas.user_age))
-                    if (jsonObject.getString(Datas.user_age) != "null") editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code))
-                    if (jsonObject.getString(Datas.user_age) != "null") editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state))
-                    if (jsonObject.getString(Datas.user_age) != "null") editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district))
-                    if (jsonObject.getString(Datas.user_age) != "null") editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id))
+                    if (jsonObject.getString(Datas.user_postal_code) != "null") editor.putString(Datas.user_postal_code, jsonObject.getString(Datas.user_postal_code))
+                    if (jsonObject.getString(Datas.user_state) != "null") editor.putString(Datas.user_state, jsonObject.getString(Datas.user_state))
+                    if (jsonObject.getString(Datas.user_district) != "null") editor.putString(Datas.user_district, jsonObject.getString(Datas.user_district))
+                    if (jsonObject.getString(Datas.lagnuage_id) != "null") editor.putString(Datas.lagnuage_id, jsonObject.getString(Datas.lagnuage_id))
                     editor.putString(Datas.token, token)
                     editor.apply()
                     if (jsonObject.getString(Datas.user_name) != "null") {

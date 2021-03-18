@@ -346,9 +346,14 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                         if (response.getBoolean("success")) {
 
                             if (i == 1) {//like increase
-                                x.setLikes(x.getLikes() + 1);
-                                x.setLikeStatus(1);
-                                likes.setText(x.getLikes() + "");
+
+                                if (x.getLikeStatus()==0) {
+                                    x.setLikes(x.getLikes() + 1);
+                                    likes.setText(x.getLikes() + "");
+                                    x.setLikeStatus(1);
+                                }
+
+
                                 if (x.getUnlikeStatus() == 1 && x.getDislike()!=0) {
                                     x.setDislike(x.getDislike() - 1);
                                     x.setUnlikeStatus(0);
@@ -358,9 +363,13 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
                                 //stopanim();
                             }
                             if (i == 2) {
-                                x.setDislike(x.getDislike() + 1);
-                                x.setUnlikeStatus(1);
-                                dilikes.setText(x.getDislike() + "");
+                                if (x.getUnlikeStatus()==0) {
+                                    x.setDislike(x.getDislike() + 1);
+                                    x.setUnlikeStatus(1);
+                                    dilikes.setText(x.getDislike() + "");
+                                }
+
+
                                 if (x.getLikeStatus() == 1 && x.getLikes()!=0)   {
                                     x.setLikes(x.getLikes() - 1);
                                     x.setLikeStatus(0);

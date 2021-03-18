@@ -325,6 +325,18 @@ class LoginActivity : AppCompatActivity() {
                                 if (success) {
                                     val token = response.getString("token")
                                     val data1 = response.getJSONArray("data")
+                                    if (data1.optJSONObject(0).optInt("user_status")==0) {
+                                        customSnackBar(
+                                            editText1!!,
+                                            this,
+                                            "Inactive User.",
+                                            ContextCompat.getColor(this, R.color.error),
+                                            R.drawable.ic_error
+                                        )
+                                        //sendbtn!!.isEnabled = true
+                                        stopAnim()
+                                        return@JsonObjectRequest
+                                    }
                                     val preferences = PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
                                     val editor = preferences.edit()
                                     editor.putBoolean(Datas.loginstatus, true)
@@ -363,6 +375,7 @@ class LoginActivity : AppCompatActivity() {
                         MySingleton.getInstance(this@LoginActivity).addToRequestQueue(jsonObjectRequest)
                         // [END_EXCLUDE]
                     } else {
+                        stopAnim()
                         // Sign in failed, display a message and update the UI
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
                         if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -489,7 +502,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
     fun sumit(view: View?) {
-        val code = editText1!!.text.toString()
+        val code = editText1!!.text.toString().trim()
+        if (code.length==6)
         verifyPhoneNumberWithCode(mVerificationId, code)
     }
 
