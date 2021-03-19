@@ -425,7 +425,16 @@ class LoginActivity : AppCompatActivity() {
             val requestQueue = Volley.newRequestQueue(this)
             val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, json, { response ->
                 try {
-                    if (response.getBoolean("success")) {
+                    if (response.getBoolean("success") ) {
+
+                        stopAnim()
+                        if(response.getInt("user_status")==0){
+                            customSnackBar(mobile_c!!, this@LoginActivity, "User is inactive.",
+                                ContextCompat.getColor(this@LoginActivity, R.color.error), R.drawable.ic_error)
+                            issubmit = false
+
+                            return@JsonObjectRequest
+                        }
                         val intent = Intent(this@LoginActivity, OTPVerifyModify::class.java)
                         intent.putExtra("mobile", mobile)
                         // Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();

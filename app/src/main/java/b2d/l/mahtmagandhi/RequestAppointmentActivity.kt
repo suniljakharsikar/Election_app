@@ -12,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -70,6 +71,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
             val isInternet = job.getCompleted()
             GlobalScope.launch (Dispatchers.Main){
                 if (isInternet) {
+
                     validDateCheck()
 
                 } else {
@@ -125,6 +127,7 @@ class RequestAppointmentActivity : AppCompatActivity() {
 
     }
     private fun validDateCheck() {
+
         startAnim()
         val url = Url.baseurl + "/appt_time_slot_list"
         val jsonObjectRequet = object :JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
@@ -225,50 +228,69 @@ class RequestAppointmentActivity : AppCompatActivity() {
              job.invokeOnCompletion {
                  val isInternet = job.getCompleted()
                  GlobalScope.launch (Dispatchers.Main) {
-                     if (isInternet) {
-                         val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
-                         val transDateFor = SimpleDateFormat("yyyy-MM-dd")
-                         val date = formatter.parse(doa)
-
-                         val appt_date = transDateFor.format(date);
-                         val appt_time = time
-                         val appt_id = aptId.toString()
-                         val message = purpose
-
-                         val jo = JSONObject()
-                         jo.put("appt_id", appt_id)
-                         jo.put("appt_date", appt_date)
-                         jo.put("appt_time", appt_time)
-                         jo.put("message", StringEscapeUtils.escapeJava(message))
-
-                         startAnim()
-                         val url = Url.baseurl + "/appt_booking"
-
-                         val jor = object : JsonObjectRequest(Request.Method.POST, url, jo, Response.Listener<JSONObject> {
-                             Log.d("Response", "submit: " + it)
+                     if (isInternet ) {
+                         if (button_submit_appt.isEnabled) {
+                             button_submit_appt.isEnabled = false
 
 
-                             stopAnim()
-                             finish()
-                         }, object : Response.ErrorListener {
-                             override fun onErrorResponse(error: VolleyError?) {
-                                 stopAnim()
-                                 Log.d("Response", "onErrorResponse: " + error)
+                             val formatter: DateFormat = SimpleDateFormat("dd MMM yyyy")
+                             val transDateFor = SimpleDateFormat("yyyy-MM-dd")
+                             val date = formatter.parse(doa)
+
+                             val appt_date = transDateFor.format(date);
+                             val appt_time = time
+                             val appt_id = aptId.toString()
+                             val message = purpose
+
+                             val jo = JSONObject()
+                             jo.put("appt_id", appt_id)
+                             jo.put("appt_date", appt_date)
+                             jo.put("appt_time", appt_time)
+                             jo.put("message", StringEscapeUtils.escapeJava(message))
+
+                             startAnim()
+                             val url = Url.baseurl + "/appt_booking"
+
+                             val jor = object : JsonObjectRequest(
+                                 Request.Method.POST,
+                                 url,
+                                 jo,
+                                 Response.Listener<JSONObject> {
+                                     Log.d("Response", "submit: " + it)
+                                     button_submit_appt.isEnabled = true
+                                     actv_choose_date.setText("")
+                                     actv_choose_time.setText("")
+                                     tie_appointment_purpose_book_app.setText("")
+
+
+                                     stopAnim()
+                                     finish()
+                                 },
+                                 object : Response.ErrorListener {
+                                     override fun onErrorResponse(error: VolleyError?) {
+                                         stopAnim()
+                                         button_submit_appt.isEnabled = true
+
+                                         Log.d("Response", "onErrorResponse: " + error)
+                                     }
+                                 }) {
+                                 override fun getHeaders(): Map<String, String> {
+                                     val headers = HashMap<String, String>()
+                                     headers["Content-Type"] = "application/json"
+                                     var preferences =
+                                         PreferenceManager.getDefaultSharedPreferences(baseContext)
+
+                                     headers["Token"] =
+                                         preferences.getString(Datas.token, "").toString()
+                                     headers["lid"] =
+                                         preferences.getString(Datas.lagnuage_id, "1").toString()
+                                     return headers
+                                 }
+
                              }
-                         }) {
-                             override fun getHeaders(): Map<String, String> {
-                                 val headers = HashMap<String, String>()
-                                 headers["Content-Type"] = "application/json"
-                                 var preferences = PreferenceManager.getDefaultSharedPreferences(baseContext)
 
-                                 headers["Token"] = preferences.getString(Datas.token, "").toString()
-                                 headers["lid"] = preferences.getString(Datas.lagnuage_id, "1").toString()
-                                 return headers
-                             }
-
+                             MySingleton.getInstance(baseContext).addToRequestQueue(jor)
                          }
-
-                         MySingleton.getInstance(baseContext).addToRequestQueue(jor)
 
                      } else {
                          stopAnim()
