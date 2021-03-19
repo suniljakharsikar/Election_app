@@ -443,6 +443,11 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         issubmit = false
                         // Toast.makeText(LoginActivity.this, "" + response.getString("message"), Toast.LENGTH_SHORT).show();
+
+                        if(response.getString("message")=="Please try again after some time")
+                            customSnackBar(mobile_c!!, this@LoginActivity, "User is inactive.",
+                                ContextCompat.getColor(this@LoginActivity, R.color.error), R.drawable.ic_error)
+                        else
                         customSnackBar(mobile_c!!, this@LoginActivity, response.getString("message").toString(),
                                 ContextCompat.getColor(this@LoginActivity, R.color.error), R.drawable.ic_error) /*//login page
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
