@@ -18,6 +18,7 @@ import b2d.l.mahtmagandhi.Utility.customSnackBar
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import kotlinx.android.synthetic.main.activity_meetings.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.json.JSONException
@@ -47,6 +48,7 @@ class Meetings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meetings)
         avi = findViewById(R.id.avi)
+        textView18.text = intent.getStringExtra("title")
         timeHeading = findViewById(R.id.textView_month_year_meeting)
 
         /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -122,6 +124,7 @@ class Meetings : AppCompatActivity() {
                     editor.clear()
                     editor.apply()
                     startActivity(Intent(this@Meetings, LoginActivity::class.java))
+                    finish()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()

@@ -54,7 +54,7 @@ import java.util.Map;
 
 public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdapter.ViewHolder> {
     private Context context;
-    private List<ChatDataResponseModel.Data> chatData;
+    public static List<ChatDataResponseModel.Data> chatData;
     private String s;
     private String s1;
     private String s2;
@@ -126,6 +126,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
             public void onClick(View view) {
                 Intent intent = new Intent(context, Comment.class);
                 intent.putExtra("pos", x.getId() + "");
+                intent.putExtra("position",position);
                 intent.putExtra("url", s1);
                 intent.putExtra("newposturl", s2);
                 intent.putExtra("passToken", passToken);
@@ -325,6 +326,7 @@ public class CommunityChatAdapter extends RecyclerView.Adapter<CommunityChatAdap
 //        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
+
 
     private void like_dislike(int i, ChatDataResponseModel.Data x, TextView likes, TextView dilikes, int position) {
 

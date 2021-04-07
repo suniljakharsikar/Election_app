@@ -16,6 +16,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_problem_suggestion2.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -41,6 +42,7 @@ class ProblemSuggestion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_problem_suggestion2)
+        textView41.text = intent.getStringExtra("title")
         avi = findViewById(R.id.avi)
         initView()
     }

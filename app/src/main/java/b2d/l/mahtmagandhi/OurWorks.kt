@@ -16,6 +16,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_our_works.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.json.JSONException
@@ -40,6 +41,7 @@ class OurWorks : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_our_works)
+        title_toolbar_our_work.text= intent.getStringExtra("title")
         avi = findViewById(R.id.avi)
         recyclerView = findViewById(R.id.rv_our_works)
         recyclerView!!.setLayoutManager(LinearLayoutManager(this))
@@ -78,6 +80,7 @@ class OurWorks : AppCompatActivity() {
                     editor.clear()
                     editor.apply()
                     startActivity(Intent(this@OurWorks, LoginActivity::class.java))
+                    finish()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()

@@ -14,6 +14,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_survey.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
@@ -42,6 +43,7 @@ class Survey : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_survey)
+        textView53.text = intent.getStringExtra("title")
         /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,

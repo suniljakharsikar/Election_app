@@ -45,6 +45,7 @@ class VotingGuide : YouTubeBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_voting_guide)
+        title_toolbar_voting_Guide.text = intent.getStringExtra("title")
         avi = findViewById(R.id.avi)
         youTubePlayerView = findViewById(R.id.youtube_voting_guide)
         youTubePlayerView!!.visibility = View.INVISIBLE

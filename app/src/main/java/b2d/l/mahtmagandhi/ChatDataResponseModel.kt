@@ -8,7 +8,7 @@ data class ChatDataResponseModel(
 ) {
     data class Data(
         var UnlikeStatus: Int, // 0
-        val commentCount: Int, // 0
+        var commentCount: Int, // 0
         val description: String, // cross check 
         var dislike: Int, // 0
         val id: Int, // 37

@@ -16,6 +16,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_committee_member.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.json.JSONException
@@ -42,6 +43,7 @@ class CommitteeMember : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_committee_member)
+        textView56.text = intent.getStringExtra("title")
         avi = findViewById(R.id.avi)
 
         /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

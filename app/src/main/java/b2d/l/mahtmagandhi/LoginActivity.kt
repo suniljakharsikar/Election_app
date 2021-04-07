@@ -428,7 +428,7 @@ class LoginActivity : AppCompatActivity() {
                     if (response.getBoolean("success") ) {
 
                         stopAnim()
-                        if(response.getInt("user_status")==0){
+                        if(response.optInt("user_status",-1)==0){
                             customSnackBar(mobile_c!!, this@LoginActivity, "User is inactive.",
                                 ContextCompat.getColor(this@LoginActivity, R.color.error), R.drawable.ic_error)
                             issubmit = false

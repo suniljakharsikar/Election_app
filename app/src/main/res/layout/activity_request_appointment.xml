@@ -13,7 +13,6 @@
         android:layout_height="wrap_content">
 
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_choose_time_appointment"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
@@ -153,6 +152,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/backicon"
             app:tint="@color/black" />
+
         <ProgressBar
             android:id="@+id/avi8"
             android:layout_width="wrap_content"
@@ -162,6 +162,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_booking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="button_submit_appt,til_choose_time_appointment,til_appointment_purpose_book_app,til_appointment_date_book_app" />
+
+        <TextView
+            android:id="@+id/textView_tag_not_booking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Booking is not available."
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_noti2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

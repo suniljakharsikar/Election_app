@@ -47,6 +47,7 @@ class Appointment : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_appointment)
+        textView8.text = intent.getStringExtra("title")
         avi = avi7
         recyclerView = findViewById<RecyclerView>(R.id.rv_appointment)
         val la: LayoutManager = LinearLayoutManager(this)
@@ -98,6 +99,16 @@ class Appointment : AppCompatActivity() {
                     val adapter = AppointmentAdapter(data)
                     recyclerView!!.adapter = adapter
 
+                }else{
+                    if (response!!.getInt("status_code")==403){
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(this@Appointment)
+                        val editor = preferences.edit()
+                        editor.clear()
+                        editor.apply()
+
+                        startActivity(Intent(this@Appointment, LoginActivity::class.java))
+                        finish()
+                    }
                 }
             }
 

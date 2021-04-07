@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.activity_about_us.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -43,6 +44,8 @@ class AboutUs : AppCompatActivity() {
         }*/
         val sliderView = findViewById<SliderView>(R.id.imageSlider)
         val adapter = SliderAdapterExample(this)
+
+        textView12.text=intent.getStringExtra("title")
 
 
         /*adapter.addItem(new SliderItem());
@@ -99,6 +102,7 @@ class AboutUs : AppCompatActivity() {
                                 editor.clear()
                                 editor.apply()
                                 startActivity(Intent(this@AboutUs, LoginActivity::class.java))
+                                finish()
                             }
                             Log.d("ashok", response.getString("message"))
                         } catch (e: JSONException) {

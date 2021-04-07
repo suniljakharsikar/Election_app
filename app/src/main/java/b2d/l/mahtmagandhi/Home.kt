@@ -135,6 +135,15 @@ class Home : AppCompatActivity() {
                     recyclerView!!.setAdapter(mAdapter)
 
 
+                }else{
+                    if (response!!.getInt("status_code")==403){
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(this@Home)
+                        val editor = preferences.edit()
+                        editor.clear()
+                        editor.apply()
+                        startActivity(Intent(this@Home, LoginActivity::class.java))
+                        finish()
+                    }
                 }
                     // Log.d("Request", "onResponse: " + key)
 

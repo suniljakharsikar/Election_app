@@ -1,6 +1,7 @@
 package b2d.l.mahtmagandhi
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Editable
@@ -173,6 +174,16 @@ class RequestAppointmentActivity : AppCompatActivity() {
                     actv_choose_date.setAdapter(adapter1)
 
 
+                    if (ts.keys.size==0){
+                        group_booking.visibility = View.GONE
+                        textView_tag_not_booking.visibility = View.VISIBLE
+
+
+                    }else{
+                        group_booking.visibility = View.VISIBLE
+                        textView_tag_not_booking.visibility = View.GONE
+                    }
+
 
 
                     /* if (!hasDate){
@@ -180,6 +191,14 @@ class RequestAppointmentActivity : AppCompatActivity() {
                     }*/
                     // Log.d("Request", "onResponse: " + key)
 
+                } else if (response!!.getInt("status_code")==403){
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@RequestAppointmentActivity)
+                    val editor = preferences.edit()
+                    editor.clear()
+                    editor.apply()
+
+                    startActivity(Intent(this@RequestAppointmentActivity, LoginActivity::class.java))
+                    finish()
                 }
             }
 

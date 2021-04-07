@@ -15,6 +15,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_manifesto.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -41,6 +42,7 @@ class Manifesto : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manifesto)
+        title_toolbar_manifesto.text = intent.getStringExtra("title")
         avi = findViewById(R.id.avi)
 
         /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -91,6 +93,7 @@ class Manifesto : AppCompatActivity() {
                     editor.clear()
                     editor.apply()
                     startActivity(Intent(this@Manifesto, LoginActivity::class.java))
+                finish()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -23,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.activity_vision_mission.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -51,6 +52,7 @@ class VisionMission : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vision_mission)
+        textView23.text = intent.getStringExtra("title")
         avi = findViewById(R.id.avi)
 
 
@@ -120,6 +122,7 @@ class VisionMission : AppCompatActivity() {
                     editor.clear()
                     editor.apply()
                     startActivity(Intent(baseContext, LoginActivity::class.java))
+                    finish()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()

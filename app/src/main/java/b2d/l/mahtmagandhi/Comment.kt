@@ -263,11 +263,28 @@ class Comment : AppCompatActivity() {
                                     val comment = gson.fromJson(data.getJSONObject(i).toString(), CommentData::class.java)
                                     commentData.add(comment)
                                 }
+
+                                val position = intent.getIntExtra("position",0)
+                                if (CommunityChatAdapter.chatData!=null && CommunityChatAdapter.chatData.size>0) {
+                                    val item = CommunityChatAdapter.chatData.get(position)
+                                    item.commentCount = data.length()
+                                }
+
                                 // commentData.add(new CommentData("xyz",s));
                                 Collections.reverse(commentData)
                                 val adapter: RecyclerView.Adapter<*> = CommentAdapter(this@Comment, commentData, preferences!!.getInt(Datas.id, 1), resol)
                                 recyclerView!!.adapter = adapter
                                 comment!!.setText("")
+                                CommunityChat.recyclerView!!.adapter!!.notifyItemChanged(position)
+                            }
+                            else if (response!!.getInt("status_code")==403){
+                                val preferences = PreferenceManager.getDefaultSharedPreferences(this@Comment)
+                                val editor = preferences.edit()
+                                editor.clear()
+                                editor.apply()
+                                finish()
+                                startActivity(Intent(this@Comment, LoginActivity::class.java))
+
                             }
                             // Toast.makeText(Comment.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
                         } catch (e: JSONException) {
@@ -276,6 +293,7 @@ class Comment : AppCompatActivity() {
                         stopAnim()
                     }, Response.ErrorListener { error ->
                         customSnackBar(recyclerView!!, this@Comment, error.toString(), ContextCompat.getColor(this@Comment, R.color.error), R.drawable.ic_error)
+
 
                         //// Toast.makeText(Comment.this, "" + error.getMessage(), // Toast.LENGTH_SHORT).show();
                         stopAnim()

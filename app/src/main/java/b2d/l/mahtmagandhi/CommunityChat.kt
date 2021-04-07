@@ -18,6 +18,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_community_chat.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -26,10 +27,14 @@ import org.json.JSONObject
 import java.util.*
 
 class CommunityChat : AppCompatActivity() {
-    var recyclerView: RecyclerView? = null
     var linearLayoutManager: LinearLayoutManager? = null
     var chatData: ArrayList<ChatData>? = null
     private var preferences: SharedPreferences? = null
+    companion object{
+        var recyclerView: RecyclerView? = null
+
+    }
+
     private var avi: ProgressBar? = null
     fun startAnim() {
         // avi.show();
@@ -47,7 +52,9 @@ class CommunityChat : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_chat)
         avi = findViewById(R.id.avi)
+
         stopAnim()
+        textView40.text = intent.getStringExtra("title")
         /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -136,6 +143,7 @@ class CommunityChat : AppCompatActivity() {
                         editor.clear()
                         editor.apply()
                         startActivity(Intent(this@CommunityChat, LoginActivity::class.java))
+                    finish()
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

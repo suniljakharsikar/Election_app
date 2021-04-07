@@ -16,6 +16,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_news_update.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -44,6 +45,7 @@ class NewsUpdate : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_update)
+        title_toolbar_news.text = intent.getStringExtra("title")
         avi = findViewById(R.id.avi)
         startAnim()
         /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

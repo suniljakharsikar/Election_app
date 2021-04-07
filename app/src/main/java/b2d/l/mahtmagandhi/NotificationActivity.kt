@@ -72,6 +72,12 @@ class NotificationActivity : AppCompatActivity() {
 
                 if (r.success) {
                     rv_noti.adapter = NotificationAdapter(r.data)
+                }else if (response!!.getInt("status_code")==403){
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@NotificationActivity)
+                    val editor = preferences.edit()
+                    editor.clear()
+                    editor.apply()
+                    startActivity(Intent(this@NotificationActivity, LoginActivity::class.java))
                 }
 
                 stopAnim()

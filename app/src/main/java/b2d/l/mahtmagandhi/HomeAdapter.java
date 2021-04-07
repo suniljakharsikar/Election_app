@@ -147,6 +147,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                           break;
                       }
                   }
+                  intent.putExtra("title",model.getMenu());
                   context.startActivity(intent);
 
               }

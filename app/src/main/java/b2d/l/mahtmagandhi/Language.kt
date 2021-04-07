@@ -115,6 +115,7 @@ class Language : AppCompatActivity() {
                     editor.clear()
                     editor.apply()
                     startActivity(Intent(this@Language, LoginActivity::class.java))
+                finish()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -221,6 +222,7 @@ class Language : AppCompatActivity() {
                     editor.clear()
                     editor.apply()
                     startActivity(Intent(this@Language, LoginActivity::class.java))
+                finish()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()

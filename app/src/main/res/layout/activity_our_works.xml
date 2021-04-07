@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/title_toolbar_our_work"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Our Works"
@@ -38,11 +39,11 @@
         android:background="@drawable/btn_ripple_bg"
         android:onClick="back"
         android:padding="@dimen/backpad"
-        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backicon" />
+        app:srcCompat="@drawable/backicon"
+        app:tint="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_our_works"

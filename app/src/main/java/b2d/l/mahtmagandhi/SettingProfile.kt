@@ -87,6 +87,7 @@ class SettingProfile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting_profile)
+        title_toolbar_profile.text = intent.getStringExtra("title")
         avi = findViewById(R.id.avi2)
 
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

@@ -275,6 +275,14 @@ class Register : AppCompatActivity() {
                     editor.apply()
                     startActivity(Intent(this@Register, Language::class.java))
                     finish()
+                }else if (response!!.getInt("status_code")==403){
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@Register)
+                    val editor = preferences.edit()
+                    editor.clear()
+                    editor.apply()
+
+                    startActivity(Intent(this@Register, LoginActivity::class.java))
+                    finish()
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
