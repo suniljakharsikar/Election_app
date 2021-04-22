@@ -1,6 +1,5 @@
 package b2d.l.mahtmagandhi;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,7 +11,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -33,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -53,6 +50,7 @@ import java.util.concurrent.ExecutionException;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    String GROUP_KEY = "com.android.example.WORK_EMAIL";
 
     /**
      * Called when message is received.
@@ -236,6 +234,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
+
     /**
      * Create and show a simple notification containing the received FCM message.
      *
@@ -254,11 +253,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_status_icon)
                         .setContentTitle(title)
-
+                        .setGroup(GROUP_KEY)
                         .setContentText(body)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
+
 
         FutureTarget<Bitmap> futureTarget = Glide.with(this)
                 .asBitmap()
@@ -294,4 +294,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+
+    
 }

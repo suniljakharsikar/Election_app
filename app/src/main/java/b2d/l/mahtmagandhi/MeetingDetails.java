@@ -1,5 +1,6 @@
 package b2d.l.mahtmagandhi;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -50,13 +51,22 @@ public class MeetingDetails extends AppCompatActivity {
     public void map(View view) {
 //        meet.setLatitude("27.6225423");
 //        meet.setLongitude("75.1662117");
-        if (meet.getLatitude().equals("null") || meet.getLongitude().equals("null")) {
+        if ((meet.getLatitude().equals("null") || meet.getLongitude().equals("null")) && meet.getAddress().length()==0) {
             Toast.makeText(this, "Location not available", Toast.LENGTH_SHORT).show();
-        } else {
+        }else if (meet.getAddress().length()>0){
+                openMap(this,meet.getAddress());
+        }
+        else {
             String strUri = "http://maps.google.com/maps?q=loc:" + meet.getLatitude() + "," + meet.getLongitude() + " (" + meet.getTitle() + ")";
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(strUri));
             intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
             startActivity(intent);
         }
+    }
+
+
+    private void openMap(Context context, String address) {
+        Intent searchAddress = new  Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q="+address));
+        context.startActivity(searchAddress);
     }
 }

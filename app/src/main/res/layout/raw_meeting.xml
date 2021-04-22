@@ -5,6 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/imageView_map_meeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_location_addr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_location_addr"
+        app:srcCompat="@drawable/ic_baseline_map_24" />
+
+    <ImageView
+        android:id="@+id/imageView61"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView39"
+        app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
+    <TextView
+        android:id="@+id/textView_location_addr"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_map_meeting"
+        app:layout_constraintStart_toEndOf="@+id/imageView61"
+        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
     <TextView
         android:id="@+id/textView26"
         android:layout_width="wrap_content"
@@ -67,7 +99,6 @@
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView26"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView26"

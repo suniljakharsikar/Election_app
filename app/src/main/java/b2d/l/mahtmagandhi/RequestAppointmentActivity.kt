@@ -139,8 +139,18 @@ class RequestAppointmentActivity : AppCompatActivity() {
                 val statusCode = response.optInt("status_code")
                 if (isSuccess && statusCode == 200) {
                     val data = response.optJSONObject("data")
+
                     if (data?.names()?.length()==null)
+                    {
+                            group_booking.visibility = View.GONE
+                            textView_tag_not_booking.visibility = View.VISIBLE
+
                         return
+
+                        }else{
+                            group_booking.visibility = View.VISIBLE
+                            textView_tag_not_booking.visibility = View.GONE
+                        }
                     val names = data.names();
 
 

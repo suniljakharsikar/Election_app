@@ -11,10 +11,20 @@ public class Meeting implements Serializable {
     private String latitude;
     private String longitude;
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    private String address;
+
     public Meeting() {
     }
 
-    public Meeting(String id, String title, String description, String meeting_date, String meeting_time, String latitude, String longitude) {
+    public Meeting(String id, String title, String description, String meeting_date, String meeting_time, String latitude, String longitude,String address) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -22,6 +32,7 @@ public class Meeting implements Serializable {
         this.meeting_time = meeting_time;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.address = address;
     }
 
     public String getId() {

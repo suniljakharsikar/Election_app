@@ -72,6 +72,16 @@ class CommunityChat : AppCompatActivity() {
         val itemViewType = 0
         recyclerView!!.getRecycledViewPool().setMaxRecycledViews(itemViewType, 0)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+
+        fetchData()
+        swipe_refresh_community_chat.setOnRefreshListener {
+            fetchData()
+
+        }
+    }
+
+    private fun fetchData() {
         val job = GlobalScope.async {
             return@async Utility.isInternetAvailable()
         }
@@ -120,6 +130,8 @@ class CommunityChat : AppCompatActivity() {
             startAnim()
             val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, json, Response.Listener { response -> //stopAnim();
                 Log.d("ashok_chat", response.toString())
+                if (swipe_refresh_community_chat.isRefreshing)
+                swipe_refresh_community_chat.isRefreshing = false
                 try {
                     val gson = Gson()
                     val (data, _, _, success) = gson.fromJson(response.toString(), ChatDataResponseModel::class.java)

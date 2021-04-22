@@ -30,7 +30,7 @@ class SplashScreenActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
         if (intent.hasExtra("from")) {
             startActivity(Intent(baseContext, NotificationActivity::class.java))
@@ -40,7 +40,7 @@ class SplashScreenActivity : AppCompatActivity() {
             Handler().postDelayed(Runnable {
                 imageView_bg_splash.visibility = View.VISIBLE
                 Handler().postDelayed(Runnable {
-                    civ_avtar_splash.setImageResource(R.drawable.profile)
+                    civ_avtar_splash.setImageResource(R.drawable.photo)
                     civ_avtar_splash.performClick()
 
                     Handler().postDelayed(Runnable {

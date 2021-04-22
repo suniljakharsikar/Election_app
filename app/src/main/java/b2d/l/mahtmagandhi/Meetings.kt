@@ -92,7 +92,7 @@ class Meetings : AppCompatActivity() {
                     val meetings = ArrayList<Meeting>()
                     for (i in 0 until data.length()) {
                         val jsonObject = data.getJSONObject(i)
-                        meetings.add(Meeting(jsonObject.getString("id"), jsonObject.getString("title"), jsonObject.getString("description"), jsonObject.getString("meeting_date"), jsonObject.getString("meeting_time"), jsonObject.getString("latitude"), jsonObject.getString("longitude")))
+                        meetings.add(Meeting(jsonObject.getString("id"), jsonObject.getString("title"), jsonObject.getString("description"), jsonObject.getString("meeting_date"), jsonObject.getString("meeting_time"), jsonObject.getString("latitude"), jsonObject.getString("longitude"),jsonObject.getString("address")))
                     }
                     val map: MutableMap<String, MutableList<Meeting>> = HashMap()
                     for (i in meetings.indices) {

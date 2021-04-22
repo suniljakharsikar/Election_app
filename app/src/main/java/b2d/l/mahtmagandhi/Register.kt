@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import b2d.l.mahtmagandhi.Register
 import b2d.l.mahtmagandhi.Utility.customSnackBar
 import b2d.l.mahtmagandhi.Utility.hideKeyboard
+import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -65,8 +66,7 @@ class Register : AppCompatActivity() {
         val loginstatus = preferences.getBoolean(Datas.registration, false)
         if (loginstatus) {
             // FIXME: 08-02-2021  
-           startActivity(Intent(this@Register, Language::class.java))
-            finish()
+           fetchLanguage()
             //inish()
         }
     }
@@ -273,16 +273,15 @@ class Register : AppCompatActivity() {
                     editor.putBoolean(Datas.registration, true)
                     editor.putString(Datas.gender,gender)
                     editor.apply()
-                    startActivity(Intent(this@Register, Language::class.java))
-                    finish()
+
+                    fetchLanguage()
                 }else if (response!!.getInt("status_code")==403){
                     val preferences = PreferenceManager.getDefaultSharedPreferences(this@Register)
                     val editor = preferences.edit()
                     editor.clear()
                     editor.apply()
 
-                    startActivity(Intent(this@Register, LoginActivity::class.java))
-                    finish()
+
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -299,6 +298,57 @@ class Register : AppCompatActivity() {
                 headers["Content-Type"] = "application/json"
                 headers["Token"] = preferences!!.getString(Datas.token, "")!!
                 Log.d("token=", preferences!!.getString(Datas.token, ""))
+                return headers
+            }
+        }
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+    }
+    private fun fetchLanguage() {
+        val url = Url.baseurl + "/language_list"
+        val jsonRequest = JSONObject()
+        startAnim()
+        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonRequest, Response.Listener { response ->
+            try {
+                val gson = Gson()
+                val (data, _, _, success) = gson.fromJson(response.toString(), LanguageResponseModel::class.java)
+                if (success) {
+
+                    if (data.size>1) {
+                        startActivity(Intent(this@Register, Language::class.java))
+                        finish()
+                    }else if(data.size==1){
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(this@Register)
+                        val editor = preferences.edit()
+                        editor.putBoolean(Datas.language_selected, true)
+                        editor.putString(Datas.lagnuage_id, data.get(0).id.toString())
+                        editor.apply()
+                        startActivity(Intent(this@Register, Home::class.java))
+                        finish()
+                    }
+
+                } else {
+                    // Toast.makeText(Language.this, "" + response.getString("message"), // Toast.LENGTH_SHORT).show();
+                    //login page
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(this@Register)
+                    val editor = preferences.edit()
+                    editor.clear()
+                    editor.apply()
+                    startActivity(Intent(this@Register, LoginActivity::class.java))
+                    finish()
+                }
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            stopAnim()
+        }, Response.ErrorListener { error ->
+
+            stopAnim()
+        }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Token"] = preferences!!.getString(Datas.token, "")!!
                 return headers
             }
         }

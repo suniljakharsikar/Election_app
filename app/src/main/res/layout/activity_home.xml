@@ -57,7 +57,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:elevation="2dp"
-        android:src="@drawable/profile"
+        android:src="@drawable/photo"
         app:civ_border_color="@color/profile_boundry_color"
         app:civ_border_width="8dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView3"
@@ -71,7 +71,7 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/bg" />
+        app:srcCompat="@drawable/rectangle_gradient" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView10"

@@ -105,7 +105,7 @@ class LoginActivity : AppCompatActivity() {
                 })
         if (loginstatus) {
             // FIXME: 08-02-2021 Home
-            startActivity(Intent(this@LoginActivity, Register::class.java))
+            startActivity(Intent(this@LoginActivity, Home::class.java))
             finish()
         }
     }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="@drawable/rectangle_gradient"
     tools:context=".SplashScreenActivity">
 
     <androidx.constraintlayout.motion.widget.MotionLayout
@@ -20,10 +21,10 @@
             android:layout_height="wrap_content"
             android:elevation="2dp"
             android:fontFamily="sans-serif"
-            android:text="GANDHIJI"
+            android:text="MY APPLICATION"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/blue_home_icon"
+            android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,8 +37,9 @@
             android:layout_height="wrap_content"
             android:elevation="2dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Mohandas karamchand"
-            android:textAllCaps="true"
+            android:text="Android"
+            android:textColor="@color/white"
+
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,9 +52,11 @@
             android:layout_height="wrap_content"
             android:elevation="2dp"
             android:fontFamily="serif-monospace"
-            android:text="Father Of The Nation"
+            android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/black"
+            android:visibility="gone"
+
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,15 +75,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/bg" />
+            app:srcCompat="@drawable/rectangle_gradient" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_avtar_splash"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:src="@drawable/hand"
-            app:civ_border_color="@color/white_text_color"
+            android:src="@drawable/ic_app_icon"
+            app:civ_border_color="@color/white"
             app:civ_border_width="8dp"
+            app:civ_circle_background_color="@color/white"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

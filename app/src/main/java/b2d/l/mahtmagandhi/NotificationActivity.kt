@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import b2d.l.mahtmagandhi.Utility.customSnackBar
@@ -67,6 +68,8 @@ class NotificationActivity : AppCompatActivity() {
         val jor = object : JsonObjectRequest(Request.Method.POST, url, null, object : Response.Listener<JSONObject> {
             override fun onResponse(response: JSONObject?) {
                 Log.d("TAG", "onResponse: " + response)
+
+                NotificationManagerCompat.from(this@NotificationActivity).cancelAll()
                 val gson = Gson()
                 val r = gson.fromJson<NotificationResponseModel>(response.toString(), NotificationResponseModel::class.java)
 

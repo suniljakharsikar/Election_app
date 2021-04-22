@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/rectangle_gradient"
     tools:context=".Language">
 
     <ScrollView
@@ -27,7 +27,7 @@
                 android:layout_width="105dp"
                 android:layout_height="105dp"
                 android:layout_marginTop="32dp"
-                android:src="@drawable/profile"
+                android:src="@drawable/photo"
                 app:civ_border_color="@color/white_text_color"
                 app:civ_border_width="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +74,7 @@
                             android:paddingStart="2dp"
                             android:paddingTop="0dp"
                             android:paddingBottom="0dp"
-                             />
+                            />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -320,7 +320,7 @@
         android:id="@+id/avi3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:indeterminate="true"
+        android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

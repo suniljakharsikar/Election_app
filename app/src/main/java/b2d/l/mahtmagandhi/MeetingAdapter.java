@@ -2,9 +2,11 @@ package b2d.l.mahtmagandhi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -96,7 +98,29 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
 
         }
 
+        holder.addressTextview.setText(meeting.getAddress());
 
+        holder.addressTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMap(holder.itemView.getContext(),meeting.getAddress());
+            }
+        });
+
+
+        holder.mapImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMap(holder.itemView.getContext(),meeting.getAddress());
+            }
+        });
+
+
+    }
+
+    private void openMap(Context context, String address) {
+        Intent searchAddress = new  Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q="+address));
+       context.startActivity(searchAddress);
     }
 
     @Override
@@ -111,13 +135,16 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title, date, time;
+        TextView title, date, time,addressTextview;
+        ImageView mapImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.textView26);
             date = itemView.findViewById(R.id.textView27);
             time = itemView.findViewById(R.id.textView28);
+            addressTextview = itemView.findViewById(R.id.textView_location_addr);
+            mapImageView = itemView.findViewById(R.id.imageView_map_meeting);
         }
     }
 }
